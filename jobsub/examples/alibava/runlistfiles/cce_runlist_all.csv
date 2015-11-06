@@ -1,0 +1,70 @@
+Date,Time,RunNumber,PedestalRunNumber,EventIDDiff,SkipEvents,AliNEvents,Rotation,Rotation Sensor,Rotation Stage,Bias Volt,Config file,Sensor Temp.,Air Temp.,Air Humid.,Cu Plate Temp.,TelescopeRunNumber,TelNEvents,Rate (Hz),BeamEnergy,Config file,MagneticField,Current on Power supply,I-Coil,GearFileName,Comments
+25/10/13,,114,000111,0,,100,0,,,-50,CCE_TB5_kazu_131024.ini,-25,4.1,5.3,-28,000753,100,102,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+25/10/13,,120,000115,0,,100,0,,,-100,CCE_TB5_kazu_131024.ini,-25.1,3.4,5.5,-28.5,000758,100,104,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+25/10/13,,124,000121,0,,100,0,,,-150,CCE_TB5_kazu_131024.ini,-25.2,3.8,5.5,-28.5,000759,100,104,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+25/10/13,,128,000125,0,,100,0,,,-200,CCE_TB5_kazu_131024.ini,-25,3.5,5.5,-28.3,000760,100,105,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+25/10/13,,132,000129,0,,100,0,,,-250,CCE_TB5_kazu_131024.ini,-25.4,3.3,5.6,-28.8,000761,100,105,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+26/10/13,,149,000158,0,,100,0,,,-300,CCE.ini,-25.41,-0.5,5.85,-28.89,000769,101,103,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+26/10/13,,150,000151,0,,100,0,,,-350,CCE.ini,-25.38,-0.6,5.84,-28.87,000770,100,100,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+26/10/13,,153,000159,0,,100,0,,,-400,CCE.ini,-25.4,-0.54,5.85,-28.93,000772,96,101,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+26/10/13,,154,000160,0,,100,0,,,-450,CCE.ini,-25.4,-0.54,5.85,-28.93,000773,101,103,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+26/10/13,,155,000161,0,,100,0,,,-500,CCE.ini,-25.44,-0.57,5.88,-28.92,000774,100,101,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+26/10/13,,156,000162,0,,100,0,,,-550,CCE.ini,-25.43,-0.7,5.9,-28.94,000775,100,103,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+26/10/13,,157,000163,0,,100,0,,,-600,CCE.ini,-25.42,-0.68,5.9,-28.94,000776,104,105,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+30/10/13,13:53,669,000111,0,,100,0,,,-50,CCE_v4.ini,-23.83,0.36,4.37,-27,001101,100,221,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,telescope alignment wrt beam changed
+30/10/13,14:30,671,000115,0,,100,0,,,-100,CCE_v4.ini,-24.06,3.95,5.48,-27.29,001104,100,,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,telescope alignment wrt beam changed
+30/10/13,14:41,672,000121,0,,100,0,,,-150,CCE_v4.ini,-24.06,4.22,5.43,-27.27,001105,100,198,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,telescope alignment wrt beam changed
+31/10/13,21:24,1004,001001,0,,300,0,,,-100,CCE_v4.ini,-24.95,-1.88,7.82,-7.39,001206,,,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+6/11/13,6:23,1274,001275,0,,300,0,,,-100,CCE_v4.ini,-21.66,1.79,6.95,-9.4,001397,300,184,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+31/10/13,22:04,1010,001006,0,,300,0,,,-200,CCE_v4.ini,-24.99,-1.94,7.71,-10.6,001207,300,200,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+31/10/13,23:16,1014,001011,0,,300,0,,,-300,CCE_v4.ini,-25.09,-2.13,7.7,-13.4,001208,300,-,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+31/10/13,23:22,1016,001017,0,,300,0,,,-400,CCE_v4.ini,-25.11,-2.15,7.69,-15.9,001209,300,170,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+1/11/13,0:11,1020,001021,0,,300,0,,,-500,CCE_v4.ini,-25.35,-2.4,7.82,-18,001210,300,173,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+1/11/13,0:57,1024,001025,0,,300,0,,,-600,CCE_v4.ini,-25.22,-2.21,7.74,-20,001211,300,170,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+1/11/13,1:32,1028,001029,0,,300,0,,,-700,CCE_v4.ini,-25.11,-2.16,7.72,-23,001212,300,171,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+6/11/13,5:58,1273,001269,0,,300,0,,,-800,CCE_v4.ini,-21.68,1.53,6.91,-38.5,001396,300,180,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+1/11/13,4:01,1041,001042,0,,300,0,,,-900,CCE_v4.ini,-25.08,-2.32,7.82,-30,001219,300,158,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,
+1/11/13,12:14,1049,001050,0,,300,0,,,-1000,CCE_v4.ini,-24.62,-2.31,8.1,-36.01,001225,300,194,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+6/11/2013,15:43:00,2006,002003,-1,,300,0,,,-100,CCE_v4.ini,-21.14,2.96,7.6,-24.94,001406,300,196,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,"forgot to stop eudaq run, ignore last 15 telescope events"
+6/11/2013,16:18:00,2011,002007,-1,,300,0,,,-200,CCE_v4.ini,-21.36,2.6,7.64,-37.7,001407,300,-,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+6/11/2013,16:46:00,2012,002013,-1,,300,0,,,-300,CCE_v4.ini,-21.34,2.53,7.68,-51.24,001408,300,208,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+6/11/2013,17:17:00,2019,002018,-1,,300,0,,,-400,CCE_v4.ini,-21.23,2.39,7.68,-67.69,001409,300,165,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+6/11/2013,17:48:00,2020,002021,-1,,300,0,,,-500,CCE_v4.ini,-21.14,2.54,7.66,-88.75,001410,300,181,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+6/11/2013,18:25:00,2027,002026,-1,,300,0,,,-600,CCE_v4.ini,-21.14,2.68,7.67,-123.88,001411,300,-,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+7/11/2013,20:54:00,2075,002072,-1,,300,0,,,-700,CCE_v4.ini,-23.52,-3.4,5.17,-109.3,001447,300,176,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,"forgot to stop telescope run, ignore last 367 events"
+12/11/2013,12:09,2301,002302,-1,,300,0,,,see comment,CCE_v4.ini,-23.5,1.54,7.81,see comment,001612,300,232,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,"sensor 2E15 (chip1) is at -1000V current=-84, sensor 5E15 (chip0) is at -700V current=-94"
+12/11/2013,12:41,2305,002306,-1,,300,0,,,see comment,CCE_v4.ini,-23.51,1.79,7.85,see comment,001613,300,194,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,"sensor 2E15 (chip1) is at -900V current=-53.2, sensor 5E15 (chip0) is at -750V current=-106.3"
+12/11/2013,13:22,2310,002311,-1,,300,0,,,see comment,CCE_v4.ini,-23.51,1.43,7.9,see comment,001614,300,232,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,"sensor 2E15 (chip1) is at -800V current=-42.2, sensor 5E15 (chip0) is at -785V current=-153"
+12/11/2013,14:16,2314,002315,-1,,300,0,,,-700,CCE_v4.ini,-23.6,2.04,7.91,see comment,001615,300,230,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,"sensor 2E15 (chip1) is at -700V current=-30.5, sensor 5E15 (chip0) is at -700V current=-76.9"
+13/11/2013,6:03:00,2348,002349,-1,,300,0,,,see comment,CCE_v4.ini,-23.54,1.06,7.96,see comment,001642,300,,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,"sensor 2E15 (chip1) is at -100V current=-6.8, sensor 5E15 (chip0) is at -800V current=-117.7"
+13/11/2013,13:10:00,3004,003001,0,,300,0,,,-100,CCE_v4.ini,-24.28,2.74,7.85,,001643,300,149,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+13/11/2013,13:49:00,3008,003005,0,,300,0,,,-200,CCE_v4.ini,-24.26,2.42,7.88,,001644,300,233,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+13/11/2013,14:14:00,3009,003010,0,,300,0,,,-300,CCE_v4.ini,-24.28,1.89,7.81,,001645,300,219,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+13/11/2013,17:47:00,3040,003037,0,,300,0,,,-400,CCE_v4.ini,-24.13,1.15,7.22,,001652,300,234,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+13/11/2013,17:21:00,3036,003033,0,,300,0,,,-500,CCE_v4.ini,-24.14,1.11,7.23,,001651,300,228,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+13/11/2013,16:50:00,3032,003029,0,,300,0,,,-600,CCE_v4.ini,-24.21,0.9,7.26,,001650,300,189,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+13/11/2013,16:22:00,3028,003025,0,,300,0,,,-700,CCE_v4.ini,-24.18,1,7.28,,001649,300,218,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+13/11/2013,15:55:00,3024,003021,0,,300,0,,,-800,CCE_v4.ini,-24.13,1.03,7.29,,001648,300,222,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+13/11/2013,15:17:00,3020,003017,0,,300,0,,,-900,CCE_v4.ini,-24.15,1.17,7.33,,001647,300,161,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+13/11/2013,14:48:00,3016,003015,0,,300,0,,,-1000,CCE_v4.ini,-24.18,2.08,7.87,,001646,300,,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB5-B000,-
+8.2.14,5:59,5064,005063,0,,300,0,0.13,0.5,-100,CCE.ini,-26.92,0.52,7.33,,002014,300,,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+8.2.14,5:26,5057,005058,-1,,300,0,0.12,0.5,-200,CCE.ini,-26.93,0.51,7.36,,002012,300,208,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+8.2.14,5:01,5056,005054,-1,,300,0,0.17,0.5,-300,CCE.ini,-26.93,0.47,7.37,,002011,300,209,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+8.2.14,4:24,5048,005049,-1,,300,0,0.18,0.5,-400,CCE.ini,-26.94,0.5,7.36,,002009,300,210,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+8.2.14,1:07,5024,005025,-1,,400,0,0.11,0.5,-500,LAM.ini,-26.86,0.59,7.4,,002003,400,195,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+8.2.14,1:52,5031,005030,-1,,300,0,0.17,0.5,-600,CCE.ini,-26.86,0.58,7.38,,002004,300,197,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+8.2.14,2:23,5032,005033,-1,,300,0,0.18,0.5,-700,CCE.ini,-26.87,0.59,7.38,,002005,300,203,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+8.2.14,3:03,5039,005038,-1,,300,0,0.17,0.5,-800,CCE.ini,-26.86,0.58,7.36,,002006,300,208,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+8.2.14,3:28,5040,005041,-1,,300,0,0.18,0.5,-900,CCE.ini,-26.89,0.56,7.36,,002007,300,209,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+8.2.14,3:59,5047,005046,-1,,300,0,0.13,0.5,-1000,CCE.ini,-26.89,0.54,7.36,,002008,300,209,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+14.2.14,23:56,6004,006001,0,,300,0,-0.1,0,-100,CCE.ini,-25.2,1.71,7,,002287,300,207,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+15.2.14,0:20,6005,006006,0,,300,0,-0.09,0,-200,CCE.ini,-25.61,1.47,7.12,,002288,300,191,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+15.2.14,1:17,6012,006011,0,,300,0,-0.08,0,-300,CCE.ini,-25.92,0.89,7.17,,002289,300,216,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+15.2.14,1:18,6013,006014,0,,300,0,-0.09,0,-400,CCE.ini,-25.93,0.98,7.17,,002290,300,213,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+15.2.14,1:50,6020,006019,0,,300,0,-0.15,0,-500,CCE.ini,-25.97,0.96,7.16,,002291,300,215,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+15.2.14,2:14,6021,006022,0,,300,0,,0,-600,CCE.ini,-26.02,0.89,7.16,,002292,300,209,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+15.2.14,2:44,6028,006027,0,,300,0,-0.13,0,-700,CCE.ini,-26.02,0.96,7.14,,002293,300,213,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+15.2.14,3:08,6029,006030,0,,300,0,-0.09,0,-800,CCE.ini,-26.02,0.91,7.14,,002294,300,214,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+15.2.14,3:55,6036,006035,0,,300,0,-0.13,0,-900,CCE.ini,-26.04,0.9,7.11,,002295,300,212,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+15.2.14,4:03,6037,006038,0,,300,0,-0.09,0,-1000,CCE.ini,-26.04,0.91,7.14,,002296,300,-,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
+7.2.14,0:37:00,4197,004198,0,,400,0,-0.16,0,-500,LAM.ini,-25.84,1.16,5.98,-29.4,001970,400,212,4.4,LAM_coins_telescope_and_alibava,0,0,0,gear-TB6-B000,-
