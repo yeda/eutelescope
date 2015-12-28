@@ -3,14 +3,14 @@
 #EVENTIDDIFFLIST=("0" "-1" "1" "-2" "2")
 #EVENTIDDIFFLIST=("0")
 
-DUTLIST=(10 0)
-#DUTLIST=(10 0 1 2 3 5 6)
+#DUTLIST=(10 0)
+DUTLIST=(10 0 1 2 3 5 6)
 
 #for EVENTIDDIFF in "${EVENTIDDIFFLIST[@]}"
 #do
 
-#TEMPLATELIST=('merger' 'hitmaker-local')
-TEMPLATELIST=('alibava-datatree')
+TEMPLATELIST=('alibava-applyxtalk' 'merger' 'hitmaker-local')
+#TEMPLATELIST=('alibava-noxtalk' 'merger-noxtalk' 'hitmaker-local')
 for Template in "${TEMPLATELIST[@]}"
 do
 
@@ -18,13 +18,13 @@ for DUT in "${DUTLIST[@]}"
 do
 
 if [ $DUT = 0 ]; then
-RUNLIST=(124 132 150 153)
-#RUNLIST=(114 120 124 128 132 149 150 153 154 155 156 157)
+#RUNLIST=(124 132 150 153)
+RUNLIST=(114 120 124 128 132 149 150 153 154 155 156 157)
 fi
 
 if [ $DUT = 10 ]; then
-RUNLIST=(672)
-#RUNLIST=(669 671 672)
+#RUNLIST=(672)
+RUNLIST=(669 671 672)
 fi
 
 if [ $DUT = 1 ]; then
@@ -40,7 +40,7 @@ RUNLIST=(3004 3008 3009 3040 3036 3032 3028 3024 3020 3016)
 fi
 
 if [ $DUT = 4 ]; then
-RUNLIST=(4197)
+#RUNLIST=(4197)
 fi
 
 
