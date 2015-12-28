@@ -5,6 +5,11 @@ output/
 backup_gbl/
 alignment_parameters/
 *.o
+lam_histos
+fit_langaus
+cce_histos
+gblpy/.DS_Store
+millepede.end
 
 # Except this file
 !.gitignore
