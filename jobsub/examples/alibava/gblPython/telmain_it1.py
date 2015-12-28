@@ -19,17 +19,19 @@ import time
 import sys, getopt
 import os
 import math
+import numpy as np
 
 def main(argv):
   start = time.clock()
   runnumber = 0
   gearfile = ''
   beamEnergy = 0.0
+  gblcuts = ''
 
   try:
-    opts, args = getopt.getopt(argv,"hg:r:e:",["gearfile=","runnumber=","beamenergy="])
+    opts, args = getopt.getopt(argv,"hg:r:e:c:",["gearfile=","runnumber=","beamenergy=","gblcuts"])
   except getopt.GetoptError:
-    print 'telmain.py -g <gearfile> -r <runnumber> -e <beamenergy>'
+    print 'telmain.py -g <gearfile> -r <runnumber> -e <beamenergy> -c <gblcuts>'
     sys.exit(2)
   for opt, arg in opts:
     if opt == '-h':
@@ -41,6 +43,9 @@ def main(argv):
       beamEnergy = -1.0*float(arg)
     elif opt in ("-r", "--runnumber"):
       runnumber = arg.zfill(6)
+    elif opt in ("-c", "--gblcuts"):
+      gblcuts = arg
+
   print 'Gear file is ', gearfile
   print 'Run number is ', runnumber
   print 'Run beam energy is ', beamEnergy 
@@ -69,9 +74,7 @@ def main(argv):
   mp2.open()  # open file for alignment
 
   # estimated alignment error (mimosa, DUT)
-  #alignmentError = (0.005, 0.5)
   alignmentError = (0.005, 0.01)
-  #alignmentError = (0.005, 1)
 
   # number of events to show event display
   displayEvents = 0
@@ -127,20 +130,19 @@ def main(argv):
   #cuts = ((1., 1.), (0.025, 0.025), (0.01, 0.01), (0.1, 0.1), (0.2, 10.0))  # 613, B off
 
   # my cuts to align telescope only
-  #cuts = ((1., 1.), (0.5, 0.5), (0.02, 0.02), (5.0, 5.0), (0, 0)) 
-  #cuts = ((1., 1.), (0.1 ,0.1), (0.01, 0.01), (0.5, 0.5), (0, 0)) 
-  #cuts = ((0.5, 1.), (0.02,0.02), (0.01, 0.01), (0.1, 0.1), (0, 0))  
-  #cuts = ((0.5, 0.5), (0.02,0.02), (0.01, 0.01), (0.1, 0.1), (0, 0))  
-  #cuts = ((0.5, 0.5), (0.02,0.02), (0.01, 0.01), (0.1, 0.1), (10.0, 10))  
-  #cuts = ((0.2, 0.2), (0.01,0.01), (0.002, 0.002), (0.1, 0.1), (10.2, 10))  
-  #cuts = ((0.5, 0.5), (0.02,0.02), (0.01, 0.01), (0.1, 0.1), (0.2, 10))  
-  cuts = ((0.5, 0.5), (0.02,0.02), (0.01, 0.01), (0.1, 0.1), (2.2, 10))  
-
+  #cuts = ((0.5, 0.5), (0.02,0.02), (0.01, 0.01), (0.1, 0.1), (2.2, 10))  
+  gblcuts = gblcuts.replace('(','')
+  gblcuts = gblcuts.replace(')','')
+  gblcuts = gblcuts.replace(' ','')
+  gblcuts = gblcuts.split(',')
+  gblcuts = map(float,gblcuts)
+  gblcuts = np.array(gblcuts).reshape(5,2)
+  cuts = map(tuple, gblcuts)
 
   # histograms for cut values
   #hists = None
   hists = SimpleHists(("doubletDx", "doubletDy", "tripletDx", "tripletDy", "dslopeX", "dslopeY", \
-                      "dposX", "dposY", "DUT6-dx", "DUT6-dy", "DUT7-dx", "DUT7-dy", "nTriplets", "nMatches", "match/triplet", "nSegments"))
+                      "dposX", "dposY", "DUT6-dx", "DUT6-dy", "DUT7-dx", "DUT7-dy", "nTriplets", "nMatches", "match/triplet", "nSegments","Pseg","Pgbl","xScat","yScat"))
   #
   numEvt = 0
   numTrack = 0
@@ -171,8 +173,10 @@ def main(argv):
       finder.plotSegments() 
 
     # analyze event
+    event.analyzeScat(hists)
+    event.analyzeMom(hists)
     event.analyze(tree)
-    
+
   dataFile.close() 
   # write and close tree file
   if tree is not None:

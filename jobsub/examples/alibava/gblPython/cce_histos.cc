@@ -16,8 +16,10 @@
 using namespace std;
 
 //Declaration of leaves types
-   Int_t           runum;
+   Int_t           runnum;
    Int_t           evtnum;
+   Float_t         Pseg;
+   Float_t         Pgbl;
    Int_t           hitnum;
    Int_t           dutID;
    Float_t         locxpos;
@@ -25,9 +27,9 @@ using namespace std;
    Float_t         locxslope;
    Float_t         locyslope;
    Int_t           clustersize;
-   Int_t           clusterxchan[10];
-   Int_t           clusterychan[10];
-   Float_t         clustercharge[10];
+   Int_t           clusterxchan[20];   //[clustersize]
+   Int_t           clusterychan[20];   //[clustersize]
+   Float_t         clustercharge[20];   //[clustersize]
 
 
 struct FileInfo{ 
@@ -49,41 +51,14 @@ TF1* fit_langaus(TH1D *hist);
 void printFitPrameters(vector<FileInfo> fileinfo);
 void printExcelVersion(vector<FileInfo> fileinfo);
 void cce_plot(TString dutNum, TString iteration);
-void for_Susanne();
 
 int main(int argc, char *argv[]){
 	TString dutNum = TString(argv[1]);
 	TString iteration = TString(argv[2]);
 	cce_plot(dutNum, iteration);
-	//for_Susanne();
 	return 0;
 }
-void for_Susanne(){
-		TString input_rootfile = TString("output/run000155/dutTree.root");
-		TFile *fin = TFile::Open(input_rootfile.Data());
-   		TTree* treeDUT= (TTree*) fin->Get("treeDUT");
-		setBranches(treeDUT);
-		TCanvas *cc =new TCanvas("cc","",800,600);	
-		TString histoname = TString("hHitpos_vs_SeedCharge");
-		TProfile *hHitAmp = new TProfile(histoname.Data(),histoname.Data(),10, 0, 0.0745);
-   		Long64_t nentries = treeDUT->GetEntries();
-		for (Long64_t ientry=0; ientry<nentries;ientry++) {
-      			treeDUT->GetEntry(ientry);
-			if (dutID==6){
-				double totcharge=0;
-				for(int iclu=0; iclu<clustersize; iclu++){
-					totcharge += clustercharge[iclu];
-				}
-				
-				if(locxpos>0){
-				double hitpos = fmod(double(locxpos),0.0745); 
-				//double hitpos = fmod(double(locxpos-0.0745/2.0),0.0745); 
-				hHitAmp->Fill(hitpos,clustercharge[0]);}
-			}	
-   		}
-		hHitAmp->Draw();
-		cc->SaveAs("Susanne.C");
-}	
+	
 void cce_plot(TString dutNum, TString iteration){
 	TString fout_name = TString("cce_dut")+dutNum+TString(".root");
 	TFile *fout = new TFile(fout_name.Data(),"RECREATE");
@@ -94,7 +69,7 @@ void cce_plot(TString dutNum, TString iteration){
 	
 	for(unsigned int ifile=0; ifile<fileinfo.size(); ifile++){	
 		fileinfo[ifile].print();
-		TString input_rootfile = TString("output/runXXXXXX/dutTree_YYYY.root");
+		TString input_rootfile = TString("output/cce_xtalk/runXXXXXX/dutTree_YYYY.root");
        	 	TString runname = TString::Itoa(fileinfo[ifile].RunNum,10);
         	while (runname.Length()<6) runname= TString("0")+runname;
 
@@ -288,22 +263,37 @@ vector<FileInfo> readCsvFile(TString csv_file_name, int dutNum){
 		getline(csv_file,s,';');
 		info.DutID = atoi(s.c_str());
 		
+		getline(csv_file,info.Irrad,';');
+
+		getline(csv_file,s,';'); // Rotation
+		getline(csv_file,s,';'); // RotationSensor
+		getline(csv_file,s,';'); // RotationStage
+		getline(csv_file,s,';'); // NegRotation
+
 		getline(csv_file,s,';');
 		info.Bias = atoi(s.c_str());
-	
-		getline(csv_file,info.Irrad,';');
-		if (info.DutID !=0 && info.DutNum == dutNum) fileinfo.push_back(info);	
+		info.Bias =-1*info.Bias;
+ 	
+		getline(csv_file,s,';'); // SensorTemp
+		getline(csv_file,s,';'); // BeamEnergy
+		getline(csv_file,s,';'); // B
+		getline(csv_file,s,';'); // CalculatedB
+		getline(csv_file,s,';'); // Current on Power supply
+
+		if (info.RunNum != 0 && info.DutID !=0 && info.DutNum == dutNum) fileinfo.push_back(info);	
 	}
 	// for some reason getline reads extra one line 
 	// so we remove it from the vector
-	//fileinfo.pop_back();
+	//if (dutNum == 0) fileinfo.pop_back();
 	return fileinfo;
 }
    	
 void setBranches(TTree* treeDUT){
    // Set branch addresses.
-   treeDUT->SetBranchAddress("runnum",&runum);
+   treeDUT->SetBranchAddress("runnum",&runnum);
    treeDUT->SetBranchAddress("evtnum",&evtnum);
+   treeDUT->SetBranchAddress("Pseg", &Pseg);
+   treeDUT->SetBranchAddress("Pgbl", &Pgbl);
    treeDUT->SetBranchAddress("hitnum",&hitnum);
    treeDUT->SetBranchAddress("dutID",&dutID);
    treeDUT->SetBranchAddress("locxpos",&locxpos);

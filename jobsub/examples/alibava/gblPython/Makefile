@@ -10,19 +10,23 @@ ADDCXXFLAGS=-g -O2
 VPATH=./
 HDIR=./
 
-HDRS= $(HDIR)/langaufit.h
+HDRS= $(HDIR)/langaufit.h $(HDIR)/lam_histos.h
 
+LAMOBJS=	lam_histos.o 
 CCEOBJS=	cce_histos.o 
 FITOBJS=	fit_langaus.o 
 
-all: cce_histos fit_langaus
+all: lam_histos cce_histos fit_langaus 
+
 cce_histos: $(CCEOBJS)
 	$(CXX) -o $@ $(CXXFLAGS) $(ADDCXXFLAGS) $(CCEOBJS) $(LDFLAGS) $(LIBS)
 fit_langaus: $(FITOBJS)
 	$(CXX) -o $@ $(CXXFLAGS) $(ADDCXXFLAGS) $(FITOBJS) $(LDFLAGS) $(LIBS)
+lam_histos: $(LAMOBJS)
+	$(CXX) -o $@ $(CXXFLAGS) $(ADDCXXFLAGS) $(LAMOBJS) $(LDFLAGS) $(LIBS)
 
 %.o: %.cc $(HDRS)
 	$(CXX) $(CXXFLAGS) $(ADDCXXFLAGS) -c $< 
 
 clean:
-	rm -rf cce_histos fit_langaus $(OBJS) 
+	rm -rf lam_histos cce_histos fit_langaus $(OBJS) 

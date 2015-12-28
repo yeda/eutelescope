@@ -27,7 +27,7 @@
 #
 ### necessary cpu time:
 #####$ -l h_cpu=80:00:00
-#$ -l h_rt=04:30:00
+#$ -l h_rt=05:30:00
 #
 ### maximum necessary memory:
 #$ -l h_vmem=8G
@@ -46,7 +46,7 @@ qsubLogPath="${gblPythonPath}/output/runFORMATTEDRUNNUM/qsublogs"
 mkdir -p ${qsubLogPath}
 cd "${gblPythonPath}"
 source PYROOT
-/usr/bin/python "telmain_itITERATION.py" -g "GEARFILE" -r RUNNUM -e BEAMENERGY
+/usr/bin/python "mytelmain.py" -g "GEARFILE" -r RUNNUM -e BEAMENERGY -c "GBLCUTS"
 #/usr/bin/python "telmain.py" -g "${gblPythonPath}/GEARFILE" -r RUNNUM
 
 cd "${outputPath}"
@@ -58,5 +58,4 @@ mv cuts.root cuts_ITERATION.root
 mv dutTree.root dutTree_ITERATION.root
 mv milleBinary.dat milleBinary_ITERATION.dat
 mv millepede.res millepede_ITERATION.res
-#mv ${gblPythonPath}/RunFORMATTEDRUNNUM.o* ${qsubLogPath} 
 
