@@ -1,0 +1,11 @@
+# Ignore everything in this directory
+pdfs/
+results/
+output/
+backup_gbl/
+alignment_parameters/
+*.o
+
+# Except this file
+!.gitignore
+
