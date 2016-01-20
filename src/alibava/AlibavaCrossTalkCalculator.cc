@@ -154,7 +154,7 @@ void AlibavaCrossTalkCalculator::processRunHeader (LCRunHeader * rdr) {
     
     
 }
-void AlibavaCrossTalkCalculator::processEvent (LCEvent * anEvent) {
+void AlibavaCrossTalkCalculator::processEvent (LCEvent * /* anEvent */) {
  /*   AlibavaEventImpl * alibavaEvent = static_cast<AlibavaEventImpl*> (anEvent);
     
     if (_skipMaskedEvents && (alibavaEvent->isEventMasked()) ) {

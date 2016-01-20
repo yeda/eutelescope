@@ -10,13 +10,19 @@
 
 # To get pedestal subtracted, common mode and cross talk corrected signal values
 # you will need to run these templates
-TEMPLATELIST=('alibava-converter' 'alibava-reco' 'alibava-applyxtalk')
+#TEMPLATELIST=('alibava-converter' 'alibava-rawdatahisto' 'alibava-reco' 'alibava-applyxtalk')
+TEMPLATELIST=('alibava-converter' 'alibava-reco')
 
 for TEMPLATE in $TEMPLATELIST; do
-	jobsub -c config/noCuts_config.cfg -csv ../runlistfiles/pedestal_runlist_all.csv $TEMPLATE $@
-#	jobsub -c config/noCuts_config.cfg -csv ../runlistfiles/pedestal_runlist_all.csv --subdir --naf ../qsubparameters.cfg $TEMPLATE $@
+# ChapReco NoCut
+#	jobsub -c config/ChapReco-nocut.cfg -csv ../runlistfiles/lam_runlist_all.csv $TEMPLATE $@
 
-#source ../myscripts/continue_when_all_runs_finished.sh
+# ChapReco TimeCut
+	jobsub -c config/ChapReco-timecut.cfg -csv ../runlistfiles/lam_runlist_all.csv $TEMPLATE $@
+
+#	jobsub -c config/noCuts_config.cfg -csv ../runlistfiles/lam_runlist_all.csv --subdir --naf ../qsubparameters.cfg $TEMPLATE $@
+
+source ../myscripts/continue_when_all_runs_finished.sh
 
 done
 
