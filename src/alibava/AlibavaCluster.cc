@@ -119,14 +119,16 @@ float AlibavaCluster::getEta(){
 	
 	// we will multiply all signal values by _signalPolarity to work on positive signal always
 	float seedSignal = _signalPolarity * getSignalOnChannel(seedChan);
-	float leftSignal = _signalPolarity * getSignalOnChannel(leftChan);
-	float rightSignal = _signalPolarity * getSignalOnChannel(rightChan);
+	float leftSignal = getSignalOnChannel(leftChan);
+	float rightSignal = getSignalOnChannel(rightChan);
 	
+	if (leftSignal != _unrealisticSignal) leftSignal = _signalPolarity * leftSignal;
+	if (rightSignal!= _unrealisticSignal) rightSignal= _signalPolarity * rightSignal;
 
 	// if both right anf left channel is masked. Simply return -1
 	// this case should not be saved by clustering algorithm anyways
 	if (rightSignal == _unrealisticSignal && leftSignal == _unrealisticSignal ) {
-		streamlog_out (DEBUG1) << "Both neighbours are masked!"<<endl;
+		streamlog_out (WARNING3) << "Both neighbours are masked!"<<endl;
 		return -1;
 	}
 	
@@ -144,7 +146,7 @@ float AlibavaCluster::getEta(){
 		// seed channel is on the left
 		eta = seedSignal / (seedSignal + rightSignal);
 	}
-	
+		
 	return eta;
 	
 }
@@ -294,21 +296,21 @@ void AlibavaCluster::setSignalPolarity(double signalPolarity){
 }
 
 void AlibavaCluster::print(){
-    streamlog_out(MESSAGE1)<<"************ Cluster ************"<<endl;
-    streamlog_out(MESSAGE1)<<"ClusterID: "<< getClusterID()<< " ChipNum: "<<getChipNum()<<endl;
+    streamlog_out(MESSAGE5)<<"************ Cluster ************"<<endl;
+    streamlog_out(MESSAGE5)<<"ClusterID: "<< getClusterID()<< " ChipNum: "<<getChipNum()<<endl;
     
     string axis;
     if (getIsSensitiveAxisX()) axis = string("X");
     else axis = string("Y");
-    streamlog_out(MESSAGE1)<<"SensitiveAxis: "<< axis << " SignalPolarity: "<<getSignalPolarity()<<endl;
+    streamlog_out(MESSAGE5)<<"SensitiveAxis: "<< axis << " SignalPolarity: "<<getSignalPolarity()<<endl;
     
-    streamlog_out(MESSAGE1)<<"SeedChannel: "<< getSeedChanNum() << " ClusterSize: "<<getClusterSize()<< " Eta: " <<getEta() <<endl;
-    streamlog_out(MESSAGE1)<<"ClusterMembers: channelNum, signal";
-    streamlog_out(MESSAGE1)<<"           ";
+    streamlog_out(MESSAGE5)<<"SeedChannel: "<< getSeedChanNum() << " ClusterSize: "<<getClusterSize()<< " Eta: " <<getEta() <<endl;
+    streamlog_out(MESSAGE5)<<"ClusterMembers: channelNum, signal";
+    streamlog_out(MESSAGE5)<<"           ";
     for (int imember=0; imember<getClusterSize(); imember++)
-        streamlog_out(MESSAGE1)<<getChanNum(imember)<<", "<<getSignal(imember)<< ", ";
-    streamlog_out(MESSAGE1)<<endl;
-    streamlog_out(MESSAGE1)<<"***********************************"<<endl;
+        streamlog_out(MESSAGE5)<<getChanNum(imember)<<", "<<getSignal(imember)<< ", ";
+    streamlog_out(MESSAGE5)<<endl;
+    streamlog_out(MESSAGE5)<<"***********************************"<<endl;
     
     
     

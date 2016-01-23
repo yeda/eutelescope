@@ -411,9 +411,7 @@ vector<AlibavaCluster> AlibavaSeedClustering::findClusters(TrackerDataImpl * trk
 		// now if there is no neighbour not bonded
 		if(thereIsNonBondedChan == false){
 			// fill the histograms and add them to the cluster vector
-            
            	 	fillHistos(acluster);
-            
             		clusterVector.push_back(acluster);
 		}
 		
@@ -461,14 +459,14 @@ void AlibavaSeedClustering::bookHistos(){
 		// Clustersize histogram
 		histoName = getHistoNameForChip(_clusterSizeHistoName,ichip);
 		TH1D * hClusterSize = new TH1D (histoName.c_str(),"",10, 0, 10);
-		title = string("Cluster Size (chip ") +to_string(ichip)+string(");Number of Entries;Cluster Size");
+		title = string("Cluster Size (chip ") +to_string(ichip)+string(");Cluster Size;Number of Entries");
 		hClusterSize->SetTitle(title.c_str());
 		_rootObjectMap.insert(make_pair(histoName, hClusterSize));
 		
 		// Eta histogram ClusterSize > 1
 		histoName = getHistoNameForChip(_etaHistoName,ichip);
 		TH1D * hEta = new TH1D (histoName.c_str(),"",100, -0.1, 1.1);
-		title = string("Eta distribution ClusterSize > 1 (chip ") +to_string(ichip)+string(");Number of Entries;Eta");
+		title = string("Eta distribution ClusterSize > 1 (chip ") +to_string(ichip)+string(");Eta;Number of Entries");
 		hEta->SetTitle(title.c_str());
 		_rootObjectMap.insert(make_pair(histoName, hEta));
 		
