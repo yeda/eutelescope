@@ -11,7 +11,12 @@
 # To get pedestal subtracted, common mode and cross talk corrected signal values
 # you will need to run these templates
 #TEMPLATELIST=('alibava-converter' 'alibava-rawdatahisto' 'alibava-reco' 'alibava-applyxtalk')
-TEMPLATELIST=('alibava-reco')
+#TEMPLATELIST=('alibava-reco')
+
+
+# To calculate cross-talk
+TEMPLATELIST=('alibava-crosstalk-it1' 'alibava-crosstalk-it2' 'alibava-crosstalk-it3')
+
 
 for TEMPLATE in $TEMPLATELIST; do
 # ChapReco NoCut

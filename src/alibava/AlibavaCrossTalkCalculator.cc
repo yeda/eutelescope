@@ -57,14 +57,13 @@ using namespace alibava;
 AlibavaCrossTalkCalculator::AlibavaCrossTalkCalculator () :
 AlibavaBaseProcessor("AlibavaCrossTalkCalculator"),
 _recodataCollectionName("recodata"),
-//_outputDataCollectionName("recodata_xtalk"),
 _crosstalkCollectionName("crosstalk"),
 _maxNEvent(20000)
 {
     
     // modify processor description
     _description =
-    "AlibavaCrossTalkCalculator does whatever it does :) ";
+    "AlibavaCrossTalkCalculator calculates the cross-talk correction values";
     
     
     // first of register the input collection
@@ -87,12 +86,7 @@ _maxNEvent(20000)
     registerProcessorParameter ("MaxNEvent",
                                 "Max number of events to be used for cross talk calculation",
                                 _maxNEvent, int (20000));
-    // Output collection name
-/*    registerProcessorParameter("OutputRecoDataCollectionName",
-                              "Output reconstructed data collection name which will be cross talk corrected",
-                              _outputDataCollectionName, string("reco_xtalk") );
- */
-    
+   
     
 }
 
