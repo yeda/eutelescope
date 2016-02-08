@@ -138,13 +138,13 @@ namespace alibava {
         //! Input data collaction name, its first channel will be used to calculate crosstalk. It should be raw data (without pedestal subtraction)
         /*!
          */
-        std::string _inputDataCollectionName;
-        
+        std::string _rawdataCollectionName;
+        std::string _crosstalkCollectionName;
         
         //! Output data collection name which will be cross talk corrected
         /*!
          */
-        std::string _outputDataCollectionName;
+        std::string _databaseFile;
         
         //! Histogram name of each channel
         /*!
@@ -157,22 +157,12 @@ namespace alibava {
         std::string _chanDataCorrelationHistoName;
         
         
-        // storing pedestal values, for next next channel, next channel and data for each chip
-        double _pedestal[ALIBAVA::NOOFCHIPS][ALIBAVA::CHIPHEADERLENGTH+ALIBAVA::NOOFCHANNELS];
-        
         std::vector<int> _channelsUsedForCrosstalkCalculation;
         
-        // number of iterations
-        int _nIteration;
-        
-        // max number of iterations
-        int _maxNIteration;
+        double _pedestalValues[ALIBAVA::NOOFCHIPS][3];
         
         int _maxNEvent;
         
-        // array to store crosstalk coefficient
-        // _crosstalkCoefficient[NChip][b1orb2]
-        double _crosstalkCoefficient[ALIBAVA::NOOFCHIPS][2];
         
         //! The function that returns name of the histogram for each channel
         std::string getChanHistoName(unsigned int ichip, unsigned int ichan);
@@ -180,11 +170,10 @@ namespace alibava {
         //! The function that returns name of the histogram for each channel correlation
         std::string getChanCorrelationHistoName(unsigned int ichip, unsigned int ichan, unsigned int iichan);
         
-        void fillHistos(int chipnum, std::vector<float> channelValuessUsedForCrosstalkCalculation);
+        void fillHistosForCrossTalkCalculation();
+        void fillHistosForPedCalculation();
         
-        void runThroughEvents();
         void calculateCrossTalk();
-        std::vector<float> correctCrossTalk(int chipnum, std::vector<float> allchannels);
         void storePedestals();
     };
     
