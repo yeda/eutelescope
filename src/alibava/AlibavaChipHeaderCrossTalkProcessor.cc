@@ -63,8 +63,8 @@ using namespace alibava;
 AlibavaChipHeaderCrossTalkProcessor::AlibavaChipHeaderCrossTalkProcessor () :
 AlibavaBaseProcessor("AlibavaChipHeaderCrossTalkProcessor"),
 _rawdataCollectionName("rawdata"),
-_databaseFile("database.slcio"),
 _crosstalkCollectionName("crosstalk"),
+_databaseFile("database.slcio"),
 _chanDataHistoName("ChanData"),
 _chanDataCorrelationHistoName("ChanDataCorr"),
 _channelsUsedForCrosstalkCalculation(),
@@ -143,9 +143,6 @@ void AlibavaChipHeaderCrossTalkProcessor::processRunHeader (LCRunHeader * rdr) {
     // set channels to be used (if it is defined)
     setChannelsToBeUsed();
     
-    // set pedestal and noise values
-    setPedestals();
-    
     // set number of skipped events to zero (defined in AlibavaBaseProcessor)
     _numberOfSkippedEvents = 0;
     
@@ -177,14 +174,14 @@ void AlibavaChipHeaderCrossTalkProcessor::storePedestals(){
             int channum =_channelsUsedForCrosstalkCalculation[ichan];
             string histoname = getChanHistoName( chipnum, channum);
             TH1D * histo = dynamic_cast<TH1D*> (_rootObjectMap[histoname]);
-            _pedestal[chipnum][ichan] = histo->GetMean();
+            _pedestalValues[chipnum][ichan] = histo->GetMean();
             
         }// end of ichan loop
     }// end of ichip loop
 }
 
 void AlibavaChipHeaderCrossTalkProcessor::fillHistosForPedCalculation(){
-    streamlog_out ( MESSAGE5 ) << "Running through events for pedestal calculation << endl ;
+    streamlog_out ( MESSAGE5 ) << "Running through events for pedestal calculation" << endl ;
     
     LCReader* lcReader = LCFactory::getInstance()->createLCReader();
     try {
@@ -330,15 +327,15 @@ void AlibavaChipHeaderCrossTalkProcessor::fillHistosForCrossTalkCalculation(){
                 string tempHistoName;
                 string chanvalue;
                 
-                if (channelValues[0]<_pedestal[chipnum][0]) { // next next channel is low
-                    if (channelValues[1]<_pedestal[chipnum][1]) {// next channel is low
+                if (channelValues[0]<_pedestalValues[chipnum][0]) { // next next channel is low
+                    if (channelValues[1]<_pedestalValues[chipnum][1]) {// next channel is low
                         chanvalue = string("LL");
                     }
                     else {// next channel is high
                         chanvalue = string("LH");
                     }
                 }else { // next next channel is high
-                    if (channelValues[1]<_pedestal[chipnum][1]) {// next channel is low
+                    if (channelValues[1]<_pedestalValues[chipnum][1]) {// next channel is low
                         chanvalue = string("HL");
                     }
                     else {// next channel is high
@@ -353,7 +350,7 @@ void AlibavaChipHeaderCrossTalkProcessor::fillHistosForCrossTalkCalculation(){
                     tempHistoName+=chanvalue;
                     
                     if ( TH2D * histo2 = dynamic_cast<TH2D*> (_rootObjectMap[tempHistoName]) )
-                        histo2->Fill(channelValues[ichan]-_pedestal[chipnum][ichan],channelValues[2]-_pedestal[chipnum][2]);
+                        histo2->Fill(channelValues[ichan]-_pedestalValues[chipnum][ichan],channelValues[2]-_pedestalValues[chipnum][2]);
                     
                 }
             }
@@ -390,8 +387,7 @@ void AlibavaChipHeaderCrossTalkProcessor::calculateCrossTalk(){
     for (unsigned int ichip=0; ichip<chipSelection.size(); ichip++) {
         int chipnum = chipSelection[ichip];
         
-        vector<double> crosstalkCoefficient;
-        crosstalkCoefficient.clear();
+        FloatVec crosstalkCoefficient;
         
         double mean_nextnextchannel[4][2];
         double mean_nextchannel[4][2];
@@ -514,8 +510,6 @@ void AlibavaChipHeaderCrossTalkProcessor::calculateCrossTalk(){
         crosstalkCoefficient.push_back(b2);
         
         streamlog_out ( MESSAGE5 ) << "Chip "<<ichip<<" b1 "<<b1<<" b2 "<<b2 << endl;
-        _crosstalkCoefficients[ichip].push_back(b1);
-        _crosstalkCoefficients[ichip].push_back(b2);
         
         AlibavaPedNoiCalIOManager man;
         man.addToFile(_databaseFile,_crosstalkCollectionName, ichip, crosstalkCoefficient);
@@ -547,7 +541,6 @@ void AlibavaChipHeaderCrossTalkProcessor::bookHistos(){
     for (unsigned int i=0; i<chipSelection.size(); i++) {
         unsigned int ichip=chipSelection[i];
         AIDAProcessor::tree(this)->cd(datafolder.c_str());
-        /here
         
         // plot channel histogram
         for (unsigned int ichan=0; ichan<_channelsUsedForCrosstalkCalculation.size(); ichan++) {

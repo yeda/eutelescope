@@ -86,6 +86,22 @@
 
 
 
+ <processor name="MyAlibavaChipHeaderCrossTalkProcessor" type="AlibavaChipHeaderCrossTalkProcessor">
+ <!--AlibavaChipHeaderCrossTalkProcessor calculates the cross talk correction values using chip header information-->
+  <!--The collection name of cross talk coefficients which will be stored in DatabaseFile-->
+  <parameter name="CrossTalkCollectionName" type="string">crosstalk </parameter>
+  <!--The filename where the cross talk coefficients will be stored-->
+  <parameter name="DatabaseFile" type="string">database.slcio </parameter>
+  <!--Input collection name of alibava clusters-->
+  <parameter name="InputCollectionName" type="string" lcioInType="TrackerData">chipheader </parameter>
+  <!--Max number of events to be used for cross talk calculation-->
+  <parameter name="MaxNEvent" type="int">20000 </parameter>
+  <!--The collection name of raw data-->
+  <parameter name="RecoDataCollectionName" type="string">rawdata </parameter>
+  <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
+  <!--parameter name="Verbosity" type="string">DEBUG </parameter-->
+</processor>
+
 
  <processor name="MyAlibavaSeedClustering" type="AlibavaSeedClustering">
 	 <!--AlibavaSeedClustering finds clusters using seed and neighbour cuts -->
