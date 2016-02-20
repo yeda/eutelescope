@@ -380,10 +380,11 @@ void AlibavaChipHeaderCrossTalkProcessor::end() {
 
 
 void AlibavaChipHeaderCrossTalkProcessor::calculateCrossTalk(){
-    
     streamlog_out ( MESSAGE5 ) << "Calculating Cross Talk " << endl ;
     EVENT::IntVec chipSelection = getChipSelection();
     string tempHistoName;
+   TCanvas* cc  = new TCanvas("cc","cc",800,600);
+	cc->cd();
     for (unsigned int ichip=0; ichip<chipSelection.size(); ichip++) {
         int chipnum = chipSelection[ichip];
         
@@ -475,7 +476,6 @@ void AlibavaChipHeaderCrossTalkProcessor::calculateCrossTalk(){
          double y1 = (mean_nextchannel[0][1] + mean_nextchannel[2][1])/2;
          double y2 = (mean_nextchannel[1][1] + mean_nextchannel[3][1])/2;
          double b1 = (y2-y1)/(x2-x1);
-         */
         
         double b1_LL= mean_nextchannel[0][1]/ mean_nextchannel[0][0];
         double b1_LH= mean_nextchannel[1][1]/ mean_nextchannel[1][0];
@@ -484,10 +484,18 @@ void AlibavaChipHeaderCrossTalkProcessor::calculateCrossTalk(){
         
         double b1= (b1_LL+b1_LH+b1_HL+b1_HH)/4.0;
         
-        
+         */
+       
+	// nextnextchannel low, change next channel
+	double b1_L = (mean_nextchannel[1][1] - mean_nextchannel[0][1])/(mean_nextchannel[1][0] - mean_nextchannel[0][0]);
+	double b1_H = (mean_nextchannel[3][1] - mean_nextchannel[2][1])/(mean_nextchannel[3][0] - mean_nextchannel[2][0]);
+	double b1= (b1_L+b1_H)/2;
+
+ 
         // in order to cancel the effect of next channel
         // keep the next channel constant calculate the difference in channel introduced by next next channel
         
+        /*
         // b2_nextchannelLow = fabs(meany_LL - meany_HL)/ fabs(meanx_LL - meanx_HL)
         double b2_nextchannelLow = fabs(mean_nextnextchannel[0][1]-mean_nextnextchannel[2][1]) / fabs(mean_nextnextchannel[0][0] - mean_nextnextchannel[2][0]);
         
@@ -497,7 +505,6 @@ void AlibavaChipHeaderCrossTalkProcessor::calculateCrossTalk(){
         
         double b2 = (b2_nextchannelLow + b2_nextchannelHigh) /2.0;
         
-        /*
          // calculate mean value of deviation because of channel 14
          double deviation = (fabs(mean_nextchannel[0][1] - mean_nextchannel[2][1]) + fabs(mean_nextchannel[1][1] - mean_nextchannel[3][1])) / 4.0;
          // calculate mean value of channel 14
@@ -505,7 +512,11 @@ void AlibavaChipHeaderCrossTalkProcessor::calculateCrossTalk(){
          
          double b2 = deviation /mean_14;
          */
-        
+        // keep next channel low, change in next next channel L or H
+	double b2=0;
+
+
+
         crosstalkCoefficient.push_back(b1);
         crosstalkCoefficient.push_back(b2);
         
@@ -535,8 +546,10 @@ void AlibavaChipHeaderCrossTalkProcessor::bookHistos(){
     
     TH1D * histo1D;
     TH2D * histo2D;
+    TH2D * histo2D_2;
     histo1D = new TH1D ("histo1D","",1000,0,1000);
     histo2D= new TH2D ("histo2D","",1000,0,1000,1000,0,1000);
+    histo2D_2= new TH2D ("histo2D_2","",1000,-500,500,1000,-500,500);
     
     for (unsigned int i=0; i<chipSelection.size(); i++) {
         unsigned int ichip=chipSelection[i];
@@ -599,7 +612,7 @@ void AlibavaChipHeaderCrossTalkProcessor::bookHistos(){
                     tempHistoTitle.str( std::string() );
                     tempHistoTitle<<tempHistoName<<";Channel "<<_channelsUsedForCrosstalkCalculation[ichan]<<" (ADCs);Channel "<<_channelsUsedForCrosstalkCalculation[2]<<" (ADCs)";
                     
-                    TH2D * chanCorrelationHisto = (TH2D*)histo2D->Clone(tempHistoName.c_str());
+                    TH2D * chanCorrelationHisto = (TH2D*)histo2D_2->Clone(tempHistoName.c_str());
                     _rootObjectMap.insert(make_pair(tempHistoName, chanCorrelationHisto));
                     tmp_string = tempHistoTitle.str();
                     chanCorrelationHisto->SetTitle(tmp_string.c_str());
@@ -613,6 +626,7 @@ void AlibavaChipHeaderCrossTalkProcessor::bookHistos(){
     
     delete histo1D;
     delete histo2D;
+    delete histo2D_2;
     
     streamlog_out ( MESSAGE1 )  << "End of Booking histograms. " << endl;
 }
