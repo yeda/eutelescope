@@ -19,14 +19,14 @@
       <processor name="MyAIDAProcessor"/>
       <processor name="MyAlibavaChipHeaderCrossTalkProcessor"/>
       <processor name="MyAlibavaApplyCrossTalk"/>
-      <!--processor name="MyAlibavaSeedClustering"/-->
-      <!--processor name="MyAlibavaClusterHistogramMaker"/-->
+      <processor name="MyAlibavaSeedClustering"/>
+      <processor name="MyAlibavaClusterHistogramMaker"/>
       <processor name="Save"/>
       <processor name="PrintEventNumber"/>
    </execute>
 
    <global>
-      <parameter name="LCIOInputFiles"> @LcioPath@/@AlibavaOutputFormat@-converter.slcio </parameter>
+      <parameter name="LCIOInputFiles"> @LcioPath@/@AlibavaOutputFormat@-reco.slcio </parameter>
       <parameter name="GearXMLFile" value="@GearFilePath@/@GearFile@"/>
       <parameter name="MaxRecordNumber" value="@MaxRecordNumber@"/>
       <parameter name="SkipNEvents" value="@SkipNEvents@"/>
@@ -62,7 +62,7 @@
   <!--Max number of events to be used for cross talk calculation-->
   <parameter name="MaxNEvent" type="int">20000 </parameter>
   <!--The collection name of raw data-->
-  <parameter name="RecoDataCollectionName" type="string">rawdata </parameter>
+  <parameter name="RecoDataCollectionName" type="string"> recodata_cmmd </parameter>
   <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
   <!--parameter name="Verbosity" type="string">DEBUG </parameter-->
 </processor>
@@ -74,9 +74,9 @@
     <!--The filename where the cross talk coefficients are stored-->
     <parameter name="DatabaseFile" type="string"> @DatabasePath@/run@RunNumber@-CHcrosstalk.slcio  </parameter>
     <!--Input collection name of reconstructed data-->
-    <parameter name="InputCollectionName" type="string" lcioInType="TrackerData">rawdata </parameter>
+    <parameter name="InputCollectionName" type="string" lcioInType="TrackerData"> recodata_cmmd </parameter>
     <!--Output collection name of cross talk corrected reconstructed data-->
-    <parameter name="OutputCollectionName" type="string" lcioOutType="TrackerData">rawdata_xtalk_it1 </parameter>
+    <parameter name="OutputCollectionName" type="string" lcioOutType="TrackerData">recodata_xtalk_it1 </parameter>
     <!--The cross talk correction will stop if the next channel crosstalk (b1) is smaller than StopCorrectionValue-->
     <parameter name="StopCorrectionValue" type="float"> 0.0 </parameter>
     <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->

@@ -192,6 +192,9 @@ void AlibavaChipHeaderCrossTalkProcessor::fillHistosForPedCalculation(){
     
     AlibavaEventImpl* alibavaEvent;
     while( (alibavaEvent = static_cast<AlibavaEventImpl*> ( lcReader->readNextEvent() ) ) != 0 ){
+	if (_skipMaskedEvents && (alibavaEvent->isEventMasked()) ) {
+		return;
+	}
         
         if (alibavaEvent->getEventNumber() > _maxNEvent && _maxNEvent!=0) {
             lcReader->close() ;
@@ -278,7 +281,11 @@ void AlibavaChipHeaderCrossTalkProcessor::fillHistosForCrossTalkCalculation(){
     
     AlibavaEventImpl* alibavaEvent;
     while( (alibavaEvent = static_cast<AlibavaEventImpl*> ( lcReader->readNextEvent() ) ) != 0 ){
-        
+       	if (_skipMaskedEvents && (alibavaEvent->isEventMasked()) ) {
+		_numberOfSkippedEvents++;
+		return;
+	}
+ 
         if (alibavaEvent->getEventNumber() > _maxNEvent && _maxNEvent!=0) {
             lcReader->close() ;
             return;
@@ -402,8 +409,8 @@ void AlibavaChipHeaderCrossTalkProcessor::calculateCrossTalk(){
         TF1 *histo2_py_Fit;
 
         double min,max;
-        min = -500;
-        max = 500;
+        min = -1000;
+        max = 1000;
         
         for (int i=0; i<4; i++){
             // this is for next next channel
@@ -547,8 +554,8 @@ void AlibavaChipHeaderCrossTalkProcessor::bookHistos(){
     TH1D * histo1D;
     TH2D * histo2D;
     TH2D * histo2D_2;
-    histo1D = new TH1D ("histo1D","",1000,0,1000);
-    histo2D= new TH2D ("histo2D","",1000,0,1000,1000,0,1000);
+    histo1D = new TH1D ("histo1D","",2000,-1000,1000);
+    histo2D= new TH2D ("histo2D","",1000,0,1000,1000,-500,500);
     histo2D_2= new TH2D ("histo2D_2","",1000,-500,500,1000,-500,500);
     
     for (unsigned int i=0; i<chipSelection.size(); i++) {
