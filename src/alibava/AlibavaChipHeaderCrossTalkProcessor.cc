@@ -74,11 +74,11 @@ _maxNEvent(20000)
     // modify processor description
     _description =
     "AlibavaChipHeaderCrossTalkProcessor calculates the cross talk correction values using chip header information";
-    registerInputCollection (LCIO::TRACKERDATA, "InputCollectionName",
+    registerInputCollection (LCIO::TRACKERDATA, "ChipHeaderCollectionName",
                              "Input collection name of alibava clusters",
                              _inputCollectionName, string("chipheader") );
     
-    registerProcessorParameter ("RecoDataCollectionName",
+    registerProcessorParameter ("RawDataCollectionName",
                                 "The collection name of raw data",
                                 _rawdataCollectionName, string ("rawdata"));
     
@@ -130,7 +130,6 @@ void AlibavaChipHeaderCrossTalkProcessor::init () {
 }
 
 void AlibavaChipHeaderCrossTalkProcessor::processRunHeader (LCRunHeader * rdr) {
-    streamlog_out ( MESSAGE4 ) << "Running processRunHeader" << endl;
     streamlog_out ( MESSAGE4 ) << "Running processRunHeader" << endl;
     
     // Add processor name to the runheader
@@ -554,7 +553,7 @@ void AlibavaChipHeaderCrossTalkProcessor::bookHistos(){
     TH1D * histo1D;
     TH2D * histo2D;
     TH2D * histo2D_2;
-    histo1D = new TH1D ("histo1D","",2000,-1000,1000);
+    histo1D = new TH1D ("histo1D","",1000,0,1000);
     histo2D= new TH2D ("histo2D","",1000,0,1000,1000,-500,500);
     histo2D_2= new TH2D ("histo2D_2","",1000,-500,500,1000,-500,500);
     

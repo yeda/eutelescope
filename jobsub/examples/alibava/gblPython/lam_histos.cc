@@ -36,11 +36,11 @@ int main(int argc, char *argv[]){
 	fileinfo = readCsvFile();
 	createMeasurements( fileinfo );
 
-//	lam_plot_eachtrack(iteration);
-	lam_plot_eachdata(iteration);
+	lam_plot_eachtrack(iteration);
+//	lam_plot_eachdata(iteration);
 	
-	writeObjects();
-//	createGraphs();
+//	writeObjects();
+	createGraphs();
 	return 0;
 }
 
