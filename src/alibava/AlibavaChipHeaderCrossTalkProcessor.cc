@@ -46,6 +46,7 @@
 #include "TROOT.h"
 #include "TCanvas.h"
 #include "TSystem.h"
+#include "TFitResultPtr.h"
 
 // system includes <>
 #include <string>
@@ -173,8 +174,15 @@ void AlibavaChipHeaderCrossTalkProcessor::storePedestals(){
             int channum =_channelsUsedForCrosstalkCalculation[ichan];
             string histoname = getChanHistoName( chipnum, channum);
             TH1D * histo = dynamic_cast<TH1D*> (_rootObjectMap[histoname]);
-            _pedestalValues[chipnum][ichan] = histo->GetMean();
-            
+            	if(ichan==2) {
+			string fitname = histoname + string("_fit");
+			TF1 *fgaus= new TF1(fitname.c_str(),"gaus",0,1000);
+            		histo->Fit(fgaus,"QR");
+			_pedestalValues[chipnum][ichan] = fgaus->GetParameter(1);
+			//delete fgaus;
+		}else{
+			_pedestalValues[chipnum][ichan] = histo->GetMean();
+            	}
         }// end of ichan loop
     }// end of ichip loop
 }
@@ -191,8 +199,11 @@ void AlibavaChipHeaderCrossTalkProcessor::fillHistosForPedCalculation(){
     
     AlibavaEventImpl* alibavaEvent;
     while( (alibavaEvent = static_cast<AlibavaEventImpl*> ( lcReader->readNextEvent() ) ) != 0 ){
+	if( alibavaEvent->getEventNumber()%10000 == 0) 
+		streamlog_out(MESSAGE5) << "Processing event "<< alibavaEvent->getEventNumber()<< endl;
+
 	if (_skipMaskedEvents && (alibavaEvent->isEventMasked()) ) {
-		return;
+		continue;
 	}
         
         if (alibavaEvent->getEventNumber() > _maxNEvent && _maxNEvent!=0) {
@@ -282,7 +293,7 @@ void AlibavaChipHeaderCrossTalkProcessor::fillHistosForCrossTalkCalculation(){
     while( (alibavaEvent = static_cast<AlibavaEventImpl*> ( lcReader->readNextEvent() ) ) != 0 ){
        	if (_skipMaskedEvents && (alibavaEvent->isEventMasked()) ) {
 		_numberOfSkippedEvents++;
-		return;
+		continue;
 	}
  
         if (alibavaEvent->getEventNumber() > _maxNEvent && _maxNEvent!=0) {
@@ -378,7 +389,10 @@ void AlibavaChipHeaderCrossTalkProcessor::fillHistos(TrackerDataImpl * /*trkdata
 }
 
 void AlibavaChipHeaderCrossTalkProcessor::end() {
-    
+           if (_numberOfSkippedEvents > 0)
+                streamlog_out ( MESSAGE5 ) << _numberOfSkippedEvents<<" events skipped since they are masked" << endl;
+        streamlog_out ( MESSAGE4 ) << "Successfully finished" << endl;
+ 
     streamlog_out ( MESSAGE4 ) << "Successfully finished" << endl;
     
 }
@@ -554,7 +568,7 @@ void AlibavaChipHeaderCrossTalkProcessor::bookHistos(){
     TH2D * histo2D;
     TH2D * histo2D_2;
     histo1D = new TH1D ("histo1D","",1000,0,1000);
-    histo2D= new TH2D ("histo2D","",1000,0,1000,1000,-500,500);
+    histo2D= new TH2D ("histo2D","",1000,0,1000,1000,0,1000);
     histo2D_2= new TH2D ("histo2D_2","",1000,-500,500,1000,-500,500);
     
     for (unsigned int i=0; i<chipSelection.size(); i++) {

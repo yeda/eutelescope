@@ -12,7 +12,8 @@
 # you will need to run these templates
 #TEMPLATELIST=('alibava-converter' 'alibava-reco' 'alibava-crosstalk-it1' 'alibava-crosstalk-it2' 'alibava-crosstalk-it3')
 #TEMPLATELIST=('alibava-converter' 'alibava-reco' 'alibava-chipheadercrosstalk')
-TEMPLATELIST=('alibava-chipheadercrosstalk')
+TEMPLATELIST=('alibava-chipheadercrosstalk-it1')
+#TEMPLATELIST=( 'alibava-reco-xtalk')
 
 for TEMPLATE in $TEMPLATELIST; do
 	jobsub -c config/config.cfg -csv runlistfiles/runlist.csv $TEMPLATE $@

@@ -26,7 +26,7 @@
    </execute>
 
    <global>
-      <parameter name="LCIOInputFiles"> @LcioPath@/@AlibavaOutputFormat@-reco.slcio </parameter>
+      <parameter name="LCIOInputFiles"> @LcioPath@/@AlibavaOutputFormat@-converter.slcio </parameter>
       <parameter name="GearXMLFile" value="@GearFilePath@/@GearFile@"/>
       <parameter name="MaxRecordNumber" value="@MaxRecordNumber@"/>
       <parameter name="SkipNEvents" value="@SkipNEvents@"/>
@@ -44,7 +44,7 @@
   <!-- compression of output file 0: false >0: true (default) -->
   <parameter name="Compress" type="int" value="1"/>
   <!-- filename without extension-->
-  <parameter name="FileName" type="string" value="@HistogramPath@/@AlibavaOutputFormat@-CHcrosstalk-it1-histo"/>
+  <parameter name="FileName" type="string" value="@HistogramPath@/@AlibavaOutputFormat@-CHcrosstalk-histo"/>
   <!-- type of output file root (default) or xml )-->
   <parameter name="FileType" type="string" value="root"/>
   <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
@@ -54,7 +54,7 @@
  <processor name="MyAlibavaChipHeaderCrossTalkProcessor" type="AlibavaChipHeaderCrossTalkProcessor">
  <!--AlibavaChipHeaderCrossTalkProcessor calculates the cross talk correction values using chip header information-->
   <!--The collection name of cross talk coefficients which will be stored in DatabaseFile-->
-  <parameter name="CrossTalkCollectionName" type="string"> crosstalk_it1 </parameter>
+  <parameter name="CrossTalkCollectionName" type="string"> crosstalk </parameter>
   <!--The filename where the cross talk coefficients will be stored-->
   <parameter name="DatabaseFile" type="string"> @DatabasePath@/run@RunNumber@-CHcrosstalk.slcio  </parameter>
   <!--Input collection name of alibava clusters-->
@@ -62,7 +62,7 @@
   <!--Max number of events to be used for cross talk calculation-->
   <parameter name="MaxNEvent" type="int">20000 </parameter>
   <!--The collection name of raw data-->
-  <parameter name="RecoDataCollectionName" type="string"> recodata_cmmd </parameter>
+  <parameter name="RecoDataCollectionName" type="string"> rawdata  </parameter>
   <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
   <!--parameter name="Verbosity" type="string">DEBUG </parameter-->
 </processor>
