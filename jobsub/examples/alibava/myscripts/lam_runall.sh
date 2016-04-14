@@ -8,9 +8,9 @@ ALLRUNLIST=(1053 1057 1061 1062 1063 1064 1065 1066 1067 1068 1069 1070 1076 107
 #for EVENTIDDIFF in "${EVENTIDDIFFLIST[@]}"
 #do
 
-DUTLIST=(1 2 3 4 5 6)
+DUTLIST=(4)
 #TEMPLATELIST=('alibava-converter' 'alibava-reco' 'alibava-applyxtalk' 'telescope-converter' 'telescope-clustering' 'telescope-filter' 'merger' 'hitmaker-local')
-TEMPLATELIST=('merger' 'hitmaker-local')
+TEMPLATELIST=('hitmaker-local')
 
 for Template in "${TEMPLATELIST[@]}"
 do
@@ -85,19 +85,19 @@ source myscripts/continue_when_all_runs_finished.sh
 #source myscripts/ask_me_to_continue.sh
 
 done # TEMPLATELIST
-root -q -b 'lam_plots_cluster.C(1)' 
-root -q -b 'lam_plots_cluster.C(2)'
-root -q -b 'lam_plots_cluster.C(3)'
-root -q -b 'lam_plots_cluster.C(4)'
-root -q -b 'lam_plots_cluster.C(5)'
-root -q -b 'lam_plots_cluster.C(6)'
-
-root -q -b 'lam_plots_hit.C(1)' 
-root -q -b 'lam_plots_hit.C(2)'
-root -q -b 'lam_plots_hit.C(3)'
-root -q -b 'lam_plots_hit.C(4)'
-root -q -b 'lam_plots_hit.C(5)'
-root -q -b 'lam_plots_hit.C(6)'
+#root -q -b 'lam_plots_cluster.C(1)' 
+#root -q -b 'lam_plots_cluster.C(2)'
+#root -q -b 'lam_plots_cluster.C(3)'
+#root -q -b 'lam_plots_cluster.C(4)'
+#root -q -b 'lam_plots_cluster.C(5)'
+#root -q -b 'lam_plots_cluster.C(6)'
+#
+#root -q -b 'lam_plots_hit.C(1)' 
+#root -q -b 'lam_plots_hit.C(2)'
+#root -q -b 'lam_plots_hit.C(3)'
+#root -q -b 'lam_plots_hit.C(4)'
+#root -q -b 'lam_plots_hit.C(5)'
+#root -q -b 'lam_plots_hit.C(6)'
 
 ########## produce hit plots
 #for DUT in "${DUTLIST[@]}"
