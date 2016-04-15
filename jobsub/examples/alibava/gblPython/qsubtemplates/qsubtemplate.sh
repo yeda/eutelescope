@@ -22,7 +22,7 @@
 #$ -N RunFORMATTEDRUNNUM_itITERATION
 #
 # where to put the logfiles
-#$ -o /nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/runFORMATTEDRUNNUM/qsublogs/
+#$ -o OUTPUTFOLDER/runFORMATTEDRUNNUM/qsublogs/
 ### Job requirements:
 #
 ### necessary cpu time:
@@ -40,13 +40,14 @@
 ###======================================================================
 basePath="/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava"
 gblPythonPath="${basePath}/gblPython"
-outputPath="${gblPythonPath}/output/runFORMATTEDRUNNUM"
-qsubLogPath="${gblPythonPath}/output/runFORMATTEDRUNNUM/qsublogs"
+outputPath="OUTPUTFOLDER/runFORMATTEDRUNNUM"
+qsubLogPath="OUTPUTFOLDER/runFORMATTEDRUNNUM/qsublogs"
+inputpath="INPUTFOLDER"
 
 mkdir -p ${qsubLogPath}
 cd "${gblPythonPath}"
 source PYROOT
-/usr/bin/python "mytelmain.py" -g "GEARFILE" -r RUNNUM -e BEAMENERGY -c "GBLCUTS"
+/usr/bin/python "mytelmain.py" -g "GEARFILE" -r RUNNUM -e BEAMENERGY -c "GBLCUTS" -i "${inputpath}" -o "${outputPath}"
 #/usr/bin/python "telmain.py" -g "${gblPythonPath}/GEARFILE" -r RUNNUM
 
 cd "${outputPath}"

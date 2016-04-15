@@ -27,15 +27,17 @@ def main(argv):
   gearfile = ''
   beamEnergy = 0.0
   gblcuts = ''
+  inputdir = ''
+  outputdir = ''
 
   try:
-    opts, args = getopt.getopt(argv,"hg:r:e:c:",["gearfile=","runnumber=","beamenergy=","gblcuts"])
+    opts, args = getopt.getopt(argv,"hg:r:e:c:i:o:",["gearfile=","runnumber=","beamenergy=","gblcuts","inputdir","outputdir"])
   except getopt.GetoptError:
-    print 'telmain.py -g <gearfile> -r <runnumber> -e <beamenergy> -c <gblcuts>'
+    print 'telmain.py -g <gearfile> -r <runnumber> -e <beamenergy> -c <gblcuts> -i <inputdir> -o <outputdir>'
     sys.exit(2)
   for opt, arg in opts:
     if opt == '-h':
-      print 'telmain.py -g <gearfile> -r <runnumber> -e <beamenergy>'
+      print 'telmain.py -g <gearfile> -r <runnumber> -e <beamenergy> -c <gblcuts> -i <inputdir> -o <outputdir>'
       sys.exit()
     elif opt in ("-g", "--gearfile"):
       gearfile = arg
@@ -45,13 +47,20 @@ def main(argv):
       runnumber = arg.zfill(6)
     elif opt in ("-c", "--gblcuts"):
       gblcuts = arg
+    elif opt in ("-i", "--inputdir"):
+      inputdir = arg
+    elif opt in ("-o", "--outputdir"):
+      outputdir = arg
 
   print 'Gear file is ', gearfile
   print 'Run number is ', runnumber
   print 'Run beam energy is ', beamEnergy 
-
+  print 'gblcuts is ', gblcuts 
+  print 'inputdir is ', inputdir 
+  print 'outputdir is ', outputdir 
+  
   # create output directory if it doesn't exist
-  outputdir = '/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/run' + runnumber
+  #outputdir = outputdir + '/run' + runnumber
   if not os.path.exists(outputdir):
     os.makedirs(outputdir)
 
@@ -62,7 +71,7 @@ def main(argv):
   #beamEnergy = -4.4  # 613
   # lcio data file
   #lciofile = '/nfs/dust/atlas/user/yeda/EUTelescopeOutput/cce-noxtalk-output/lcio/runXXXXXX-hitmaker-local.slcio'
-  lciofile = '/nfs/dust/atlas/user/yeda/EUTelescopeOutput/output/lcio/runXXXXXX-hitmaker-local.slcio'
+  lciofile = inputdir + '/runXXXXXX-hitmaker-local.slcio'
   dataFile = TelFile(lciofile.replace("XXXXXX",runnumber), 'merged_hits')
   dataFile.open() 
   
@@ -110,9 +119,9 @@ def main(argv):
   #parDUT = '101001'
 
   # combined alignment of DUTs (in common plane, need to have same intersection point with Z-axis in gear file)
-  combDUT = (6, 7)
+  #combDUT = (6, 7)
   # don't combine DUTs
-  #combDUT = None    
+  combDUT = None    
 
   steerfile = outputdir + '/steer.txt'
   mp2.createSteering(steerfile, detector, parMimosa, parDUT, combDUT)

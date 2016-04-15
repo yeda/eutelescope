@@ -17,7 +17,8 @@
 #include "lam_histos.h"
 using namespace std;
 
-
+TString InputPath = TString("output/notcomb-xtalk");
+TString OutputPath = TString("results/notcomb-xtalk");
 vector<LAmeas*> measurements;
 TString csvfilename = TString("../runlistfiles/lam_file_info.csv");
 TFile *fout;
@@ -30,17 +31,17 @@ int main(int argc, char *argv[]){
 	TString iteration = TString(argv[2]);
 	measurements.clear();
 	
-	TString fout_name = TString("results/lam_dut")+dutNum+TString(".root");
+	TString fout_name = OutputPath + TString("/lam_dut")+dutNum+TString(".root");
 	fout = new TFile(fout_name.Data(),"RECREATE");
 
 	fileinfo = readCsvFile();
 	createMeasurements( fileinfo );
 
-//	lam_plot_eachtrack(iteration);
-	lam_plot_eachdata(iteration);
+	lam_plot_eachtrack(iteration);
+	//lam_plot_eachdata(iteration);
 	
-	writeObjects();
-//	createGraphs();
+//	writeObjects();
+	createGraphs();
 	return 0;
 }
 
@@ -179,7 +180,7 @@ void createGraphs(){
 			gr->SetTitle(title.Data());
 			gr->SetName(title.Data());
 			
-			title = TString("results/dut_")+dutNum+TString("_")+TString::Itoa(dutid[iId],10)+TString("_V")+TString::Itoa(storedBias[ibias],10)+TString(".pdf");
+			title = OutputPath + TString("/dut_")+dutNum+TString("_")+TString::Itoa(dutid[iId],10)+TString("_V")+TString::Itoa(storedBias[ibias],10)+TString(".pdf");
 			cc->cd();
 			gr->Draw("ALP");
 			cc->SaveAs(title.Data());
@@ -377,7 +378,7 @@ Double_t fit_func(Double_t *x, Double_t *par){
 }
 
 TTree* getTree(int RunNum, TString iteration){
-	TString input_rootfile = TString("output/runXXXXXX/dutTree_YYYY.root");
+	TString input_rootfile = InputPath + TString("/runXXXXXX/dutTree_YYYY.root");
 	TString runname = TString::Itoa(RunNum,10);
 	while (runname.Length()<6) runname= TString("0")+runname;
 

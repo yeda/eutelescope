@@ -1,6 +1,8 @@
 #!/bin/bash
 
 RunNum=$1
+OutputFolder=$2
+
 
 DutCode=${RunNum:0:1}
 
@@ -35,8 +37,8 @@ NewPosZ_Dut2=`python -c "import math; print ${PosZ_Dut}+${PosX_Dut2}*(math.sin($
 
 
 GearTemplate="${GblFolder}/gearfiles/template-gear-tb${TB}.xml"
-mkdir -p "${GblFolder}/output/run${(l:6::0:)RunNum}"
-NewGear="${GblFolder}/output/run${(l:6::0:)RunNum}/gear_${RunNum}_it0.xml"
+mkdir -p "${OutputFolder}/run${(l:6::0:)RunNum}"
+NewGear="${OutputFolder}/run${(l:6::0:)RunNum}/gear_${RunNum}_it0.xml"
 cp ${GearTemplate} ${NewGear}
 
 sed -i "s@B_FIELD@${BField}@g" ${NewGear}

@@ -8,9 +8,11 @@ ALLRUNLIST=(1053 1057 1061 1062 1063 1064 1065 1066 1067 1068 1069 1070 1076 107
 #for EVENTIDDIFF in "${EVENTIDDIFFLIST[@]}"
 #do
 
-DUTLIST=(1 2 3 4 5 6)
+#DUTLIST=(1 2 3 4 5 6)
+DUTLIST=(4)
 #TEMPLATELIST=('alibava-converter' 'alibava-reco' 'alibava-applyxtalk' 'telescope-converter' 'telescope-clustering' 'telescope-filter' 'merger' 'hitmaker-local')
-TEMPLATELIST=('merger' 'hitmaker-local')
+#TEMPLATELIST=('alibava-converter' 'alibava-reco' 'telescope-converter' 'telescope-clustering' 'telescope-filter' 'merger-noxtalk' 'hitmaker-local')
+TEMPLATELIST=('alibava-reco-noxtalk' 'merger-noxtalk' 'hitmaker-local')
 
 for Template in "${TEMPLATELIST[@]}"
 do
