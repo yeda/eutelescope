@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<gear>
+  <!-- GEAR file for a Telescope in DESY TB - Nov. 2013 -->
+  <!-- A DUT read out by an ALiBaVa was placed in the center -->
+  <global detectorName="EUTelescope"/>
+  <BField type="ConstantBField" x="0.0" y="B_FIELD" z="0.0"/>
+  <detectors>
+    <detector geartype="SiPlanesParameters" name="SiPlanes">
+      <siplanesID ID="0"/>
+      <siplanesType type="TelescopeWithoutDUT"/>
+      <siplanesNumber number="8"/>
+      <!-- z along beam -->
+      <layers>
+	<!--Datura Plane 0 -->
+	<layer>
+	  <ladder ID="0" positionX="0.00" positionY="0.00" positionZ="0.00" radLength="93.660734" rotationXY="0.0" rotationZX="0.0" rotationZY="0.00" sizeX="21.2" sizeY="10.6" thickness="0.036"/>
+	  <sensitive ID="0" npixelX="1152" npixelY="576" pitchX="0.018402778" pitchY="0.018402778" positionX="0.00" positionY="0.00" positionZ="0.00" radLength="93.660734" resolution="0.0045" rotation1="-1.0" rotation2="0.0" rotation3="0.0" rotation4="-1.0" sizeX="21.2" sizeY="10.6" thickness="0.05"/>
+	</layer>
+	<!--Datura Plane 1 -->
+	<layer>
+	  <ladder ID="1" positionX="-0.06124803" positionY="-0.1000252" positionZ="21.2104443" radLength="93.660734" rotationXY="-0.408284786313" rotationZX="0.0606876896464" rotationZY="-0.515077598549" sizeX="21.2" sizeY="10.6" thickness="0.036"/>
+	  <sensitive ID="1" npixelX="1152" npixelY="576" pitchX="0.018402778" pitchY="0.018402778" positionX="0.00" positionY="0.00" positionZ="21.5" radLength="93.660734" resolution="0.0045" rotation1="-1.0" rotation2="0.0" rotation3="0.0" rotation4="-1.0" sizeX="21.2" sizeY="10.6" thickness="0.05"/>
+	</layer>
+	<!--Datura Plane 2 -->
+	<layer>
+	  <ladder ID="2" positionX="-0.00693028" positionY="0.05151461" positionZ="42.4813304" radLength="93.660734" rotationXY="-0.203981400544" rotationZX="0.270711098982" rotationZY="-0.833940070623" sizeX="21.2" sizeY="10.6" thickness="0.036"/>
+	  <sensitive ID="2" npixelX="1152" npixelY="576" pitchX="0.018402778" pitchY="0.018402778" positionX="0.00" positionY="0.00" positionZ="43.0" radLength="93.660734" resolution="0.0045" rotation1="-1.0" rotation2="0.0" rotation3="0.0" rotation4="-1.0" sizeX="21.2" sizeY="10.6" thickness="0.05"/>
+	</layer>
+        <!-- DUT 1 -->
+        <layer>
+          <ladder ID="6" positionX="POSX_DUT1" positionY="0.00" positionZ="POSZ_DUT1" radLength="93.660734" rotationXY="0.0" rotationZX="ROTATION_DUT" rotationZY="0.00" sizeX="9.536" sizeY="8.0" thickness="0.300"/>
+          <sensitive ID="6" npixelX="128" npixelY="0" pitchX="0.0745" pitchY="8.0" positionX="0.00" positionY="0.00" positionZ="142.5" radLength="93.660734" resolution="0.0215" rotation1="-1.0" rotation2="0.0" rotation3="0.0" rotation4="-1.0" sizeX="9.536" sizeY="8.0" thickness="0.300"/>
+        </layer>
+         <!-- DUT 2 -->
+        <layer>
+          <ladder ID="7" positionX="POSX_DUT2" positionY="0.00" positionZ="POSZ_DUT2" radLength="93.660734" rotationXY="0.0" rotationZX="ROTATION_DUT" rotationZY="0.00" sizeX="9.536" sizeY="8.0" thickness="0.300"/>
+          <sensitive ID="7" npixelX="128" npixelY="0" pitchX="0.0745" pitchY="8.0" positionX="0.00" positionY="0.00" positionZ="142.5001" radLength="93.660734" resolution="0.0215" rotation1="-1.0" rotation2="0.0" rotation3="0.0" rotation4="-1.0" sizeX="9.536" sizeY="8.0" thickness="0.300"/>
+        </layer>
+        <!-- Datura Plane 3 -->
+        <layer>
+          <ladder ID="3" positionX="0.05544816" positionY="0.008256624" positionZ="232.5714787" radLength="93.660734" rotationXY="-0.143271498286" rotationZX="0.351114266354" rotationZY="-1.39486575193" sizeX="21.2" sizeY="10.6" thickness="0.036"/>
+          <sensitive ID="3" npixelX="1152" npixelY="576" pitchX="0.018402778" pitchY="0.018402778" positionX="0.00" positionY="0.00" positionZ="233.50" radLength="93.660734" resolution="0.0045" rotation1="-1.0" rotation2="0.0" rotation3="0.0" rotation4="-1.0" sizeX="21.2" sizeY="10.6" thickness="0.05"/>
+        </layer>
+        <!--Datura Plane 4 -->
+        <layer>
+          <ladder ID="4" positionX="0.05715591" positionY="0.27775221" positionZ="253.31249733" radLength="93.660734" rotationXY="-0.260914472257" rotationZX="0.247133885717" rotationZY="-0.52753943059" sizeX="21.2" sizeY="10.6" thickness="0.036"/>
+          <sensitive ID="4" npixelX="1152" npixelY="576" pitchX="0.018402778" pitchY="0.018402778" positionX="0.00" positionY="0.00" positionZ="254.0" radLength="93.660734" resolution="0.0045" rotation1="-1.0" rotation2="0.0" rotation3="0.0" rotation4="-1.0" sizeX="21.2" sizeY="10.6" thickness="0.05"/>
+        </layer>
+        <!--Datura Plane 5 -->
+        <layer>
+          <ladder ID="5" positionX="0.00" positionY="0.00" positionZ="275.0" radLength="93.660734" rotationXY="-0.490596200802" rotationZX="0.0" rotationZY="0.00" sizeX="21.2" sizeY="10.6" thickness="0.036"/>
+          <sensitive ID="5" npixelX="1152" npixelY="576" pitchX="0.018402778" pitchY="0.018402778" positionX="0.00" positionY="0.00" positionZ="275.0" radLength="93.660734" resolution="0.0045" rotation1="-1.0" rotation2="0.0" rotation3="0.0" rotation4="-1.0" sizeX="21.2" sizeY="10.6" thickness="0.05"/>
+        </layer>
+      </layers>
+    </detector>
+  </detectors>
+</gear>
