@@ -23,6 +23,13 @@ using namespace std;
    Int_t           evtnum;
    Float_t         Pseg;
    Float_t         Pgbl;
+   Float_t         tel_globalPos_0[3];
+   Float_t         tel_globalPos_1[3];
+   Float_t         tel_globalPos_2[3];
+   Float_t         tel_globalPos_3[3];
+   Float_t         tel_globalPos_4[3];
+   Float_t         tel_globalPos_5[3];
+   Float_t         dut_globalPos[3];
    Int_t           hitnum;
    Int_t           dutID;
    Float_t         locxpos;
@@ -33,6 +40,8 @@ using namespace std;
    Int_t           clusterxchan[20];   //[clustersize]
    Int_t           clusterychan[20];   //[clustersize]
    Float_t         clustercharge[20];   //[clustersize]
+
+
 
 // global 
 #define pi 3.14159265
@@ -50,6 +59,7 @@ struct FileInfo{
 };
 
 struct LAmeas{
+	int DutNum;
 	int DutID;
 	double B;
 	int Bias;
@@ -60,6 +70,10 @@ struct LAmeas{
 
 	LAmeas(){}
 	~LAmeas(){}
+
+	void setDutNum(int avalue){ DutNum = avalue; }
+	int getDutNum() { return DutNum; } 
+
 	void setDutID(int avalue){ DutID = avalue; }
 	int getDutID() { return DutID; } 
 	
@@ -74,6 +88,11 @@ struct LAmeas{
 	
 	void setLAerror(double avalue){ LAerror = avalue; }
 	double getLAerror() { return LAerror; } 
+
+	TF1* getFitProfile() { 
+		TString fitname = TString("fit_")+getProfileName();
+		return profile->GetFunction(fitname.Data());
+	 }
 
 	void setProfile(TProfile* aprofile){ profile = aprofile; }
 	TProfile* getProfile() { return profile; }
@@ -109,6 +128,27 @@ struct LAmeas{
 		return fitname;
 	}
 	
+	TString getIrrad(){
+		TString irrad;
+		if ( DutNum==1 && DutID==6) irrad = TString("5E+14");
+		if ( DutNum==1 && DutID==7) irrad = TString("1E+15");
+
+		if ( DutNum==2 && DutID==6) irrad = TString("2E+15");
+		if ( DutNum==2 && DutID==7) irrad = TString("5E+15");
+
+		if ( DutNum==3 && DutID==6) irrad = TString("5E+14_An");
+		if ( DutNum==3 && DutID==7) irrad = TString("1E+15_An");
+
+		if ( DutNum==4) irrad = TString("non-irrad");
+
+		if ( DutNum==5 && DutID==6) irrad = TString("2E+14");
+		if ( DutNum==5 && DutID==7) irrad = TString("1.2E+14");
+
+		if ( DutNum==6 && DutID==6) irrad = TString("2E+14_An");
+		if ( DutNum==6 && DutID==7) irrad = TString("1.2E+14_An");
+		
+		return irrad;
+	}	
 };
 
 int decodeDutID(TString s){
@@ -147,8 +187,8 @@ void lam_plot_eachtrack(TString iteration);
 void lam_plot_eachdata(TString iteration);
 void fitProfiles();
 void fitGraphs();
-void writeObjects();
 void createGraphs();
+void plot_LAcombined();
 
 TF1* fit_langaus(TH1D *hist){
    // Here are the Landau * Gaussian parameters:

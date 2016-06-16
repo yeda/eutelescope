@@ -1,7 +1,0 @@
-# Ignore everything in this directory
-Sunum/
-ChapReco/pdfs/
-
-# Except this file
-!.gitignore
-

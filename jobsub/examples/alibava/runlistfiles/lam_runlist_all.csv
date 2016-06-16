@@ -591,7 +591,6 @@ Date,Time,RunNumber,PedestalRunNumber,EventIDDiff,SkipEvents,AliNEvents,Rotation
 7.2.14,23:16,5021,005025,-1,,400,3,2.95,3.25,-2.95,-500,source,LAM.ini,-26.83,0.63,7.42,,002000,400,196,4.4,LAM_coins_telescope_and_alibava,0,0.0012827,0,0,gear-TB6-B000,-
 7.2.14,23:55,5022,005025,-1,,400,2,2.1,2.4,-2.1,-500,source,LAM.ini,-26.83,0.65,7.39,,002001,400,-,4.4,LAM_coins_telescope_and_alibava,0,0.0012827,0,0,gear-TB6-B000,-
 8.2.14,0:32,5023,005025,-1,,400,1,1.01,1.5,-1.01,-500,source,LAM.ini,-26.85,0.58,7.41,,002002,400,196,4.4,LAM_coins_telescope_and_alibava,0,0.0012827,0,0,gear-TB6-B000,-
-8.2.14,1:07,5024,005025,-1,,400,0,0.11,0.5,-0.11,-500,source,LAM.ini,-26.86,0.59,7.4,,002003,400,195,4.4,LAM_coins_telescope_and_alibava,0,0.0012827,0,0,gear-TB6-B000,-
 8.2.14,3:59,5047,005046,-1,,300,0,0.13,0.5,-0.13,-1000,source,CCE.ini,-26.89,0.54,7.36,,002008,300,209,4.4,LAM_coins_telescope_and_alibava,0,0.0012827,0,0,gear-TB6-B000,-
 8.2.14,8:51:00,5066,005067,0,,400,20,19.89,20,-19.89,-500,source,LAM.ini,-26.96,-0.74,7.2,,002025,400,139,4.4,LAM_coins_telescope_and_alibava,1,1.022317832,441.09,438,gear-TB6-B100,Telescope Error :Unexpected Trigger number:171732 (expecting 171731)
 8.2.14,11:01,5079,005076,0,,400,-20,-20.06,-20,20.06,-500,source,LAM_v3.ini,-26.74,0.83,6.73,,002027,400,188,4.4,LAM_coins_telescope_and_alibava,0,0.0012827,0,0,gear-TB6-B000,take this measurement if the temperature difference is too much

@@ -30,13 +30,13 @@ PosX_Dut2=$(echo ${Line_Dut2} | cut -f2 -d"\"")
 # note that Z position of duts must be equal
 PosZ_Dut=$(echo ${Line_Dut1} | cut -f4 -d"\"")
 
-NewPosX_Dut1=`python -c "import math; print ${PosX_Dut1}*(math.cos(${TiltAngle}*math.pi/180.0))"`
-NewPosX_Dut2=`python -c "import math; print ${PosX_Dut2}*(math.cos(${TiltAngle}*math.pi/180.0))"`
-NewPosZ_Dut1=`python -c "import math; print ${PosZ_Dut}+${PosX_Dut1}*(math.sin(${TiltAngle}*math.pi/180.0))"`
-NewPosZ_Dut2=`python -c "import math; print ${PosZ_Dut}+${PosX_Dut2}*(math.sin(${TiltAngle}*math.pi/180.0))"`
+NewPosX_Dut1=`python -c "import math; print ${PosX_Dut1} * ( math.cos( ${TiltAngle} * math.pi/180.0 ))"`
+NewPosX_Dut2=`python -c "import math; print ${PosX_Dut2} * ( math.cos( ${TiltAngle} * math.pi/180.0 ))"`
+NewPosZ_Dut1=`python -c "import math; print ${PosZ_Dut}+${PosX_Dut1} * ( math.sin( ${TiltAngle} * math.pi/180.0 ))"`
+NewPosZ_Dut2=`python -c "import math; print ${PosZ_Dut}+${PosX_Dut2} * ( math.sin( ${TiltAngle} * math.pi/180.0 ))"`
 
 
-GearTemplate="${GblFolder}/gearfiles/template-gear-tb${TB}.xml"
+GearTemplate="${GblFolder}/gearfiles/template-gear-tb${TB}-it12.xml"
 mkdir -p "${OutputFolder}/run${(l:6::0:)RunNum}"
 NewGear="${OutputFolder}/run${(l:6::0:)RunNum}/gear_${RunNum}_it0.xml"
 cp ${GearTemplate} ${NewGear}

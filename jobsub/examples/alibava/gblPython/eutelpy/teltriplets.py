@@ -62,7 +62,7 @@ class TelDoublet(object):
   # @param[in]  hit  hit
   # @param[in]  distCut  distance cuts (in x, y)
   #   
-  def match(self, hit, distCut):
+  def match(self, hit, distXCut, distYCut):
     # triplet residuals
     x, y, z = hit.getPos()
     x -= 0.5 * self.__curv[0] * (z - self.__zMag) ** 2
@@ -71,7 +71,7 @@ class TelDoublet(object):
     dx = x - self.__position[0] - dz * self.__slope[0]
     dy = y - self.__position[1] - dz * self.__slope[1]
     #
-    if abs(dx) > distCut[0] or abs(dy) > distCut[1]:
+    if dx < distXCut[0] or dx > distXCut[1] or dy < distYCut[0] or dy > distYCut[1]:
       return None
     #
     return (dx, dy)
@@ -197,7 +197,7 @@ class TelTriplets(object):
   #
   def findTracks(self, hits, qbyp=0., bfac=(0., 0.), zMag=0.):   
     # cuts
-    doubletCut, tripletCut, slopeCut, positionCut = self.__cuts[:4]
+    doubletXCut, doubletYCut, tripletXCut, tripletYCut, slopeXCut, slopeYCut, positionXCut, positionYCut = self.__cuts[:8]
     # curvature
     curv = [bfac[0] * qbyp, bfac[1] * qbyp]
     #
@@ -214,13 +214,13 @@ class TelTriplets(object):
         for hit3 in self.__hits[lcenter + 1]:
           aDoublet = TelDoublet(hit1, hit3, curv, zMag)
           dx, dy = aDoublet.getDists()
-          if abs(dx) > doubletCut[0] or abs(dy) > doubletCut[1]:
+          if dx < doubletXCut[0] or dx > doubletXCut[1] or dy < doubletYCut[0] or dy > doubletYCut[1]:
             continue
           if self.__hists is not None:
             self.__hists.addEntry("doubletDx", dx)
             self.__hists.addEntry("doubletDy", dy)
           for hit2 in self.__hits[lcenter]:
-            trp = aDoublet.match(hit2, tripletCut)
+            trp = aDoublet.match(hit2, tripletXCut, tripletYCut)
             if trp is not None:
               nTrp += 1
               #print " trp ", lcenter, dx, dy, trp[0], trp[1]
@@ -241,7 +241,7 @@ class TelTriplets(object):
         slope2 = trp2.getSlope()
         dslopeX = slope1[0] - slope2[0]; dslopeY = slope1[1] - slope2[1] 
         #print " slopes ", slope1, slope2, dslope
-        if abs(dslopeX) > slopeCut[0] or abs(dslopeY) > slopeCut[1]:
+        if dslopeX < slopeXCut[0] or dslopeX > slopeXCut[1] or dslopeY < slopeYCut[0] or dslopeY > slopeYCut[1]:
           continue
         if self.__hists is not None:
           self.__hists.addEntry("dslopeX", dslopeX)
@@ -253,7 +253,7 @@ class TelTriplets(object):
         pos2 = trp2.getPosAt(zmean)
         #print " match ", dslopeX, dslopeY, pos1[0], pos1[1], pos2[0], pos2[1]
         dposX = pos1[0] - pos2[0]; dposY = pos1[1] - pos2[1]
-        if abs(dposX) < positionCut[0] and abs(dposY) < positionCut[1]:
+        if positionXCut[0]< dposX and dposX < positionXCut[1] and positionYCut[0] < dposY and dposY< positionYCut[1]:
           matches.append((i1, i2))
           trp1.addMatch()
           trp2.addMatch()
@@ -298,10 +298,10 @@ class TelTriplets(object):
   #
   def matchDUT(self):
     # DUT matching cuts defined ?
-    if len(self.__cuts) < 5:
+    if len(self.__cuts) < 9:
       return
     
-    distCut = self.__cuts[4]
+    distCut = self.__cuts[8]
     for l, hits in self.__hits.iteritems():
       if l < 6:
         continue

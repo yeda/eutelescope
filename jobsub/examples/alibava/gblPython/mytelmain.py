@@ -65,8 +65,8 @@ def main(argv):
     os.makedirs(outputdir)
 
   # maximum number of events
-  maxEvt = 5000
-  #maxEvt = 10000000
+  #maxEvt = 5000
+  maxEvt = 10000000
   # beam energy (*q)
   #beamEnergy = -4.4  # 613
   # lcio data file
@@ -100,11 +100,13 @@ def main(argv):
   detector = g.getDetector()
   # create MP2 steering files
   # for mimosa planes determine positions and XY rotations, fix first plane and position of last as Reference
-  parMimosa = ['RRRRRR', '111001', '111001', '111001', '111001', 'RRR001'] 
-  #parMimosa = ['RRRRRR', '000000', '000000', '000000', '000000', 'RRRRRR'] 
-  if bField[1] != 0.:
+  ##### only telescope
+  #parMimosa = ['RRRRRR', '111111', '111111', '111111', '111111', 'RRR001'] 
+  #parMimosa = ['RRRRRR', '111001', '111001', '111001', '111001', 'RRR001'] 
+  parMimosa = ['RRRRRR', '000000', '000000', '000000', '000000', 'RRRRRR'] 
+  #if bField[1] != 0.:
     # for B field in Y fix X position of plane 3 in addition
-    parMimosa[3] = 'R11001'
+  #  parMimosa[3] = 'R11001'
 
   #################
   # DUT Alignment #
@@ -146,7 +148,7 @@ def main(argv):
   gblcuts = gblcuts.replace(' ','')
   gblcuts = gblcuts.split(',')
   gblcuts = map(float,gblcuts)
-  gblcuts = np.array(gblcuts).reshape(5,2)
+  gblcuts = np.array(gblcuts).reshape(9,2)
   cuts = map(tuple, gblcuts)
 
   # histograms for cut values
@@ -163,6 +165,7 @@ def main(argv):
       break
     # event read
     #if event.getNumHits() <= 0:
+    # only telescope
     if event.getNumDUThits() <= 0:
       continue
     numEvt += 1 

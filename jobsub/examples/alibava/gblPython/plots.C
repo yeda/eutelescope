@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "TMath.h" 
 #include "TFile.h"
 #include "TH1D.h"
@@ -17,17 +18,18 @@ const int N = 3;
 Color_t color[9] = {kBlack, kRed, kBlue, kGreen+2, kMagenta+1, kOrange-3, kPink-9, kViolet+1, kCyan+2};
 
 void incidenceAngle();
-void lamplot(int dutnum);
+void lamplot(int dutnum, int iteration);
 
 void plots(){
 	gStyle->SetOptStat(0);
 	//incidenceAngle();
-	lamplot(1);
+	lamplot(4,3);
 }
 
-void lamplot(int dutnum){
-	TString finname = TString("results/lam_dutXXX.root");
+void lamplot(int dutnum, int iteration){
+	TString finname = TString("results/notcomb-xtalk/lam_dutXXX_itYYY.root");
 	finname.ReplaceAll(TString("XXX"),TString::Itoa(dutnum,10));
+	finname.ReplaceAll(TString("YYY"),TString::Itoa(iteration,10));
 	TFile* fin = TFile::Open(finname.Data());
 	vector<TString> profnames = getObjectNames(fin,TString("TProfile"));
 	
@@ -59,7 +61,7 @@ void lamplot(int dutnum){
 
 	}
 	leg->Draw();
-	
+	cc->SaveAs("lam.pdf");
 }
 
 
