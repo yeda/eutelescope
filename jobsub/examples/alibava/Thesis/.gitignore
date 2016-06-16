@@ -1,0 +1,7 @@
+# Ignore everything in this directory
+Sunum/
+output
+
+# Except this file
+!.gitignore
+
