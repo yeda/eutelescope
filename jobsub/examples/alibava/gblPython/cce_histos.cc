@@ -10,6 +10,7 @@
 #include "TTree.h"
 #include "TCanvas.h"
 #include "TGraph.h"
+#include "TGraphErrors.h"
 #include <cstdlib>
 
 #include "langaufit.h"
@@ -45,12 +46,36 @@ struct FileInfo{
 	}
 };
 
+// int is dutnum*10 + dutid
+map<int, double> mapCalib = 	{ 
+					{6,163.685}, {7, 160.472}, 
+					{16, 166.237}, {17, 163.602}, 
+					{26, 154.325}, {27, 156.122},
+					{36, 166.237}, {37, 163.602}, 
+					{46, 163.685}, {47, 160.472}, 
+					{56, 169.929}, {57, 165.31},
+					{66, 169.929}, {67, 165.31}
+				};
+map<int, double> mapCalibErr = 	{ 
+					{6,0.2477}, {7, 0.245595}, 
+					{16, 0.353991}, {17, 0.426676},
+					{26, 0.356341}, {27, 0.407405},
+					{36, 0.353991}, {37, 0.426676},
+					{46,163.685}, {47, 160.472}, 
+					{56, 0.357177}, {57, 0.365202},
+					{66, 0.357177}, {67, 0.365202}
+				};
+
 void setBranches(TTree* treeDUT);
 vector<FileInfo> readCsvFile(TString csv_file_name, int dutNum);
 TF1* fit_langaus(TH1D *hist);
 void printFitPrameters(vector<FileInfo> fileinfo);
 void printExcelVersion(vector<FileInfo> fileinfo);
 void cce_plot(TString dutNum, TString iteration);
+
+TString inputFolder = TString("output/cce-xtalk-telaligned");
+TString outputFolder = TString("results/cce-xtalk-telaligned");
+
 
 int main(int argc, char *argv[]){
 	TString dutNum = TString(argv[1]);
@@ -60,7 +85,7 @@ int main(int argc, char *argv[]){
 }
 	
 void cce_plot(TString dutNum, TString iteration){
-	TString fout_name = TString("cce_dut")+dutNum+TString(".root");
+	TString fout_name = outputFolder+TString("/cce_dut")+dutNum+TString(".root");
 	TFile *fout = new TFile(fout_name.Data(),"RECREATE");
 
 	
@@ -69,7 +94,7 @@ void cce_plot(TString dutNum, TString iteration){
 	
 	for(unsigned int ifile=0; ifile<fileinfo.size(); ifile++){	
 		fileinfo[ifile].print();
-		TString input_rootfile = TString("output/cce_xtalk/runXXXXXX/dutTree_YYYY.root");
+		TString input_rootfile = inputFolder + TString("/runXXXXXX/dutTree_YYYY.root");
        	 	TString runname = TString::Itoa(fileinfo[ifile].RunNum,10);
         	while (runname.Length()<6) runname= TString("0")+runname;
 
@@ -100,21 +125,35 @@ void cce_plot(TString dutNum, TString iteration){
 	}
 	printFitPrameters(fileinfo);
         double biasvolt[2][20];
+        double biasvolterr[2][20];
 	double mp[2][20];
+	double mperr[2][20];
 	int nValue[2];
         nValue[0]=0; nValue[1]=0;
+
+	TString sname[2];
 	for (unsigned int ifile=0; ifile<fileinfo.size(); ifile++){
 		int ichip=5;
-                if(fileinfo[ifile].DutID == 6) ichip=0;
-                if(fileinfo[ifile].DutID == 7) ichip=1;
-		
+                if(fileinfo[ifile].DutID == 6) {
+			ichip=0;
+			sname[0] =TString("dutnum")+TString::Itoa(fileinfo[ifile].DutNum,10)+TString("_dutid")+TString::Itoa(fileinfo[ifile].DutID,10);
+		}
+                if(fileinfo[ifile].DutID == 7) {
+			ichip=1;
+			sname[1] =TString("dutnum")+TString::Itoa(fileinfo[ifile].DutNum,10)+TString("_dutid")+TString::Itoa(fileinfo[ifile].DutID,10);
+		}
+		int calibID = fileinfo[ifile].DutNum *10 + fileinfo[ifile].DutID;		
 		biasvolt[ichip][nValue[ichip]] = fabs(fileinfo[ifile].Bias);
-                mp[ichip][nValue[ichip]] = fileinfo[ifile].fLangau->GetParameter(1);
+		biasvolterr[ichip][nValue[ichip]] = 0;
+                mp[ichip][nValue[ichip]] = fileinfo[ifile].fLangau->GetParameter(1) * mapCalib[calibID];
+                mperr[ichip][nValue[ichip]] = fileinfo[ifile].fLangau->GetParError(1) * mapCalibErr[calibID];
 		nValue[ichip]= nValue[ichip]+1;
         }
 
-        TGraph *g0 = new TGraph(nValue[0],biasvolt[0],mp[0]);
-        TGraph *g1 = new TGraph(nValue[1],biasvolt[1],mp[1]);
+        TGraphErrors *g0 = new TGraphErrors(nValue[0],biasvolt[0],mp[0],biasvolterr[0],mperr[0]);
+        TGraphErrors *g1 = new TGraphErrors(nValue[1],biasvolt[1],mp[1],biasvolterr[1],mperr[1]);
+	g0->SetName(sname[0].Data());
+	g1->SetName(sname[1].Data());
 	fout->cd();
 	g0->Write();
 	g1->Write();
@@ -126,7 +165,7 @@ void printExcelVersion(vector<FileInfo> fileinfo){
 	cout<<"        LanGau fit parameters         "<<endl;
 	cout<<"**************************************"<<endl;
 	ofstream excelfile;
-	TString excelfilename = TString("cce_dut")+TString::Itoa(fileinfo[0].DutNum,10)+TString(".txt");
+	TString excelfilename = outputFolder + TString("/cce_dut")+TString::Itoa(fileinfo[0].DutNum,10)+TString(".txt");
 	excelfile.open(excelfilename);
 	// First do for Sensor 6
 	for (unsigned int ifile=0; ifile<fileinfo.size(); ifile++){

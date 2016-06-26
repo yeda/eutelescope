@@ -22,24 +22,62 @@
 #include "formatting.h"
 
 TString beamRun = TString("run004197");
+TString gblRun = TString("run004079");
 
 TString FileBase = TString("/nfs/dust/atlas/user/yeda/EUTelescopeOutput/output");
+TString GblOutputFileBase = TString("/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/notcomb-xtalk-telaligned");
 TCanvas *cc =new TCanvas("cc","",800,600);
 
 TString pdfFolder = TString("pdfs/chapTrack-pdf/");
 using namespace std;
 
 void synchronization();
-
+void track_algorithm();
 
 int main(int argc, char *argv[]){
 	gStyle->SetOptStat(0);
 	TGaxis::SetMaxDigits(3);
 
 	synchronization();
+	track_algorithm();
 
 	return 0;
 }
+
+void track_algorithm(){
+	TH1D *h1D;
+	TH2D *h2D;
+	TString PdfName;
+
+	TFile *file;
+	TString FileName;
+	FileName = GblOutputFileBase + TString("/XXXXXX/cuts_Y.root");
+	vector<TString> itnum = {"1","3"};
+	for (unsigned int it=0; it<itnum.size(); it++){
+		FileName.ReplaceAll(TString("XXXXXX"), gblRun);
+		FileName.ReplaceAll(TString("Y"), itnum[it]);
+		
+		file = TFile::Open(FileName.Data());
+		
+		vector<TString> histvec = {"doubletDx", "doubletDy", "tripletDx", "tripletDy", "dslopeX", "dslopeY", "dposX", "dposY", "DUT6-dx", "DUT7-dx"};
+		vector<TString> Xaxislabel = {"dx (mm)", "dy (mm)", "dx (mm)", "dy (mm)", "dslopeX (degrees)", "dslopeY (degrees)", "dx (mm)", "dy (mm)", "dx (mm)", "dx (mm)"};
+		for(unsigned int ihist=0; ihist<histvec.size(); ihist++){
+			h1D = (TH1D*) file->Get(histvec[ihist].Data());
+
+			formatCanvas1D(cc);
+			formatHisto(h1D);
+			//cc->SetLogz(1);
+			h1D->SetXTitle(Xaxislabel[ihist].Data());
+			h1D->SetYTitle("Number of Entries");
+			h1D->Draw();
+			PdfName = pdfFolder+gblRun+TString("_it")+itnum[it]+TString("_")+histvec[ihist]+TString(".pdf");
+			cc->SaveAs(PdfName.Data());
+		}
+
+	}
+
+}
+
 
 void synchronization(){
 

@@ -50,7 +50,7 @@ int main(int argc, char *argv[]){
 
 	gStyle->SetOptStat(0);
 	lam_plot_eachtrack(iteration);
-//	lam_plot_eachdata(iteration);	
+	lam_plot_eachdata(iteration);	
 	createGraphs();
 	plot_LAcombined();
 	return 0;
@@ -98,7 +98,8 @@ void lam_plot_eachdata(TString iteration){
 			TH1D* hclu = (TH1D*)gDirectory->Get("hclu");
 			mean_clusize[i] = hclu->GetMean();
 			mean_clusize_err[i] = hclu->GetMeanError();
-	
+if(fileinfo[ifile].B==0 && fileinfo[ifile].Bias==500)
+cout<<"B: "<<fileinfo[ifile].B<< " Bias: "<< fileinfo[ifile].Bias<< " Run: "<<fileinfo[ifile].RunNum<<"-"<<fileinfo[ifile].DutID<<" slope: "<<mean_locxslope[i]<<" clu: "<<mean_clusize[i]<<endl;	
 			i++;		
 		}
 		
@@ -118,10 +119,10 @@ void lam_plot_eachtrack(TString iteration){
 	
 	gStyle->SetOptStat(0);
 	for(unsigned int ifile=0; ifile<fileinfo.size(); ifile++){	
-		fileinfo[ifile].print();
-		if (fileinfo[ifile].RunNum == 3122 || fileinfo[ifile].RunNum == 5022 || fileinfo[ifile].RunNum == 5047) 
+		if (fileinfo[ifile].RunNum == 3122 || fileinfo[ifile].RunNum == 5022) 
 			continue;
 
+		fileinfo[ifile].print();
    		TTree* treeDUT= getTree(fileinfo[ifile].RunNum, iteration);
 		setBranches(treeDUT);
 	
@@ -314,13 +315,13 @@ void createGraphs(){
 
 			
 			title = ss.str();
-			cout<<"title "<< title<< endl;
+//			cout<<"title "<< title<< endl;
 			latex->DrawLatex(0.5,0.8,title.Data());
 			double la2T = p1 * 2.0 + p0;
 			ss.str("");
 			ss << string("LA = ")<<fixed<<setprecision(2)<< la2T << string(" at 2T ");
 			title = ss.str();
-			cout<<"title "<< title<< endl;
+//			cout<<"title "<< title<< endl;
 			latex->DrawLatex(0.5,0.7,title.Data());
 
 			title = OutputPath + TString("/dut_")+dutNum+TString("_")+TString::Itoa(dutid[iId],10)+TString("_V")+TString::Itoa(storedBias[ibias],10)+TString(".pdf");
@@ -347,7 +348,7 @@ void fitGraphs(){
   		f->SetParLimits(3, 0.1, 10.);
   		f->SetParameters(0,1,1.13,5);
 		graph->Fit(hname.Data(),"RQ");
-		cout<< hname << " created"<< " LA= "<<f->GetParameter(0)<<" +/- "<< f->GetParError(0)<<endl;
+//		cout<< hname << " created"<< " LA= "<<f->GetParameter(0)<<" +/- "<< f->GetParError(0)<<endl;
 		measurements[imeas]->setLA(f->GetParameter(0));
 		measurements[imeas]->setLAerror(f->GetParError(0));
 		graph->Write();
@@ -361,14 +362,14 @@ void fitProfiles(){
 	for (unsigned int imeas=0; imeas<measurements.size(); imeas++){
 		TProfile* profile = measurements[imeas]->getProfile();
 		TString hname = measurements[imeas]->getProfileFitName();
-		TF1* f = new TF1(hname.Data(),fit_func,-20,20,4);
+		TF1* f = new TF1(hname.Data(),fit_func,-21,21,4);
 		
   		f->SetParNames("LA", "a", "b", "sigma");
   		f->SetParLimits(3, 0.1, 5.);
   		f->SetParLimits(0, -5.0, 5.0);
   		f->SetParameters(0,1,1.13,5);
 		profile->Fit(hname.Data(),"RQ");
-		cout<< hname << " created"<< " LA= "<<f->GetParameter(0)<<" +/- "<< f->GetParError(0)<<endl;
+//		cout<< hname << " created"<< " LA= "<<f->GetParameter(0)<<" +/- "<< f->GetParError(0)<<endl;
 		measurements[imeas]->setLA(f->GetParameter(0));
 		measurements[imeas]->setLAerror(f->GetParError(0));
 		profile->Write();
@@ -395,9 +396,9 @@ void createMeasurements(vector<FileInfo> fileinfo){
 		
 		if (isMeasStored(ameas)==false) {
 			TString tempname = ameas->getProfileName();
-			TProfile *tempprofile = new TProfile(tempname.Data(),tempname.Data(),20,-20,20);
-			tempprofile->SetStats(false);
+			TProfile *tempprofile = new TProfile(tempname.Data(),tempname.Data(),21,-21,21);
 //			TProfile *tempprofile = new TProfile(tempname.Data(),tempname.Data(),Nbin_profiles, bin_profiles);
+			tempprofile->SetStats(false);
 			ameas->setProfile ( tempprofile );
 			measurements.push_back(ameas);
 		}

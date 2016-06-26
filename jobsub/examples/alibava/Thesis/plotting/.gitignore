@@ -3,9 +3,8 @@
 
 # Except this file
 !.gitignore
-!chapReco.cc
-!chapTrack.cc
-!formatting.h
+!*.cc
+!*.h
 !Makefile
 
 

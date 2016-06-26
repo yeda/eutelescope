@@ -6,7 +6,9 @@ CXX=g++
 # enable debug settings for GCC
 #ADDCXXFLAGS=-ggdb -O0
 # OR enable performance optimizations
-ADDCXXFLAGS=-g -O2
+#ADDCXXFLAGS=-g -O2
+ADDCXXFLAGS=-ggdb -O0 -std=c++0x
+
 VPATH=./
 HDIR=./
 

@@ -6,7 +6,9 @@ CXX=g++
 # enable debug settings for GCC
 #ADDCXXFLAGS=-ggdb -O0
 # OR enable performance optimizations
-ADDCXXFLAGS=-g -O2
+ADDCXXFLAGS=-ggdb -O0 -std=c++0x
+#ADDCXXFLAGS=-g -O2
+
 VPATH=./
 HDIR=./
 
@@ -14,8 +16,12 @@ HDRS= $(HDIR)/formatting.h
 
 ChapRecoOBJS=	chapReco.o 
 ChapTrackOBJS=	chapTrack.o 
+ChapCCEOBJS=	chapCCE.o 
 
-all: chapReco chapTrack
+all: chapReco chapTrack chapCCE
+
+chapCCE: $(ChapCCEOBJS)
+	$(CXX) -o $@ $(CXXFLAGS) $(ADDCXXFLAGS) $(ChapCCEOBJS) $(LDFLAGS) $(LIBS)
 
 chapReco: $(ChapRecoOBJS)
 	$(CXX) -o $@ $(CXXFLAGS) $(ADDCXXFLAGS) $(ChapRecoOBJS) $(LDFLAGS) $(LIBS)
@@ -27,4 +33,4 @@ chapTrack: $(ChapTrackOBJS)
 	$(CXX) $(CXXFLAGS) $(ADDCXXFLAGS) -c $< 
 
 clean:
-	rm -rf chapReco chapTrack $(ChapRecoOBJS) $(ChapTrackOBJS) $(OBJS) 
+	rm -rf chapReco chapTrack chapCCE $(ChapCCEOBJS) $(ChapRecoOBJS) $(ChapTrackOBJS) $(OBJS) 

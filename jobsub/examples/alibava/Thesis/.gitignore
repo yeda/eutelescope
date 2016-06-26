@@ -4,4 +4,6 @@ output
 
 # Except this file
 !.gitignore
+!.cc
+!.h
 
