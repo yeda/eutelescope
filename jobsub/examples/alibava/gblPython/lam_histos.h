@@ -46,6 +46,8 @@ using namespace std;
 // global 
 #define pi 3.14159265
 
+const double threshold = 3000.0;
+
 struct FileInfo{ 
 	int DutNum;  
 	int RunNum;
@@ -57,6 +59,15 @@ struct FileInfo{
 		cout<<"DutNum "<< DutNum <<" RunNum "<<RunNum<<" DutID "<<DutID<< " Bias "<<Bias<<" Irrad "<<Irrad<< " B "<< B <<endl;
 	}
 };
+map<int, double> mapCalib = 	{ 
+					{6,163.685}, {7, 160.472}, 
+					{16, 166.237}, {17, 163.602}, 
+					{26, 154.325}, {27, 156.122},
+					{36, 166.237}, {37, 163.602}, 
+					{46, 163.685}, {47, 160.472}, 
+					{56, 169.929}, {57, 165.31},
+					{66, 169.929}, {67, 165.31}
+				};
 
 struct LAmeas{
 	int DutNum;
@@ -70,6 +81,17 @@ struct LAmeas{
 
 	LAmeas(){}
 	~LAmeas(){}
+
+	std::string results_to_txt(){
+        	std::ostringstream ss;
+		ss << DutNum << ";" << DutID << ";" << getIrrad();
+
+		if (DutNum==4 && DutID == 6) ss<<"1";
+		else if (DutNum==4 && DutID == 7) ss<<"2";
+		
+		ss << ";" << B << ";" << Bias << ";" << LA << ";" << LAerror << ";";
+		return ss.str();
+	}
 
 	void setDutNum(int avalue){ DutNum = avalue; }
 	int getDutNum() { return DutNum; } 
@@ -141,11 +163,11 @@ struct LAmeas{
 
 		if ( DutNum==4) irrad = TString("non-irrad");
 
-		if ( DutNum==5 && DutID==6) irrad = TString("2E+14");
-		if ( DutNum==5 && DutID==7) irrad = TString("1.2E+14");
+		if ( DutNum==5 && DutID==7) irrad = TString("2E+14");
+		if ( DutNum==5 && DutID==6) irrad = TString("1.2E+14");
 
-		if ( DutNum==6 && DutID==6) irrad = TString("2E+14_An");
-		if ( DutNum==6 && DutID==7) irrad = TString("1.2E+14_An");
+		if ( DutNum==6 && DutID==7) irrad = TString("2E+14_An");
+		if ( DutNum==6 && DutID==6) irrad = TString("1.2E+14_An");
 		
 		return irrad;
 	}	
@@ -168,14 +190,12 @@ int decodeBias(TString s){
 	s.Remove(0,s.Last('_')+2);
 	return s.Atoi();
 }
-
 template<class T>
 std::string to_string(const T& t) {
         std::ostringstream ss;
         ss << t;
         return ss.str();
 }
-
 void setBranches(TTree* treeDUT);
 vector<FileInfo> readCsvFile();
 Double_t fit_func(Double_t *x, Double_t *par);
@@ -184,11 +204,14 @@ TTree* getTree(int RunNum, TString iteration);
 void createMeasurements(vector<FileInfo> fileinfo);
 LAmeas* getMeasurement(int dutID, double b, int bias);
 void lam_plot_eachtrack(TString iteration);
+void lam_plot_eachtrack_ITK(TString iteration);
 void lam_plot_eachdata(TString iteration);
 void fitProfiles();
 void fitGraphs();
 void createGraphs();
-void plot_LAcombined();
+void plot_LAcombined(TString s);
+int sortLegendB(TString s);
+void writetotxt(TString f_txt);
 
 TF1* fit_langaus(TH1D *hist){
    // Here are the Landau * Gaussian parameters:

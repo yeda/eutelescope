@@ -12,13 +12,17 @@ ADDCXXFLAGS=-ggdb -O0 -std=c++0x
 VPATH=./
 HDIR=./
 
-HDRS= $(HDIR)/langaufit.h $(HDIR)/lam_histos.h
+HDRS= $(HDIR)/langaufit.h $(HDIR)/lam_histos.h $(HDIR)/calculate_err.h
 
 LAMOBJS=	lam_histos.o 
 CCEOBJS=	cce_histos.o 
 FITOBJS=	fit_langaus.o 
+ERROBJS=	calculate_err.o 
+	
+all: calculate_err lam_histos cce_histos fit_langaus 
 
-all: lam_histos cce_histos fit_langaus 
+calculate_err: $(ERROBJS)
+	$(CXX) -o $@ $(CXXFLAGS) $(ADDCXXFLAGS) $(ERROBJS) $(LDFLAGS) $(LIBS)
 
 cce_histos: $(CCEOBJS)
 	$(CXX) -o $@ $(CXXFLAGS) $(ADDCXXFLAGS) $(CCEOBJS) $(LDFLAGS) $(LIBS)
@@ -31,4 +35,4 @@ lam_histos: $(LAMOBJS)
 	$(CXX) $(CXXFLAGS) $(ADDCXXFLAGS) -c $< 
 
 clean:
-	rm -rf lam_histos cce_histos fit_langaus $(OBJS) 
+	rm -rf lam_histos cce_histos fit_langaus runall calculate_err $(ERROBJS) $(RUNALLOBJ) $(CCEOBJS) $(FITOBJS) $(LAMOBJS) $(OBJS) 

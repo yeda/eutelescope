@@ -9,10 +9,10 @@ ALLRUNLIST=(1053 1057 1061 1062 1063 1064 1065 1066 1067 1068 1069 1070 1076 107
 #do
 
 #DUTLIST=(1 2 3 4 5 6)
-DUTLIST=(4)
-#TEMPLATELIST=('alibava-converter' 'alibava-reco' 'alibava-applyxtalk' 'telescope-converter' 'telescope-clustering' 'telescope-filter' 'merger' 'hitmaker-local')
+DUTLIST=(5)
+TEMPLATELIST=('alibava-converter' 'alibava-reco' 'alibava-applyxtalk' 'telescope-converter' 'telescope-clustering' 'telescope-filter' 'merger' 'hitmaker-local')
 #TEMPLATELIST=('alibava-converter' 'alibava-reco' 'telescope-converter' 'telescope-clustering' 'telescope-filter' 'merger-noxtalk' 'hitmaker-local')
-TEMPLATELIST=('alibava-reco-noxtalk' 'merger-noxtalk' 'hitmaker-local')
+#TEMPLATELIST=('alibava-reco-noxtalk' 'merger-noxtalk' 'hitmaker-local')
 
 for Template in "${TEMPLATELIST[@]}"
 do
@@ -50,7 +50,8 @@ fi
 
 
 if [ $DUT = 5 ]; then
-RUNLIST=(5047 5235 5239 5012 5013 5014 5015 5016 5017 5018 5019 5020 5021 5022 5023 5079 5080 5081 5082 5083 5084 5085 5086 5087 5088 5089 5090 5240 5243 5245 5253 5254 5256 5257 5258 5259 5260 5261 5262 5263 5264 5265 5269 5270 5271 5272 5273 5274 5275 5276 5277 5278 5279 5188 5192 5193 5194 5195 5196 5197 5201 5202 5203 5204 5205 5206 5207 5208 5209 5210 5211 5212 5213 5214 5215 5216 5220 5222 5224 5225 5226 5227 5228 5229 5231 5232 5233 5234 5132 5133 5134 5135 5136 5137 5138 5141 5142 5145 5147 5148 5149 5150 5154 5155 5156 5157 5158 5159 5166 5168 5169 5171 5172 5173 5175 5176 5177 5178 5179 5180 5181 5184 5185 5186 5284 5288 5289 5290 5291 5292 5294 5295 5296 5297 5298 5304 5305 5306 5308 5309 5310 5311 5312 5313 5314 5066 5095 5096 5097 5098 5099 5100 5101 5102 5103 5104 5105 5106 5110 5111 5113 5114 5115 5116 5117 5118 5119 5120 5121 5122 5123 5318 5322 5323 5324 5325 5326 5327 5328 5329 5330 5331 5332 5333 5334 5335 5336 5337)
+RUNLIST=(5020 5021 5022 5023 5024)
+#RUNLIST=(5047 5235 5239 5012 5013 5014 5015 5016 5017 5018 5019 5020 5021 5022 5023 5024 5079 5080 5081 5082 5083 5084 5085 5086 5087 5088 5089 5090 5240 5243 5245 5253 5254 5256 5257 5258 5259 5260 5261 5262 5263 5264 5265 5269 5270 5271 5272 5273 5274 5275 5276 5277 5278 5279 5188 5192 5193 5194 5195 5196 5197 5201 5202 5203 5204 5205 5206 5207 5208 5209 5210 5211 5212 5213 5214 5215 5216 5220 5222 5224 5225 5226 5227 5228 5229 5231 5232 5233 5234 5132 5133 5134 5135 5136 5137 5138 5141 5142 5145 5147 5148 5149 5150 5154 5155 5156 5157 5158 5159 5166 5168 5169 5171 5172 5173 5175 5176 5177 5178 5179 5180 5181 5184 5185 5186 5284 5288 5289 5290 5291 5292 5294 5295 5296 5297 5298 5304 5305 5306 5308 5309 5310 5311 5312 5313 5314 5066 5095 5096 5097 5098 5099 5100 5101 5102 5103 5104 5105 5106 5110 5111 5113 5114 5115 5116 5117 5118 5119 5120 5121 5122 5123 5318 5322 5323 5324 5325 5326 5327 5328 5329 5330 5331 5332 5333 5334 5335 5336 5337)
 BONDS='$0:20-122$ $1:24-127$'
 TIMECUTMIN=5.0
 TIMECUTMAX=15.0
@@ -87,19 +88,19 @@ source myscripts/continue_when_all_runs_finished.sh
 #source myscripts/ask_me_to_continue.sh
 
 done # TEMPLATELIST
-root -q -b 'lam_plots_cluster.C(1)' 
-root -q -b 'lam_plots_cluster.C(2)'
-root -q -b 'lam_plots_cluster.C(3)'
-root -q -b 'lam_plots_cluster.C(4)'
-root -q -b 'lam_plots_cluster.C(5)'
-root -q -b 'lam_plots_cluster.C(6)'
-
-root -q -b 'lam_plots_hit.C(1)' 
-root -q -b 'lam_plots_hit.C(2)'
-root -q -b 'lam_plots_hit.C(3)'
-root -q -b 'lam_plots_hit.C(4)'
-root -q -b 'lam_plots_hit.C(5)'
-root -q -b 'lam_plots_hit.C(6)'
+#root -q -b 'lam_plots_cluster.C(1)' 
+#root -q -b 'lam_plots_cluster.C(2)'
+#root -q -b 'lam_plots_cluster.C(3)'
+#root -q -b 'lam_plots_cluster.C(4)'
+#root -q -b 'lam_plots_cluster.C(5)'
+#root -q -b 'lam_plots_cluster.C(6)'
+#
+#root -q -b 'lam_plots_hit.C(1)' 
+#root -q -b 'lam_plots_hit.C(2)'
+#root -q -b 'lam_plots_hit.C(3)'
+#root -q -b 'lam_plots_hit.C(4)'
+#root -q -b 'lam_plots_hit.C(5)'
+#root -q -b 'lam_plots_hit.C(6)'
 
 ########## produce hit plots
 #for DUT in "${DUTLIST[@]}"

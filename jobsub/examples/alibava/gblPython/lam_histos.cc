@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <map>
 #include <fstream>
 #include <math.h>
 #include <vector>
@@ -25,6 +26,7 @@
 using namespace std;
 
 TString InputPath = TString("output/notcomb-xtalk-telaligned");
+//TString OutputPath = TString("results/ITK");
 TString OutputPath = TString("results/notcomb-xtalk-telaligned");
 vector<LAmeas*> measurements;
 TString csvfilename = TString("../runlistfiles/lam_file_info.csv");
@@ -32,7 +34,7 @@ TFile *fout;
 TCanvas *cc = new TCanvas("cc","cc",800,600);
 TString dutNum;	
 vector<FileInfo> fileinfo; 
-Color_t color[9] = {kBlack, kRed, kBlue, kGreen+2, kMagenta+1, kOrange-3, kPink-9, kViolet+1, kCyan+2};
+Color_t color[9] = {kBlack, kGreen+2, kBlue, kMagenta+1, kRed, kOrange-3, kPink-9, kViolet+1, kCyan+2};
 
 const int Nbin_profiles = 25;
 double bin_profiles[26]={ -22.0, -18.0, -14.0, -11.0, -9.0, -7.5, -6.5, -5.5, -4.5, -3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 9.0, 11.0, 14.0, 18.0, 22.0};
@@ -50,100 +52,42 @@ int main(int argc, char *argv[]){
 
 	gStyle->SetOptStat(0);
 	lam_plot_eachtrack(iteration);
-	lam_plot_eachdata(iteration);	
+//	lam_plot_eachtrack_ITK(iteration);	
+//	lam_plot_eachdata(iteration);	
 	createGraphs();
-	plot_LAcombined();
+//	plot_LAcombined(TString("ITK"));
+	plot_LAcombined(TString(""));
+
+        writetotxt("LA_out.txt");
+
 	return 0;
 }
 
-void lam_plot_eachdata(TString iteration){
-	gStyle->SetOptStat(0);
-	double mean_locxslope[50];
-	double mean_locxslope_err[50];
-	double mean_clusize[50];
-	double mean_clusize_err[50];
-	int i=0;
+void writetotxt(TString f_txt){
 
-	for (unsigned int imeas=0; imeas<measurements.size(); imeas++){ 
-		fill(mean_locxslope, mean_locxslope+50, 0);
-		fill(mean_locxslope_err, mean_locxslope_err+50, 0);
-		fill(mean_clusize, mean_clusize+50, 0);
-		fill(mean_clusize_err, mean_clusize_err+50, 0);
-
-		i=0;
-		for(unsigned int ifile=0; ifile<fileinfo.size(); ifile++){	
-	
-			if(measurements[imeas]->getDutID() != fileinfo[ifile].DutID || measurements[imeas]->getB() != fileinfo[ifile].B || measurements[imeas]->getBias() != fileinfo[ifile].Bias) continue;
-	
-		//	fileinfo[ifile].print();
-
-	   		TTree* treeDUT= getTree(fileinfo[ifile].RunNum, iteration);
-			setBranches(treeDUT);
-		
-			TString cut = TString("dutID==")+TString::Itoa(fileinfo[ifile].DutID,10);
-			treeDUT->Draw("(-1 * locxslope * 180.0 / TMath::Pi())>>hslope(100,-25,25)", cut.Data());
-			TH1D* hslope = (TH1D*)gDirectory->Get("hslope");
-			//TF1 *fitfunc = fit_langaus(hslope);
-		stringstream ss;	
-		ss<<"Fit_DutNum"<< fileinfo[ifile].DutID <<"_RunNum"<<fileinfo[ifile].RunNum;
-			string fitname = ss.str();
-			TF1* fitfunc = new TF1(fitname.c_str(),"gaus"); 
-			hslope->Fit(fitfunc,"Q");
-			mean_locxslope[i] = fitfunc->GetParameter(1);
-			mean_locxslope_err[i] = fitfunc->GetParError(1);
-//			mean_locxslope[i] = hslope->GetMean();
-//			mean_locxslope_err[i] = hslope->GetMeanError();
-	
-			treeDUT->Draw("clustersize>>hclu(20,0,20)", cut.Data());
-			TH1D* hclu = (TH1D*)gDirectory->Get("hclu");
-			mean_clusize[i] = hclu->GetMean();
-			mean_clusize_err[i] = hclu->GetMeanError();
-if(fileinfo[ifile].B==0 && fileinfo[ifile].Bias==500)
-cout<<"B: "<<fileinfo[ifile].B<< " Bias: "<< fileinfo[ifile].Bias<< " Run: "<<fileinfo[ifile].RunNum<<"-"<<fileinfo[ifile].DutID<<" slope: "<<mean_locxslope[i]<<" clu: "<<mean_clusize[i]<<endl;	
-			i++;		
-		}
-		
-		TGraphErrors* gr = new TGraphErrors(i,mean_locxslope,mean_clusize,mean_locxslope_err,mean_clusize_err);
-		TString grname = measurements[imeas]->getGraphName();
-		gr->SetName(grname.Data());
-		grname = grname+TString("; Mean Incidence Angle(degrees); Mean Cluster Size");
-		gr->SetTitle(grname.Data());
-		measurements[imeas]->setGraph(gr);
-					
+	std::ofstream out_txt;
+    	out_txt.open(f_txt.Data(), std::ofstream::out | std::ofstream::app);
+	 
+	for(unsigned int i=0; i<measurements.size(); i++){
+		out_txt<<measurements[i]->results_to_txt()<<endl;
 	}
-	fitGraphs();
 }
 
-
-void lam_plot_eachtrack(TString iteration){
+int sortLegendB(TString s){
+	TString Bstr;
+	Bstr = s( s.First("B")+1, s.First("V")-s.First("B")-2);
+	int bf = Bstr.Atoi();
 	
-	gStyle->SetOptStat(0);
-	for(unsigned int ifile=0; ifile<fileinfo.size(); ifile++){	
-		if (fileinfo[ifile].RunNum == 3122 || fileinfo[ifile].RunNum == 5022) 
-			continue;
-
-		fileinfo[ifile].print();
-   		TTree* treeDUT= getTree(fileinfo[ifile].RunNum, iteration);
-		setBranches(treeDUT);
-	
-		LAmeas* currentMeas =  getMeasurement(fileinfo[ifile].DutID, fileinfo[ifile].B, fileinfo[ifile].Bias );	
-		TProfile* currentProfile = currentMeas->getProfile();
-
-		Long64_t nentries = treeDUT->GetEntries();
-		for (Long64_t ientry=0; ientry<nentries;ientry++) {
-      			treeDUT->GetEntry(ientry);
-			if ( dutID==currentMeas->getDutID() ){
-				double slope = locxslope * 180.0 / TMath::Pi();
-				currentProfile->Fill(slope,clustersize);
-			}	
-   		}
-	}
-
-	fitProfiles();
+	if(bf==0) return 1;
+	else if(bf==25) return 2;
+	else if(bf==50) return 3;
+	else if(bf==75) return 4;
+	else if(bf==100) return 5;
+	else return -1;
 }
 
-void plot_LAcombined(){
-
+void plot_LAcombined(TString s){
+	
 	TProfile* pr;
 	TF1* fit_pr;
 	int icolor =0;
@@ -183,43 +127,67 @@ void plot_LAcombined(){
 			cc->cd();
 
 	gStyle->SetOptStat(0);
-		        TLegend* leg = new TLegend(0.40,0.63,0.65,0.82);
-		        leg->SetHeader("Magnetic Field (T)");
-		        leg->SetFillColor(0);
 
+	map<int, LAmeas*> sorting;
 			for (unsigned int imeas=0; imeas< measurements.size(); imeas++){
 				if (measurements[imeas]->getDutID() == measuredDut[i] && measurements[imeas]->getBias() == measuredBias[j]){
 					pr = (TProfile*) measurements[imeas]->getProfile();
 					fit_pr = (TF1*) measurements[imeas]->getFitProfile();
-					if (dutNum == TString("1") && measuredDut[i]==6) pr->SetAxisRange(1.45,2.0,"Y");
-					if (dutNum == TString("1") && measuredDut[i]==7) pr->SetAxisRange(1.3,1.7,"Y");
-					if (dutNum == TString("2") && measuredDut[i]==6) pr->SetAxisRange(1.0,1.5,"Y");
-					if (dutNum == TString("2") && measuredDut[i]==7) pr->SetAxisRange(1.0,1.5,"Y");
-					if (dutNum == TString("3") && measuredDut[i]==6) pr->SetAxisRange(1.3,2.2,"Y");
-					if (dutNum == TString("3") && measuredDut[i]==7) pr->SetAxisRange(1.3,1.7,"Y");
-					if (dutNum == TString("4")) pr->SetAxisRange(1.8,3.0,"Y");
-					if (dutNum == TString("5") && measuredDut[i]==6) pr->SetAxisRange(2.2,3.2,"Y");
-					if (dutNum == TString("5") && measuredDut[i]==7) pr->SetAxisRange(1.7,2.8,"Y");
-					if (dutNum == TString("6") && measuredDut[i]==6) pr->SetAxisRange(2.4,3.4,"Y");
-					if (dutNum == TString("6") && measuredDut[i]==7) pr->SetAxisRange(2.0,3.0,"Y");
-					pr->SetLineColor(color[icolor]);
+
+					sorting.insert(make_pair( sortLegendB( pr->GetName() ), measurements[imeas] ) );
+					if (s==TString("ITK")){
+						if (dutNum == TString("1") && measuredDut[i]==6) pr->SetAxisRange(1.2,1.6,"Y");
+						if (dutNum == TString("1") && measuredDut[i]==7) pr->SetAxisRange(1.05,1.25,"Y");
+						if (dutNum == TString("2") && measuredDut[i]==6) pr->SetAxisRange(1.0,1.15,"Y");
+						if (dutNum == TString("2") && measuredDut[i]==7) pr->SetAxisRange(1.0,1.1,"Y");
+						if (dutNum == TString("3") && measuredDut[i]==6) pr->SetAxisRange(1.2,1.7,"Y");
+						if (dutNum == TString("3") && measuredDut[i]==7) pr->SetAxisRange(1.1,1.35,"Y");
+						if (dutNum == TString("4")) pr->SetAxisRange(1.2,2.5,"Y");
+						if (dutNum == TString("5") && measuredDut[i]==6) pr->SetAxisRange(1.4,2.4,"Y");
+						if (dutNum == TString("5") && measuredDut[i]==7) pr->SetAxisRange(1.4,2.1,"Y");
+						if (dutNum == TString("6") && measuredDut[i]==6) pr->SetAxisRange(1.45,2.5,"Y");
+						if (dutNum == TString("6") && measuredDut[i]==7) pr->SetAxisRange(1.4,2.2,"Y");
+					}
+					else {
+						if (dutNum == TString("1") && measuredDut[i]==6) pr->SetAxisRange(1.45,2.0,"Y");
+						if (dutNum == TString("1") && measuredDut[i]==7) pr->SetAxisRange(1.3,1.7,"Y");
+						if (dutNum == TString("2") && measuredDut[i]==6) pr->SetAxisRange(1.1,1.6,"Y");
+						if (dutNum == TString("2") && measuredDut[i]==7) pr->SetAxisRange(1.0,1.5,"Y");
+						if (dutNum == TString("3") && measuredDut[i]==6) pr->SetAxisRange(1.3,2.2,"Y");
+						if (dutNum == TString("3") && measuredDut[i]==7) pr->SetAxisRange(1.3,1.7,"Y");
+						if (dutNum == TString("4")) pr->SetAxisRange(1.8,3.0,"Y");
+						if (dutNum == TString("5") && measuredDut[i]==6) pr->SetAxisRange(2.2,3.2,"Y");
+						if (dutNum == TString("5") && measuredDut[i]==7) pr->SetAxisRange(1.7,2.8,"Y");
+						if (dutNum == TString("6") && measuredDut[i]==6) pr->SetAxisRange(2.4,3.4,"Y");
+						if (dutNum == TString("6") && measuredDut[i]==7) pr->SetAxisRange(2.0,3.0,"Y");
+					}
 					TString title;
+//					title = TString("; Incidence Angle (degrees); Cluster Size");
 					title = TString("LAM ")+ measurements[imeas]->getIrrad()+TString("; Incidence Angle (degrees); Cluster Size");
 					pr->SetTitle(title.Data());
-					fit_pr->SetLineColor(color[icolor]);
-					std::ostringstream ss;
-					ss<< string("B= ")<< fixed<< setprecision(2)<<measurements[imeas]->getB() << string(", LA= ")<<fixed<<setprecision(2)<<fit_pr->GetParameter(0)<< string(" +/- ")<<fixed<<setprecision(2)<<fit_pr->GetParError(0);
-					title = TString(ss.str());
-	
-			                leg->AddEntry(pr,title.Data(),"l");
-
 		        		gStyle->SetOptStat(0);
 					pr->Draw("same");
-					icolor++;
 				}
 			}
 
-			leg->Draw();
+		        TLegend* leg = new TLegend(0.3,0.9,0.7,0.6);
+		        leg->SetHeader("Magnetic Field (T)");
+		        leg->SetFillColor(0);
+
+		        for (map< int, LAmeas* >::iterator i_entry=sorting.begin(); i_entry!= sorting.end(); i_entry++){	
+					LAmeas* lameas= i_entry->second; 
+					pr = (TProfile*) lameas->getProfile();
+					fit_pr = (TF1*) lameas->getFitProfile();
+					pr->SetLineColor(color[i_entry->first -1]);
+					fit_pr->SetLineColor(color[i_entry->first -1]);
+					std::ostringstream ss;
+					ss<< string("B= ")<< fixed<< setprecision(2)<< lameas->getB() << string(", LA= ")<<fixed<<setprecision(2)<<fit_pr->GetParameter(0)<< string(" +/- ")<<fixed<<setprecision(2)<<fit_pr->GetParError(0);
+					TString title = TString(ss.str());
+
+	            		    	leg->AddEntry(pr,title.Data(),"l");
+			}
+
+			if(dutNum != TString("2")) leg->Draw();
 			TString title = OutputPath + TString("/LA_dut_")+dutNum+TString("_")+TString::Itoa(measuredDut[i],10)+TString("_V")+TString::Itoa(measuredBias[j],10)+TString(".pdf");
 		
 			cc->SaveAs(title.Data());
@@ -230,6 +198,66 @@ void plot_LAcombined(){
 	}
 	
 }
+
+void lam_plot_eachtrack(TString iteration){
+	
+	gStyle->SetOptStat(0);
+	for(unsigned int ifile=0; ifile<fileinfo.size(); ifile++){	
+
+//		fileinfo[ifile].print();
+   		TTree* treeDUT= getTree(fileinfo[ifile].RunNum, iteration);
+		setBranches(treeDUT);
+	
+		LAmeas* currentMeas =  getMeasurement(fileinfo[ifile].DutID, fileinfo[ifile].B, fileinfo[ifile].Bias );	
+		TProfile* currentProfile = currentMeas->getProfile();
+
+		Long64_t nentries = treeDUT->GetEntries();
+		for (Long64_t ientry=0; ientry<nentries;ientry++) {
+      			treeDUT->GetEntry(ientry);
+			if ( dutID==currentMeas->getDutID() ){
+				double slope = locxslope * 180.0 / TMath::Pi();
+				currentProfile->Fill(slope,clustersize);
+			}	
+   		}
+	}
+
+	fitProfiles();
+}
+
+
+void lam_plot_eachtrack_ITK(TString iteration){
+	
+	gStyle->SetOptStat(0);
+	for(unsigned int ifile=0; ifile<fileinfo.size(); ifile++){	
+
+//		fileinfo[ifile].print();
+   		TTree* treeDUT= getTree(fileinfo[ifile].RunNum, iteration);
+		setBranches(treeDUT);
+	
+		LAmeas* currentMeas =  getMeasurement(fileinfo[ifile].DutID, fileinfo[ifile].B, fileinfo[ifile].Bias );	
+		TProfile* currentProfile = currentMeas->getProfile();
+
+		Long64_t nentries = treeDUT->GetEntries();
+		for (Long64_t ientry=0; ientry<nentries;ientry++) {
+      			treeDUT->GetEntry(ientry);
+			if ( dutID==currentMeas->getDutID() ){
+				int calibID = 10*fileinfo[ifile].DutNum + currentMeas->getDutID();
+				double calib = mapCalib[calibID];
+				int newclusize =0;
+				for (unsigned int i_strip = 0; i_strip<clustersize; i_strip++){
+					if (clustercharge[i_strip] * calib > threshold)
+						newclusize++;
+				}
+				double slope = locxslope * 180.0 / TMath::Pi();
+				if (newclusize > 0)
+					currentProfile->Fill(slope,newclusize);
+			}	
+   		}
+	}
+
+	fitProfiles();
+}
+
 
 void createGraphs(){
 	gStyle->SetOptStat(0);
@@ -271,7 +299,9 @@ void createGraphs(){
 			double magfield[10];
 			double magfielderr[10];
 			double LA[10];
+			double tanLA[10];
 			double LAerr[10];
+			double tanLAerr[10];
 			TString hist_tit;
 			int i = 0;
 			for (unsigned int imeas=0; imeas<measurements.size(); imeas++){
@@ -279,14 +309,18 @@ void createGraphs(){
 					magfield[i] = measurements[imeas]->getB();
 					magfielderr[i] = 0.0;
 					LA[i] = measurements[imeas]->getLA();
+					tanLA[i] = TMath::Tan((TMath::Pi() / 180.0) * measurements[imeas]->getLA());
 					LAerr[i] = measurements[imeas]->getLAerror();
-					hist_tit = TString("LAM ")+ measurements[imeas]->getIrrad()+TString("; Magnetic Field (T); Lorentz Angle (degrees)");
+					tanLAerr[i] = TMath::Tan((TMath::Pi() / 180.0) *  measurements[imeas]->getLAerror());
+					hist_tit = TString("LAM ")+ measurements[imeas]->getIrrad()+TString("; Magnetic Field (T); tan Lorentz Angle");
+					//hist_tit = TString("LAM ")+ measurements[imeas]->getIrrad()+TString("; Magnetic Field (T); Lorentz Angle (degrees)");
 		
 					i++;
 				}
 			}		
 
-			TGraphErrors* gr = new TGraphErrors(i,magfield,LA,magfielderr,LAerr);
+			//TGraphErrors* gr = new TGraphErrors(i,magfield,LA,magfielderr,LAerr);
+			TGraphErrors* gr = new TGraphErrors(i,magfield,tanLA,magfielderr,tanLAerr);
 			TString title = TString("graph_dut")+TString::Itoa(dutid[iId],10)+TString("_V")+TString::Itoa(storedBias[ibias],10);
 			TString tit_can = TString("canvas_")+ title;
 			TCanvas *can = new TCanvas(tit_can.Data(),tit_can.Data(), 800,600);
@@ -295,11 +329,13 @@ void createGraphs(){
 			gr->SetMarkerStyle(6);
 			gr->SetTitle(hist_tit.Data());
 			gr->SetName(title.Data());
+			gr->GetXaxis()->SetRangeUser(-0.1, 1.1);
 			title = TString("fit_")+title;	
-			TF1* fitfunc = new TF1(title.Data(),"pol1"); 
-			gr->Fit(fitfunc,"Q");
-			
-			gr->Draw("ALP");
+			TF1* fitfunc = new TF1(title.Data(),"pol1", -0.05, 1.05); 
+			gr->Fit(fitfunc,"QR");
+			fitfunc->SetLineStyle(2);
+
+			gr->Draw("AP");
 			
 			// LA = p0 * (B-field) + p1
 			double p0 = fitfunc->GetParameter(0);
@@ -318,6 +354,8 @@ void createGraphs(){
 //			cout<<"title "<< title<< endl;
 			latex->DrawLatex(0.5,0.8,title.Data());
 			double la2T = p1 * 2.0 + p0;
+			la2T = TMath::ATan(la2T);
+			la2T = la2T * 180.0 / TMath::Pi();
 			ss.str("");
 			ss << string("LA = ")<<fixed<<setprecision(2)<< la2T << string(" at 2T ");
 			title = ss.str();
@@ -362,13 +400,14 @@ void fitProfiles(){
 	for (unsigned int imeas=0; imeas<measurements.size(); imeas++){
 		TProfile* profile = measurements[imeas]->getProfile();
 		TString hname = measurements[imeas]->getProfileFitName();
-		TF1* f = new TF1(hname.Data(),fit_func,-21,21,4);
+
+		TF1* f = new TF1(hname.Data(),fit_func,-20,20,4);
 		
   		f->SetParNames("LA", "a", "b", "sigma");
   		f->SetParLimits(3, 0.1, 5.);
   		f->SetParLimits(0, -5.0, 5.0);
   		f->SetParameters(0,1,1.13,5);
-		profile->Fit(hname.Data(),"RQ");
+		profile->Fit(hname.Data(),"QR");
 //		cout<< hname << " created"<< " LA= "<<f->GetParameter(0)<<" +/- "<< f->GetParError(0)<<endl;
 		measurements[imeas]->setLA(f->GetParameter(0));
 		measurements[imeas]->setLAerror(f->GetParError(0));
@@ -536,5 +575,63 @@ TTree* getTree(int RunNum, TString iteration){
 	TTree* treeDUT= (TTree*) fin->Get("treeDUT");
 	return treeDUT;
 }	
+
+
+void lam_plot_eachdata(TString iteration){
+	gStyle->SetOptStat(0);
+	double mean_locxslope[50];
+	double mean_locxslope_err[50];
+	double mean_clusize[50];
+	double mean_clusize_err[50];
+	int i=0;
+
+	for (unsigned int imeas=0; imeas<measurements.size(); imeas++){ 
+		fill(mean_locxslope, mean_locxslope+50, 0);
+		fill(mean_locxslope_err, mean_locxslope_err+50, 0);
+		fill(mean_clusize, mean_clusize+50, 0);
+		fill(mean_clusize_err, mean_clusize_err+50, 0);
+
+		i=0;
+		for(unsigned int ifile=0; ifile<fileinfo.size(); ifile++){	
+	
+			if(measurements[imeas]->getDutID() != fileinfo[ifile].DutID || measurements[imeas]->getB() != fileinfo[ifile].B || measurements[imeas]->getBias() != fileinfo[ifile].Bias) continue;
+	
+		//	fileinfo[ifile].print();
+
+	   		TTree* treeDUT= getTree(fileinfo[ifile].RunNum, iteration);
+			setBranches(treeDUT);
+		
+			TString cut = TString("dutID==")+TString::Itoa(fileinfo[ifile].DutID,10);
+			treeDUT->Draw("(locxslope * 180.0 / TMath::Pi())>>hslope(100,-25,25)", cut.Data());
+			TH1D* hslope = (TH1D*)gDirectory->Get("hslope");
+			TF1 *fitfunc = fit_langaus(hslope);
+		stringstream ss;	
+		ss<<"Fit_DutNum"<< fileinfo[ifile].DutID <<"_RunNum"<<fileinfo[ifile].RunNum;
+			string fitname = ss.str();
+//			TF1* fitfunc = new TF1(fitname.c_str(),"gaus"); 
+//			hslope->Fit(fitfunc,"Q");
+			mean_locxslope[i] = fitfunc->GetParameter(1);
+			mean_locxslope_err[i] = fitfunc->GetParError(1);
+	
+			treeDUT->Draw("clustersize>>hclu(20,0,20)", cut.Data());
+			TH1D* hclu = (TH1D*)gDirectory->Get("hclu");
+			mean_clusize[i] = hclu->GetMean();
+			mean_clusize_err[i] = hclu->GetMeanError();
+if(fileinfo[ifile].B==0 && fileinfo[ifile].Bias==500)
+cout<<"B: "<<fileinfo[ifile].B<< " Bias: "<< fileinfo[ifile].Bias<< " Run: "<<fileinfo[ifile].RunNum<<"-"<<fileinfo[ifile].DutID<<" slope: "<<mean_locxslope[i]<<" clu: "<<mean_clusize[i]<<endl;	
+			i++;		
+		}
+		
+		TGraphErrors* gr = new TGraphErrors(i,mean_locxslope,mean_clusize,mean_locxslope_err,mean_clusize_err);
+		TString grname = measurements[imeas]->getGraphName();
+		gr->SetName(grname.Data());
+		grname = grname+TString("; Mean Incidence Angle(degrees); Mean Cluster Size");
+		gr->SetTitle(grname.Data());
+		measurements[imeas]->setGraph(gr);
+					
+	}
+	fitGraphs();
+}
+
 
 
