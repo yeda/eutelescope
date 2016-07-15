@@ -20,7 +20,7 @@ using namespace std;
 
 
 int sortGraph(TString type, int dutnum, int dutid){
-	if (type == TString("tb")){	
+	if (type == TString("tb") || type == TString("clusize") ){	
 		if (dutnum==0 && dutid==6) return 0;
 		if (dutnum==0 && dutid==7) return 2;
 
@@ -83,7 +83,7 @@ void formatGraph(TString type, TGraphErrors *gr, int dutnum, int dutid){
 	gr->SetLineWidth(2);
 	gr->SetFillStyle(0);
 
-	if (type == "tb" && (dutnum == 3 || dutnum == 6)) gr->SetLineStyle(2);
+	if ( (type == "tb"|| type == "clusize") && (dutnum == 3 || dutnum == 6)) gr->SetLineStyle(2);
 	else if (type == "sr" && dutnum > 9) gr->SetLineStyle(2);
 	else gr->SetLineStyle(1);
 

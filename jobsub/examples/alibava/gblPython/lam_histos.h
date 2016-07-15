@@ -11,6 +11,7 @@
 #include "TFile.h"
 #include "TTree.h"
 #include "TCanvas.h"
+#include "TProfile.h"
 #include "TGraphErrors.h"
 #include "TMath.h"
 #include <cstdlib>
@@ -152,26 +153,46 @@ struct LAmeas{
 	
 	TString getIrrad(){
 		TString irrad;
-		if ( DutNum==1 && DutID==6) irrad = TString("5E+14");
-		if ( DutNum==1 && DutID==7) irrad = TString("1E+15");
+		if ( DutNum==1 && DutID==6) irrad = TString("5.0 #times 10^{14}");
+		if ( DutNum==1 && DutID==7) irrad = TString("1.0 #times 10^{15}");
 
-		if ( DutNum==2 && DutID==6) irrad = TString("2E+15");
-		if ( DutNum==2 && DutID==7) irrad = TString("5E+15");
+		if ( DutNum==2 && DutID==6) irrad = TString("2.0 #times 10^{15}");
+		if ( DutNum==2 && DutID==7) irrad = TString("5.0 #times 10^{15}");
 
-		if ( DutNum==3 && DutID==6) irrad = TString("5E+14_An");
-		if ( DutNum==3 && DutID==7) irrad = TString("1E+15_An");
+		if ( DutNum==3 && DutID==6) irrad = TString("5.0 #times 10^{14} an.");
+		if ( DutNum==3 && DutID==7) irrad = TString("1.0 #times 10^{15} an.");
 
-		if ( DutNum==4) irrad = TString("non-irrad");
+		if ( DutNum==4) irrad = TString("non-irradiated");
 
-		if ( DutNum==5 && DutID==7) irrad = TString("2E+14");
-		if ( DutNum==5 && DutID==6) irrad = TString("1.2E+14");
+		if ( DutNum==5 && DutID==7) irrad = TString("2.0 #times 10^{14}");
+		if ( DutNum==5 && DutID==6) irrad = TString("1.2 #times 10^{14}");
 
-		if ( DutNum==6 && DutID==7) irrad = TString("2E+14_An");
-		if ( DutNum==6 && DutID==6) irrad = TString("1.2E+14_An");
+		if ( DutNum==6 && DutID==7) irrad = TString("2.0 #times 10^{14} an.");
+		if ( DutNum==6 && DutID==6) irrad = TString("1.2 #times 10^{14} an.");
 		
 		return irrad;
 	}	
 };
+
+void formatProfile(TProfile *gr){
+    gr->GetXaxis()->SetLabelSize(0.045);
+    gr->GetXaxis()->SetTitleSize(0.05);
+    gr->GetXaxis()->SetTitleOffset(1.2);
+    
+    gr->GetYaxis()->SetLabelSize(0.045);
+    gr->GetYaxis()->SetTitleSize(0.05);
+    gr->GetYaxis()->SetTitleOffset(1.2);
+    
+//    gr->SetTitle("");
+
+}
+
+void formatCanvas1D(TCanvas *cc){
+    cc->SetRightMargin(0.125);
+    cc->SetLeftMargin(0.125);
+    cc->SetBottomMargin(0.13);
+    cc->SetTopMargin(0.07);
+}
 
 int decodeDutID(TString s){
 	int us = s.First('_');

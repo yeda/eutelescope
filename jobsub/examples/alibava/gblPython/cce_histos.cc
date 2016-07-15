@@ -38,6 +38,8 @@ struct FileInfo{
 	int RunNum;
 	int DutID;   
 	int Bias;
+	double MeanCluSize;
+	double MeanCluSizeErr;
 	string Irrad;
 	TH1D *hHitAmp;
 	TF1 *fLangau;
@@ -105,6 +107,11 @@ void cce_plot(TString dutNum, TString iteration){
    		TTree* treeDUT= (TTree*) fin->Get("treeDUT");
 		setBranches(treeDUT);
 	
+			TString cut = TString("dutID==")+TString::Itoa(fileinfo[ifile].DutID,10);
+			treeDUT->Draw("clustersize>>hclu(20,0,20)", cut.Data());
+			TH1D* hclu = (TH1D*)gDirectory->Get("hclu");
+			fileinfo[ifile].MeanCluSize = hclu->GetMean();
+			fileinfo[ifile].MeanCluSizeErr = hclu->GetMeanError();
 		TString histoname = TString("hHitAmp_run")+TString::Itoa(fileinfo[ifile].RunNum,10)+TString("_id")+TString::Itoa(fileinfo[ifile].DutID,10);
 		fileinfo[ifile].hHitAmp = new TH1D(histoname.Data(),histoname.Data(),100, 0, 500);
    		Long64_t nentries = treeDUT->GetEntries();
@@ -128,6 +135,8 @@ void cce_plot(TString dutNum, TString iteration){
         double biasvolterr[2][20];
 	double mp[2][20];
 	double mperr[2][20];
+	double meanclusize[2][20];
+	double meanclusizeerr[2][20];
 	int nValue[2];
         nValue[0]=0; nValue[1]=0;
 
@@ -147,6 +156,8 @@ void cce_plot(TString dutNum, TString iteration){
 		biasvolterr[ichip][nValue[ichip]] = 0;
                 mp[ichip][nValue[ichip]] = fileinfo[ifile].fLangau->GetParameter(1) * mapCalib[calibID];
                 mperr[ichip][nValue[ichip]] = fileinfo[ifile].fLangau->GetParError(1) * mapCalibErr[calibID];
+		meanclusize[ichip][nValue[ichip]] = fileinfo[ifile].MeanCluSize;
+		meanclusizeerr[ichip][nValue[ichip]] = fileinfo[ifile].MeanCluSizeErr;
 		nValue[ichip]= nValue[ichip]+1;
         }
 
@@ -157,6 +168,16 @@ void cce_plot(TString dutNum, TString iteration){
 	fout->cd();
 	g0->Write();
 	g1->Write();
+	
+        TGraphErrors *cg0 = new TGraphErrors(nValue[0],biasvolt[0],meanclusize[0],biasvolterr[0],meanclusizeerr[0]);
+        TGraphErrors *cg1 = new TGraphErrors(nValue[1],biasvolt[1],meanclusize[1],biasvolterr[1],meanclusizeerr[1]);
+	TString csname = TString("clusize_")+sname[0];
+	cg0->SetName(csname.Data());
+	csname = TString("clusize_")+sname[1];
+	cg1->SetName(csname.Data());
+	fout->cd();
+	cg0->Write();
+	cg1->Write();
 	
 	printExcelVersion(fileinfo);
 }

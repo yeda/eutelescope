@@ -26,8 +26,8 @@
 using namespace std;
 
 TString InputPath = TString("output/notcomb-xtalk-telaligned");
-//TString OutputPath = TString("results/ITK");
-TString OutputPath = TString("results/notcomb-xtalk-telaligned");
+TString OutputPath = TString("results/ITK");
+//TString OutputPath = TString("results/notcomb-xtalk-telaligned");
 vector<LAmeas*> measurements;
 TString csvfilename = TString("../runlistfiles/lam_file_info.csv");
 TFile *fout;
@@ -51,14 +51,16 @@ int main(int argc, char *argv[]){
 	createMeasurements( fileinfo );
 
 	gStyle->SetOptStat(0);
-	lam_plot_eachtrack(iteration);
-//	lam_plot_eachtrack_ITK(iteration);	
+//	lam_plot_eachtrack(iteration);
+	lam_plot_eachtrack_ITK(iteration);	
 //	lam_plot_eachdata(iteration);	
-	createGraphs();
-//	plot_LAcombined(TString("ITK"));
-	plot_LAcombined(TString(""));
+//	createGraphs();
 
-        writetotxt("LA_out.txt");
+	plot_LAcombined(TString("ITK"));
+//	plot_LAcombined(TString(""));
+
+//        writetotxt("LA_out.txt");
+        writetotxt("LA_ITK_out.txt");
 
 	return 0;
 }
@@ -87,7 +89,7 @@ int sortLegendB(TString s){
 }
 
 void plot_LAcombined(TString s){
-	
+TString _irradString_;	
 	TProfile* pr;
 	TF1* fit_pr;
 	int icolor =0;
@@ -124,6 +126,7 @@ void plot_LAcombined(TString s){
 			icolor=0;
 			string canvasname = string("LA_dut")+ to_string(measuredDut[i])+string("_V")+to_string(measuredBias[j]);
 			TCanvas *cc = new TCanvas(canvasname.c_str(),canvasname.c_str(),800, 600);
+			formatCanvas1D(cc);	
 			cc->cd();
 
 	gStyle->SetOptStat(0);
@@ -138,8 +141,8 @@ void plot_LAcombined(TString s){
 					if (s==TString("ITK")){
 						if (dutNum == TString("1") && measuredDut[i]==6) pr->SetAxisRange(1.2,1.6,"Y");
 						if (dutNum == TString("1") && measuredDut[i]==7) pr->SetAxisRange(1.05,1.25,"Y");
-						if (dutNum == TString("2") && measuredDut[i]==6) pr->SetAxisRange(1.0,1.15,"Y");
-						if (dutNum == TString("2") && measuredDut[i]==7) pr->SetAxisRange(1.0,1.1,"Y");
+						if (dutNum == TString("2") && measuredDut[i]==6) pr->SetAxisRange(0.95,1.15,"Y");
+						if (dutNum == TString("2") && measuredDut[i]==7) pr->SetAxisRange(0.95,1.1,"Y");
 						if (dutNum == TString("3") && measuredDut[i]==6) pr->SetAxisRange(1.2,1.7,"Y");
 						if (dutNum == TString("3") && measuredDut[i]==7) pr->SetAxisRange(1.1,1.35,"Y");
 						if (dutNum == TString("4")) pr->SetAxisRange(1.2,2.5,"Y");
@@ -151,7 +154,7 @@ void plot_LAcombined(TString s){
 					else {
 						if (dutNum == TString("1") && measuredDut[i]==6) pr->SetAxisRange(1.45,2.0,"Y");
 						if (dutNum == TString("1") && measuredDut[i]==7) pr->SetAxisRange(1.3,1.7,"Y");
-						if (dutNum == TString("2") && measuredDut[i]==6) pr->SetAxisRange(1.1,1.6,"Y");
+						if (dutNum == TString("2") && measuredDut[i]==6) pr->SetAxisRange(1.0,1.5,"Y");
 						if (dutNum == TString("2") && measuredDut[i]==7) pr->SetAxisRange(1.0,1.5,"Y");
 						if (dutNum == TString("3") && measuredDut[i]==6) pr->SetAxisRange(1.3,2.2,"Y");
 						if (dutNum == TString("3") && measuredDut[i]==7) pr->SetAxisRange(1.3,1.7,"Y");
@@ -162,17 +165,23 @@ void plot_LAcombined(TString s){
 						if (dutNum == TString("6") && measuredDut[i]==7) pr->SetAxisRange(2.0,3.0,"Y");
 					}
 					TString title;
-//					title = TString("; Incidence Angle (degrees); Cluster Size");
-					title = TString("LAM ")+ measurements[imeas]->getIrrad()+TString("; Incidence Angle (degrees); Cluster Size");
+					title = TString("; Incidence Angle (degrees); Cluster Size");
+//					title = TString("LAM ")+ measurements[imeas]->getIrrad()+TString("; Incidence Angle (degrees); Cluster Size");
 					pr->SetTitle(title.Data());
+					_irradString_ = measurements[imeas]->getIrrad();
 		        		gStyle->SetOptStat(0);
+					formatProfile(pr);
 					pr->Draw("same");
 				}
 			}
 
-		        TLegend* leg = new TLegend(0.3,0.9,0.7,0.6);
-		        leg->SetHeader("Magnetic Field (T)");
+			double leg_y = 0.92 - 0.05 * sorting.size(); 
+		        TLegend* leg = new TLegend(0.29,0.92,0.73,leg_y);
+
+//			leg->SetTextSize(22);
 		        leg->SetFillColor(0);
+		        leg->SetLineColor(0);
+		        leg->SetHeader("Magnetic Field (T)");
 
 		        for (map< int, LAmeas* >::iterator i_entry=sorting.begin(); i_entry!= sorting.end(); i_entry++){	
 					LAmeas* lameas= i_entry->second; 
@@ -181,15 +190,24 @@ void plot_LAcombined(TString s){
 					pr->SetLineColor(color[i_entry->first -1]);
 					fit_pr->SetLineColor(color[i_entry->first -1]);
 					std::ostringstream ss;
-					ss<< string("B= ")<< fixed<< setprecision(2)<< lameas->getB() << string(", LA= ")<<fixed<<setprecision(2)<<fit_pr->GetParameter(0)<< string(" +/- ")<<fixed<<setprecision(2)<<fit_pr->GetParError(0);
+					ss<< string("B= ")<< fixed<< setprecision(2)<< lameas->getB() << string(", #theta_{L} = ")<<fixed<<setprecision(2)<<fit_pr->GetParameter(0)<< string(" #pm ")<<fixed<<setprecision(2)<<fit_pr->GetParError(0);
 					TString title = TString(ss.str());
 
 	            		    	leg->AddEntry(pr,title.Data(),"l");
 			}
 
 			if(dutNum != TString("2")) leg->Draw();
+
+        TLatex *latex =new TLatex();
+        latex->SetNDC();
+        latex->SetTextFont(43);
+        latex->SetTextColor(kOrange+7);
+        latex->SetTextSize(26);
+_irradString_ = TString("#bf{")+_irradString_+TString("}");
+        latex->DrawLatex(0.65,0.2,_irradString_.Data());
+
+
 			TString title = OutputPath + TString("/LA_dut_")+dutNum+TString("_")+TString::Itoa(measuredDut[i],10)+TString("_V")+TString::Itoa(measuredBias[j],10)+TString(".pdf");
-		
 			cc->SaveAs(title.Data());
 			fout->cd();
 			cc->Write();
@@ -258,8 +276,8 @@ void lam_plot_eachtrack_ITK(TString iteration){
 	fitProfiles();
 }
 
-
 void createGraphs(){
+/*
 	gStyle->SetOptStat(0);
 	vector<int> storedBias;
 	storedBias.clear();
@@ -371,8 +389,8 @@ void createGraphs(){
 		
 		}
 	}
+*/
 }
-
 
 void fitGraphs(){
 	gStyle->SetOptStat(0);
