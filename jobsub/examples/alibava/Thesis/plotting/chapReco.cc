@@ -124,7 +124,7 @@ void clusize_Comp(){
         
     }
     
-    TLegend *leg = new TLegend(0.61,0.41,0.86,0.91);
+    TLegend *leg = new TLegend(0.61,0.46,0.86,0.91);
     leg->SetFillColor(0);
     leg->SetLineColor(0);
     
@@ -207,7 +207,7 @@ void hitamp_Comp(){
         
     }
     
-    TLegend *leg = new TLegend(0.61,0.41,0.86,0.91);
+    TLegend *leg = new TLegend(0.61,0.46,0.86,0.91);
     leg->SetFillColor(0);
     leg->SetLineColor(0);
     
@@ -291,7 +291,7 @@ void signal_Comp(){
         
     }
     
-    TLegend *leg = new TLegend(0.6,0.4,0.85,0.9);
+    TLegend *leg = new TLegend(0.6,0.45,0.85,0.9);
     leg->SetFillColor(0);
     leg->SetLineColor(0);
     
@@ -704,6 +704,7 @@ void pedestal_Comp(){
     cc_noi->SaveAs(PdfName.Data());
     
 }
+
 
 
 
