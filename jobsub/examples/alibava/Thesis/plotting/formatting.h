@@ -118,6 +118,7 @@ void formatGraph(TString type, TGraphErrors *gr, int dutnum, int dutid){
 
 TString getIrrad(int dutnum, int dutid){
 	if (dutnum==0 || dutnum==10) return TString("non-irrad.");
+	if (dutnum==4 ) return TString("non-irrad.");
 
 	if (dutnum==1 && dutid==6) return TString("5.0x10^{14}");
 	if (dutnum==1 && dutid==7) return TString("1.0x10^{15}");
@@ -159,6 +160,26 @@ void formatHisto(TH1 *h){
 	h->SetTitle("");
 	h->SetLineWidth(2);
 }
+
+// int is dutnum*10 + dutid
+map<int, double> mapCalib = 	{ 
+					{6,163.685}, {7, 160.472}, 
+					{16, 166.237}, {17, 163.602}, 
+					{26, 154.325}, {27, 156.122},
+					{36, 166.237}, {37, 163.602}, 
+					{46, 163.685}, {47, 160.472}, 
+					{56, 169.929}, {57, 165.31},
+					{66, 169.929}, {67, 165.31}
+				};
+map<int, double> mapCalibErr = 	{ 
+					{6,0.2477}, {7, 0.245595}, 
+					{16, 0.353991}, {17, 0.426676},
+					{26, 0.356341}, {27, 0.407405},
+					{36, 0.353991}, {37, 0.426676},
+					{46,163.685}, {47, 160.472}, 
+					{56, 0.357177}, {57, 0.365202},
+					{66, 0.357177}, {67, 0.365202}
+				};
 
 
 

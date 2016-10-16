@@ -51,9 +51,9 @@ void track_algorithm(){
 
 	TFile *file;
 	TString FileName;
-	FileName = GblOutputFileBase + TString("/XXXXXX/cuts_Y.root");
 	vector<TString> itnum = {"1","3"};
 	for (unsigned int it=0; it<itnum.size(); it++){
+		FileName = GblOutputFileBase + TString("/XXXXXX/cuts_Y.root");
 		FileName.ReplaceAll(TString("XXXXXX"), gblRun);
 		FileName.ReplaceAll(TString("Y"), itnum[it]);
 		
@@ -91,6 +91,7 @@ void synchronization(){
 	file = TFile::Open(FileName.Data());
 
 	h2D = (TH2D*) file->Get("MyAlibavaCorrelator/hSyncX/hSyncX_d2_d7");
+	h2D->SetYTitle("dx (mm)");
 	formatCanvasColZ(cc);
 	formatHisto(h2D);
 	//cc->SetLogz(1);

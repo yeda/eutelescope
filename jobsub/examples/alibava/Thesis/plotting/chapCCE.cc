@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <math.h>
 #include <vector>
 #include <map>
@@ -33,7 +34,7 @@ struct GraphEntry{
 };
 
 
-void plotMultiGraph(TString type, vector<int> dutlist, TString pdfname);
+void plotMultiGraph(TString type, vector<int> dutlist, TString pdfname, TString f_txt);
 void plotTB();
 void plotSr();
 void convertSrResults();
@@ -98,23 +99,31 @@ TCanvas *cc =new TCanvas("cc","",800,600);
 void plotSr(){
 	vector<int> dutlist = {0,10,2,12,3,13,6,16,17};
 	TString str = TString("SrComp_org.pdf");
-	plotMultiGraph(TString("sr"), dutlist, str);
+	plotMultiGraph(TString("sr"), dutlist, str,TString(""));
 }
 
 
 void plotTB(){
 	vector<int> dutlist = {0,1,2,3,5,6};
 	TString str = TString("TB-Data.pdf");
-	plotMultiGraph(TString("tb"), dutlist, str);
+	plotMultiGraph(TString("tb"), dutlist, str, TString("cce_tb_txt.txt"));
 }
 void plotCluSize(){
 	vector<int> dutlist = {0,1,2,3,5,6};
 	TString str = TString("TB-CluSize.pdf");
-	plotMultiGraph(TString("clusize"), dutlist, str);
+	plotMultiGraph(TString("clusize"), dutlist, str,TString(""));
 }
 
 
-void plotMultiGraph(TString type, vector<int> dutlist, TString pdfname){
+void plotMultiGraph(TString type, vector<int> dutlist, TString pdfname, TString f_txt){
+        std::ofstream out_txt;
+	bool write_to_txt = false;
+        if (f_txt != TString("")){ 
+		out_txt.open(f_txt.Data(), std::ofstream::out | std::ofstream::app);
+		write_to_txt = true;
+		out_txt<<"dutnum;dutid;vbias;cce"<<endl;
+	}
+	double x,y;
 TCanvas *cc =new TCanvas("cc","",800,600);
 	TMultiGraph *mgr = new TMultiGraph();
 	TGraphErrors *gr;
@@ -137,8 +146,16 @@ TCanvas *cc =new TCanvas("cc","",800,600);
 			tempname.ReplaceAll(TString("X"), TString::Itoa(dutlist[idut],10));
 			tempname.ReplaceAll(TString("Y"), TString::Itoa(iid,10));
 
+			
 			gr = (TGraphErrors*)file->Get(tempname.Data());
 			formatGraph(type, gr, dutlist[idut], iid);
+
+			if (write_to_txt){
+				for (int i=0; i<gr->GetN(); i++){
+					gr->GetPoint(i,x,y);
+					out_txt<<idut<<";"<<iid<<";"<<x<<";"<<y<<";"<<endl;
+				}
+			}
 
 			GraphEntry anentry;
 			anentry.graph = gr;
