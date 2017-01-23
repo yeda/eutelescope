@@ -1,7 +1,5 @@
 # Ignore everything in this directory
-ForHara/
-pdfs/
-MillepedeII/.svn/
+*
 
 # Except this file
 !.gitignore

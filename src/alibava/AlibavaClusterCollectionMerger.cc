@@ -202,11 +202,19 @@ void AlibavaClusterCollectionMerger::readDataSource(int /* numEvents */) {
 		{
 			// get alibava collections
 			alibavaPulseColVec = dynamic_cast< LCCollectionVec * > ( alibavaEvent->getCollection( _alibavaPulseCollectionName ) ) ;
+			
+		} catch ( DataNotAvailableException& e ) {
+			noCollectionFound = true;
+			streamlog_out( WARNING5 ) <<"No input collection " << _alibavaPulseCollectionName << " found on alibava event " << alibavaEvent->getEventNumber() << endl;
+		}
+		try
+		{
+			// get alibava collections
 			alibavaSparseColVec = dynamic_cast< LCCollectionVec * > ( alibavaEvent->getCollection( _alibavaSparseCollectionName ) ) ;
 			
 		} catch ( DataNotAvailableException& e ) {
 			noCollectionFound = true;
-			streamlog_out( WARNING5 ) <<"No input collection " << _alibavaPulseCollectionName << " or "<< _alibavaSparseCollectionName << " found on alibava event " << alibavaEvent->getEventNumber() << endl;
+			streamlog_out( WARNING5 ) <<"No input collection " <<  _alibavaSparseCollectionName << " found on alibava event " << alibavaEvent->getEventNumber() << endl;
 		}
 			
 		try

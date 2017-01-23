@@ -101,9 +101,7 @@ def main(argv):
   # create MP2 steering files
   # for mimosa planes determine positions and XY rotations, fix first plane and position of last as Reference
   ##### only telescope
-  #parMimosa = ['RRRRRR', '111111', '111111', '111111', '111111', 'RRR001'] 
-  #parMimosa = ['RRRRRR', '111001', '111001', '111001', '111001', 'RRR001'] 
-  parMimosa = ['RRRRRR', '000000', '000000', '000000', '000000', 'RRRRRR'] 
+  parMimosa = ['RRRRRR', '111111', '111111', '111111', '111111', 'RRR001'] 
   #if bField[1] != 0.:
     # for B field in Y fix X position of plane 3 in addition
   #  parMimosa[3] = 'R11001'
@@ -116,7 +114,7 @@ def main(argv):
   # for DUT determine X,Z positions
   #parDUT = '101000'
   # for DUT determine X,Z positions and XZ,XY rotations
-  parDUT = '101011'
+  parDUT = '000000'
   # for DUT determine X,Z positions and XY rotations
   #parDUT = '101001'
 
@@ -127,28 +125,14 @@ def main(argv):
 
   steerfile = outputdir + '/steer.txt'
   mp2.createSteering(steerfile, detector, parMimosa, parDUT, combDUT)
-  #
-  # Cuts in (X,Y) for triplet finder, DUT matching 
-  #   (peak from true, background from random matches; tail in bending plane for B<>0, electrons)
-  #   Doublet definition: X/Y-distances (mean depends on beam direction and Z-distance)
-  #   Triplet definition: X/Y-distances of third hit to doublet (RMS = triplet resolution)
-  #   Track definition: X/Y-slope differences of pair of triplets (RMS depends on Z-distances)
-  #   Track definition: X/Y-position differences of pair of triplets (RMS depends on Z-distances)
-  #   DUT matching: X/Y-distances of DUT hit to track
-  #cuts = ((2., 1.), (1., 1.), (0.01, 0.01), (5., 5.))  # iteration 1, no alignment, B on
-  #cuts = ((1., 1.), (1., 1.), (0.01, 0.01), (5., 5.))  # iteration 1, no alignment, B off
-  #cuts = ((2., 1.), (0.25, 0.25), (0.01, 0.0025), (1., 1.))  # iteration 1, some alignment
-  #cuts = ((2., 1.), (0.1, 0.025), (0.01, 0.001), (0.1, 0.1))  # 286, B on
-  #cuts = ((1., 1.), (0.025, 0.025), (0.01, 0.01), (0.1, 0.1), (0.2, 10.0))  # 613, B off
 
-  # my cuts to align telescope only
-  #cuts = ((0.5, 0.5), (0.02,0.02), (0.01, 0.01), (0.1, 0.1), (2.2, 10))  
   gblcuts = gblcuts.replace('(','')
   gblcuts = gblcuts.replace(')','')
   gblcuts = gblcuts.replace(' ','')
   gblcuts = gblcuts.split(',')
   gblcuts = map(float,gblcuts)
-  gblcuts = np.array(gblcuts).reshape(9,2)
+  #gblcuts = np.array(gblcuts).reshape(5,2)
+  gblcuts = np.array(gblcuts).reshape(4,2) # for telescope only
   cuts = map(tuple, gblcuts)
 
   # histograms for cut values
@@ -164,9 +148,9 @@ def main(argv):
     if not event.isValid():
       break
     # event read
-    #if event.getNumHits() <= 0:
+    if event.getNumHits() <= 0:
     # only telescope
-    if event.getNumDUThits() <= 0:
+    #if event.getNumDUThits() <= 0:
       continue
     numEvt += 1 
     #event.dump()

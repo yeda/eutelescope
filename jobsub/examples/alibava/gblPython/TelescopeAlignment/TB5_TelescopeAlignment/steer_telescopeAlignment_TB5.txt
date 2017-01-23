@@ -1,0 +1,118 @@
+*** Millepede-II steering file from eutelpy ***
+
+Cfiles ! C-type binary files
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001053/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001057/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001061/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001062/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001063/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001064/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001065/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001066/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001067/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001068/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001069/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001070/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001076/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001077/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001078/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001079/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001082/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001083/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001084/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001085/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001086/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001087/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001088/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001089/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001090/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001091/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run001092/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002033/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002034/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002035/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002036/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002037/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002039/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002040/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002041/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002042/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002043/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002044/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002045/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002046/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002052/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002053/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002054/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002055/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002056/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002058/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002059/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002060/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002061/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002062/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002064/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002067/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002071/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002297/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002334/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002335/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002336/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002337/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002338/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002343/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002344/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run002345/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003044/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003045/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003046/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003047/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003048/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003049/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003050/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003051/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003052/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003053/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003054/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003055/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003056/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003061/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003062/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003063/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003064/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003065/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003066/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003067/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003068/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003069/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003070/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003071/milleBinary_10.dat
+/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/telescopeAlignment/run003072/milleBinary_10.dat
+
+* Global labels are plane-ID * 10 + 1..6 for
+* x-shift, y-shift, z-shift, x-rot, y-rot, z-rot
+
+Parameter ! fixed parameters
+      1  0.  -1. ! Reference
+      2  0.  -1. ! Reference
+      3  0.  -1. ! Reference
+      4  0.  -1. ! Reference
+      5  0.  -1. ! Reference
+      6  0.  -1. ! Reference
+     51  0.  -1. ! Reference
+     52  0.  -1. ! Reference
+     53  0.  -1. ! Reference
+     54  0.  -1. ! Unused
+     55  0.  -1. ! Unused
+     62  0.  -1. ! Unused
+     64  0.  -1. ! Unused
+     72  0.  -1. ! Unused
+     74  0.  -1. ! Unused
+
+method inversion 5 0.1 ! Solution method
+outlierdownweighting 4 ! M-estimators to downweight outliers
+chiscut 30. 6. ! Chi2-cuts for local (track) fits
+! Other options
+printcounts
+skipemptycons
+end

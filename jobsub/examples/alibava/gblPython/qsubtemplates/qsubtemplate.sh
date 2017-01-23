@@ -22,7 +22,7 @@
 #$ -N RunFORMATTEDRUNNUM_itITERATION
 #
 # where to put the logfiles
-#$ -o /nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava/gblPython/output/runFORMATTEDRUNNUM/qsublogs/
+#$ -o OUTPUTFOLDER/runFORMATTEDRUNNUM/qsublogs/
 ### Job requirements:
 #
 ### necessary cpu time:
@@ -37,16 +37,21 @@
 #
 ### Choosing the operating system
 #$ -l os=sld6
+#
+##  Exclude broken nodes (STATUS of 10.5.16):
+##$ -l hostname="!(bird528.desy.de|bird624.desy.de|bird574.desy.de|bird578.desy.de|bird567.desy.de|bird524.desy.de|bird529.desy.de|bird540.desy.de|bird590.desy.de|bird600.desy.de|bird158.desy.de|bird190.desy.de|bird597.desy.de|bird239.desy.de|bird526.desy.de|bird606.desy.de|bird539.desy.de|bird614.desy.de)"
+#
 ###======================================================================
 basePath="/nfs/dust/atlas/user/yeda/ilcsoft/v01-17-05/Eutelescope/trunk/jobsub/examples/alibava"
 gblPythonPath="${basePath}/gblPython"
-outputPath="${gblPythonPath}/output/runFORMATTEDRUNNUM"
-qsubLogPath="${gblPythonPath}/output/runFORMATTEDRUNNUM/qsublogs"
+outputPath="OUTPUTFOLDER/runFORMATTEDRUNNUM"
+qsubLogPath="OUTPUTFOLDER/runFORMATTEDRUNNUM/qsublogs"
+inputpath="INPUTFOLDER"
 
 mkdir -p ${qsubLogPath}
 cd "${gblPythonPath}"
 source PYROOT
-/usr/bin/python "mytelmain.py" -g "GEARFILE" -r RUNNUM -e BEAMENERGY -c "GBLCUTS"
+/usr/bin/python "mytelmain.py" -g "GEARFILE" -r RUNNUM -e BEAMENERGY -c "GBLCUTS" -i "${inputpath}" -o "${outputPath}"
 #/usr/bin/python "telmain.py" -g "${gblPythonPath}/GEARFILE" -r RUNNUM
 
 cd "${outputPath}"
