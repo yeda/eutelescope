@@ -123,8 +123,8 @@ TString getIrrad(int dutnum, int dutid){
 	if (dutnum==1 && dutid==6) return TString("5.0x10^{14}");
 	if (dutnum==1 && dutid==7) return TString("1.0x10^{15}");
 
-	if (dutnum==17 && dutid==6) return TString("5.0x10^{14} an.");
-	if (dutnum==17 && dutid==7) return TString("1.0x10^{15} an.");
+	if (dutnum==17 && dutid==6) return TString("2.0x10^{15} an.");
+	if (dutnum==17 && dutid==7) return TString("5.0x10^{15} an.");
 
 	if ((dutnum==2 || dutnum==12) && dutid==6) return TString("2.0x10^{15}");
 	if ((dutnum==2 || dutnum==12) && dutid==7) return TString("5.0x10^{15}");

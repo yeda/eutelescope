@@ -30,11 +30,14 @@ struct LAmeas {
 
 void createGraph_LAvsB();
 void createMultiGraph_LAvsB();
-void createGraph_LAvsIrrad();
+void createGraph_LAvsIrrad(double MagField);
+void createGraph_LAvsCCE(double MagField);
 void createGraph_LAvsBias();
 
+void reRunData();
 void readLAResults();
 void readSysErr();
+void readCCEResults();
 void printvalues();
 string remove_last_n_char(string s, unsigned int n);
 string get_last_n_char(string s, unsigned int n);
@@ -97,6 +100,15 @@ TString getIrrad(int DutNum, int DutID){
     if ( DutNum==6 && DutID==6) irrad = TString("1.2 #times 10^{14} an.");
     
     return irrad;
+}
+vector<string> splitstring(string s, char delim) {
+    vector<string> elems;
+    stringstream ss(s);
+    string item;
+    while (getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+    return elems;
 }
 
 #endif

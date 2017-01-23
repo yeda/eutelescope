@@ -56,19 +56,20 @@ void clusize_Comp();
 int main(int argc, char *argv[]){
     gStyle->SetOptStat(0);
     TGaxis::SetMaxDigits(3);
-    /*
+    
      rawData();
      pedestal();
-     commonmode();
-     recodata();
+     
+commonmode();
+  /*   recodata();
      timecut();
      clustering();
-     */
+   
     pedestal_Comp();
     signal_Comp();
     hitamp_Comp();
     clusize_Comp();
-
+*/
     return 0;
 }
 
@@ -134,8 +135,11 @@ void clusize_Comp(){
             
             int dutnum = floor(runRunList_Comp[j]/1000.0);
             int dutid = id+6;
-            TString labelname = getIrrad(dutnum,dutid);
             
+            TString labelname;
+	    if (j==0) labelname = getIrrad(dutnum,dutid);
+	    else labelname = getIrrad(dutnum,dutid) + TString(" n_{eq}");
+
             if(j==0 && id==1) continue;
             else leg->AddEntry(h1D[j][id],labelname.Data(),"l");
         }
@@ -217,8 +221,11 @@ void hitamp_Comp(){
             
             int dutnum = floor(runRunList_Comp[j]/1000.0);
             int dutid = id+6;
-            TString labelname = getIrrad(dutnum,dutid);
             
+            TString labelname;
+	    if (j==0) labelname = getIrrad(dutnum,dutid);
+	    else labelname = getIrrad(dutnum,dutid) + TString(" n_{eq}");
+
             if(j==0 && id==1) continue;
             else leg->AddEntry(h1D[j][id],labelname.Data(),"l");
         }
@@ -301,8 +308,11 @@ void signal_Comp(){
             
             int dutnum = floor(runRunList_Comp[j]/1000.0);
             int dutid = id+6;
-            TString labelname = getIrrad(dutnum,dutid);
             
+            TString labelname;
+	    if (j==0) labelname = getIrrad(dutnum,dutid);
+	    else labelname = getIrrad(dutnum,dutid) + TString(" n_{eq}");
+
             if(j==0 && id==1) continue;
             else leg->AddEntry(h1D[j][id],labelname.Data(),"l");
         }
@@ -549,11 +559,11 @@ void commonmode(){
     std::cout<< "Running "<< FileName <<std::endl;
     file = TFile::Open(FileName.Data());
     
-    h1D = (TH1D*) file->Get("MyAlibavaDataHistogramMaker/Events/hEvent_1000_chip0");
+    h1D = (TH1D*) file->Get("MyAlibavaDataHistogramMaker/Events/hEvent_1777_chip0");
     formatCanvas1D(cc);
     formatHisto(h1D);
     h1D->Draw();
-    PdfName = outputPath+pedRun+TString("_event1000_nocmmd.pdf");
+    PdfName = outputPath+pedRun+TString("_event1777_nocmmd.pdf");
     cc->SaveAs(PdfName.Data());
     
     
@@ -686,7 +696,10 @@ void pedestal_Comp(){
             
             int dutnum = floor(pedRunList_Comp[j]/1000.0);
             int dutid = id+6;
-            TString labelname = getIrrad(dutnum,dutid);
+
+            TString labelname;
+	    if (j==0) labelname = getIrrad(dutnum,dutid);
+	    else labelname = getIrrad(dutnum,dutid) + TString(" n_{eq}");
             
             if(j==0 && id==1) leg->AddEntry("","","");
             else leg->AddEntry(h1D[1][j][id],labelname.Data(),"l");

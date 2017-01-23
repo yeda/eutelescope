@@ -34,27 +34,30 @@
 
 using namespace std;
 
-// For ITK
-TString OutputPath = TString("./results/ITK/");
+bool is_itk= false;
 
-TString LAresultfile = TString("./LA_ITK_out.txt");
-bool ITK = true;
 
-//TString OutputPath = TString("./results/notcomb-xtalk-telaligned/");
-//TString LAresultfile = TString("./LA_out.txt");
 
+TString OutputPath;
+TString LAresultfile;
+TString output_rootfile;
 TString Errresultfile = TString("./lam_error.txt");
+TString cce_txt_file = TString("./cce_tb_txt.txt");
 
-TString output_rootfile = OutputPath + TString("./lam_graphs.root");
 map<TString,TObject*> rootobjects;
 TString LAvsBname = TString("LAvsB_dutnumXX_dutidYY_VZZ");
 TString LAvsBname_mgr = TString("LAvsB_VZZ");
 
 TString LAvsIrradname = TString("LAvsIrrad_BXX_VZZ");
+TString LAvsCCEname = TString("LAvsCCE_BXX_VZZ");
 TString LAvsBiasname = TString("LAvsBias_dutnumXX_dutidYY_BZZ");
 
 // map<dutnum, map<voltage, map<Bfield, map<dutid, LAmeas > > > >
 map<int, map<int, map<double, map<int, LAmeas > > > > results;
+
+// map<dutnum, map<dutid, cce> > 
+map<int, map<int, double > > cce_results; // biasV =500
+
 
 // map<dutnum, map<dutid, map<irrad_str, irrad_double > > > irrad_map
 map<int, map<int, TString > > irrad_map_str;
@@ -68,25 +71,31 @@ TCanvas* cc = new TCanvas("cc","cc",800,600);
 
 
 int main(int argc, char *argv[]){
-/*
- 	TString runthis = TString("rm ") + LAresultfile;
-	system(runthis.Data());
-	system("./lam_histos 1 3; ./lam_histos 2 3; ./lam_histos 3 3; ./lam_histos 4 3; ./lam_histos 5 3; ./lam_histos 6 3;");
-    
-    runthis = TString("rm ") + Errresultfile;
-    system(runthis.Data());
-    system("./calculate_err");
-  */
+	if(is_itk) OutputPath = TString("./results/ITK/");
+	else OutputPath = TString("./results/notcomb-xtalk-telaligned/");
+	
+	LAresultfile = OutputPath + TString("LA_out.txt");
+	output_rootfile = OutputPath + TString("lam_graphs.root");	
+
+//    reRunData(); 
     gStyle->SetOptStat(0);
 //    TGaxis::SetMaxDigits(3);
 
     readLAResults();
     readSysErr();
-    
+    readCCEResults();
+ 
     printvalues();
     createGraph_LAvsB();
     //createMultiGraph_LAvsB();
-    createGraph_LAvsIrrad();
+
+    createGraph_LAvsIrrad(0);
+    createGraph_LAvsIrrad(0.25);
+    createGraph_LAvsIrrad(0.5);
+    createGraph_LAvsIrrad(0.75);
+    createGraph_LAvsIrrad(1.0);
+
+    createGraph_LAvsCCE(1.0);
 
     createGraph_LAvsBias();
 
@@ -94,7 +103,15 @@ int main(int argc, char *argv[]){
     
     return 0;
 }
-
+void reRunData(){
+ 	TString runthis = TString("rm ") + LAresultfile;
+	system(runthis.Data());
+	system("./lam_histos 1 3; ./lam_histos 2 3; ./lam_histos 3 3; ./lam_histos 4 3; ./lam_histos 5 3; ./lam_histos 6 3;");
+    
+    runthis = TString("rm ") + Errresultfile;
+    system(runthis.Data());
+    system("./calculate_err");
+}
 
 void createGraph_LAvsBias(){
     
@@ -188,8 +205,145 @@ void createGraph_LAvsBias(){
 
 
 
+void createGraph_LAvsCCE(double MagField){
+    
+    int dutid, dutnum;
+    TString tmp_str;
+    TString grname;
+    
+    int i_color = 0;
+    int icount=0;
+    int an_icount=0;
 
-void createGraph_LAvsIrrad(){
+    double CCE[20]={0};
+    double CCEerr[20]={0};
+    double LA[20]={0};
+    double LAerr[20]={0};
+    
+    double an_CCE[20]={0};
+    double an_CCEerr[20]={0};
+    double an_LA[20]={0};
+    double an_LAerr[20]={0};
+
+	double val_cce;
+	double val_cceerr;
+	double val_la;
+	double val_laerr;
+
+    map<int, map<int, map<double, map<int, LAmeas > > > >::iterator it_dutnum;
+    for (it_dutnum = results.begin(); it_dutnum!=results.end(); it_dutnum++) {
+        dutnum = it_dutnum->first;
+        
+        map<int, map<double, map<int, LAmeas > > >::iterator it_voltage;
+        for (it_voltage = it_dutnum->second.begin(); it_voltage!= it_dutnum->second.end(); it_voltage++) {
+            if (it_voltage->first != 500) continue;
+            
+            map<double, map<int, LAmeas > >::iterator it_bfield;
+            for (it_bfield = it_voltage->second.begin(); it_bfield!=it_voltage->second.end(); it_bfield++) {
+                if (it_bfield->first != MagField) continue;
+                
+                map<int, LAmeas >::iterator it_dutid;
+                
+                for (it_dutid = it_bfield->second.begin(); it_dutid!=it_bfield->second.end(); it_dutid++) {
+                    dutid = it_dutid->first;
+                    	if (dutnum == 4 && dutid == 7) continue;
+                    
+			LAmeas ameas = it_dutid->second;
+			val_cce = cce_results[dutnum][dutid] / 1000.0;
+                        val_cceerr = 0;
+			val_la = fabs(ameas.LA);
+                        val_laerr = ameas.LAerr_stat + ameas.LAerr_sys;
+                        
+                    if (dutnum == 3 || dutnum == 6){
+                        an_CCE[an_icount] = val_cce;
+                        an_CCEerr[an_icount] = val_cceerr;
+                        an_LA[an_icount] = val_la;
+                        an_LAerr[an_icount] = val_laerr;
+                        an_icount++;
+                        
+                    }
+                    else {
+                        CCE[icount] = val_cce;
+                        CCEerr[icount] = val_cceerr;
+                        LA[icount] = val_la;
+                        LAerr[icount] = val_laerr;
+                        icount++;
+                    }
+                }
+                
+            }
+        }
+    }
+    
+    TMultiGraph* gr = new TMultiGraph();
+
+    grname = LAvsCCEname;
+    int Bfield = 100;
+    grname.ReplaceAll("XX", TString::Itoa(MagField*100,10));
+    grname.ReplaceAll("ZZ", TString::Itoa(500,10));
+    gr->SetName(grname.Data());
+    TString grtitle;
+
+    grtitle = TString(";Collected Charge (ke); #left|#theta_{L}#right| (#circ)");
+
+    gr->SetTitle(grtitle.Data());
+ 
+    
+    TGraphErrors* gr1 = new TGraphErrors(icount, CCE, LA, CCEerr, LAerr );
+    TGraphErrors* gr2 = new TGraphErrors(an_icount, an_CCE, an_LA, an_CCEerr, an_LAerr );
+    formatGraph(gr1);
+    gr1->SetMarkerStyle(8);
+    gr1->SetMarkerColor(kRed);
+    gr1->SetFillColor(kRed);
+    gr1->SetFillStyle(3004);
+    gr1->GetXaxis()->SetLimits(-1,11);
+
+    formatGraph(gr2);
+    gr2->SetMarkerStyle(8);
+    gr2->SetMarkerColor(kBlue);
+    gr2->SetFillColor(kBlue);
+    gr2->SetFillStyle(3005);
+    gr2->GetXaxis()->SetLimits(-1,11);
+
+    gr->Add(gr1);
+    gr->Add(gr2);
+  
+    
+    rootobjects.insert(pair<TString,TObject*>(grname,gr));
+    
+    gStyle->SetOptStat(0);
+    cc->cd();
+    //cc->SetLogx(1);
+
+    formatCanvas1D(cc);
+    gr->Draw("a2");
+    gr->Draw("p");
+    
+    
+    TLegend* leg;
+    if (is_itk)
+        leg = new TLegend(0.4,0.4,0.65,0.2);
+    else
+        leg = new TLegend(0.6,0.4,0.85,0.2);
+
+    
+    leg->SetFillColor(0);
+    leg->SetLineColor(1);
+    
+    leg->AddEntry(gr1,"non-annealed","lpf");
+    leg->AddEntry(gr2,"annealed","lpf");
+
+ 
+    leg->Draw();
+    tmp_str = OutputPath +grname + TString(".pdf");
+    cc->SaveAs(tmp_str.Data());
+    
+}
+
+
+
+
+void createGraph_LAvsIrrad(double MagField){
     
     int dutid, dutnum;
     TString tmp_str;
@@ -210,6 +364,11 @@ void createGraph_LAvsIrrad(){
     double an_LA[20]={0};
     double an_LAerr[20]={0};
 
+	double val_irrad;
+	double val_irraderr;
+	double val_la;
+	double val_laerr;
+
     map<int, map<int, map<double, map<int, LAmeas > > > >::iterator it_dutnum;
     for (it_dutnum = results.begin(); it_dutnum!=results.end(); it_dutnum++) {
         dutnum = it_dutnum->first;
@@ -220,28 +379,37 @@ void createGraph_LAvsIrrad(){
             
             map<double, map<int, LAmeas > >::iterator it_bfield;
             for (it_bfield = it_voltage->second.begin(); it_bfield!=it_voltage->second.end(); it_bfield++) {
-                if (it_bfield->first != 1.0) continue;
+                if (it_bfield->first != MagField) continue;
                 
                 map<int, LAmeas >::iterator it_dutid;
                 
                 for (it_dutid = it_bfield->second.begin(); it_dutid!=it_bfield->second.end(); it_dutid++) {
                     dutid = it_dutid->first;
                     if (dutnum == 4 && dutid == 7) continue;
-                    LAmeas ameas = it_dutid->second;
+                    	LAmeas ameas = it_dutid->second;
+			val_irrad = irrad_map_val[dutnum][dutid] / scale;
+                        val_irraderr = 0.1 * irrad_map_val[dutnum][dutid] / scale;
 
+                        if (MagField == 0) 
+				val_la = ameas.LA;
+                        else 
+				val_la = fabs(ameas.LA);
+
+                        val_laerr = ameas.LAerr_stat + ameas.LAerr_sys;
+                        
                     if (dutnum == 3 || dutnum == 6){
-                        an_Irrad[an_icount] = irrad_map_val[dutnum][dutid] / scale;
-                        an_Irraderr[an_icount] = 0.1 * irrad_map_val[dutnum][dutid] / scale;
-                        an_LA[an_icount] = fabs(ameas.LA);
-                        an_LAerr[an_icount] = ameas.LAerr_stat + ameas.LAerr_sys;
+                        an_Irrad[an_icount] = val_irrad;
+                        an_Irraderr[an_icount] = val_irraderr;
+                        an_LA[an_icount] = val_la;
+                        an_LAerr[an_icount] = val_laerr;
                         an_icount++;
                         
                     }
                     else {
-                        Irrad[icount] = irrad_map_val[dutnum][dutid] / scale;
-                        Irraderr[icount] = 0.1 * irrad_map_val[dutnum][dutid] / scale;
-                        LA[icount] = fabs(ameas.LA);
-                        LAerr[icount] = ameas.LAerr_stat + ameas.LAerr_sys;
+                        Irrad[icount] = val_irrad;
+                        Irraderr[icount] = val_irraderr;
+                        LA[icount] = val_la;
+                        LAerr[icount] = val_laerr;
                         icount++;
                     }
                 }
@@ -254,28 +422,34 @@ void createGraph_LAvsIrrad(){
 
     grname = LAvsIrradname;
     int Bfield = 100;
-    grname.ReplaceAll("XX", TString::Itoa(Bfield,10));
+    grname.ReplaceAll("XX", TString::Itoa(MagField*100,10));
     grname.ReplaceAll("ZZ", TString::Itoa(500,10));
     gr->SetName(grname.Data());
-    TString grtitle = TString(";Fluence/10^{14} (1 MeV n_{eq}/cm^{2}); #left|#theta_{L}#right| (#circ)");
+    TString grtitle;
+
+    if (MagField == 0) 
+	grtitle = TString(";Fluence/10^{14} (1 MeV n_{eq}/cm^{2}); #theta_{L} (#circ)");
+    else 
+	grtitle = TString(";Fluence/10^{14} (1 MeV n_{eq}/cm^{2}); #left|#theta_{L}#right| (#circ)");
+
     gr->SetTitle(grtitle.Data());
  
     
     TGraphErrors* gr1 = new TGraphErrors(icount, Irrad, LA, Irraderr, LAerr );
     TGraphErrors* gr2 = new TGraphErrors(an_icount, an_Irrad, an_LA, an_Irraderr, an_LAerr );
+    formatGraph(gr1);
     gr1->SetMarkerStyle(8);
     gr1->SetMarkerColor(kRed);
     gr1->SetFillColor(kRed);
     gr1->SetFillStyle(3004);
     gr1->GetXaxis()->SetLimits(-1,11);
-    formatGraph(gr1);
 
+    formatGraph(gr2);
     gr2->SetMarkerStyle(8);
     gr2->SetMarkerColor(kBlue);
     gr2->SetFillColor(kBlue);
     gr2->SetFillStyle(3005);
     gr2->GetXaxis()->SetLimits(-1,11);
-    formatGraph(gr2);
 
     gr->Add(gr1);
     gr->Add(gr2);
@@ -286,7 +460,6 @@ void createGraph_LAvsIrrad(){
     gStyle->SetOptStat(0);
     cc->cd();
     //cc->SetLogx(1);
-    cout<< "here"<<endl;
 
     formatCanvas1D(cc);
     gr->Draw("a2");
@@ -294,8 +467,10 @@ void createGraph_LAvsIrrad(){
     
     
     TLegend* leg;
-    if (ITK)
+    if (is_itk)
         leg = new TLegend(0.4,0.4,0.65,0.2);
+    else if(MagField == 0)
+        leg = new TLegend(0.6,0.9,0.85,0.7);
     else
         leg = new TLegend(0.6,0.4,0.85,0.2);
 
@@ -308,7 +483,7 @@ void createGraph_LAvsIrrad(){
 
  
     leg->Draw();
-    tmp_str = OutputPath +grname +TString(".pdf");
+    tmp_str = OutputPath +grname + TString(".pdf");
     cc->SaveAs(tmp_str.Data());
     
 }
@@ -555,6 +730,30 @@ void printvalues(){
 }
 
 
+void readCCEResults(){
+    	string line;
+	string tmpstr;
+	int dutnum, dutid;
+	double cce;
+	ifstream cce_file(cce_txt_file.Data());
+	
+	getline(cce_file,line);
+	while(getline(cce_file,line)){
+		// dutnum;dutid;vbias;cce;
+		vector<string> values = splitstring(line,';');
+
+		if( values[2] == string("500") ){
+			dutnum = atoi(values[0].c_str());
+			if (dutnum == 4) continue;
+			if (dutnum == 0) dutnum = 4;
+			dutid = atoi(values[1].c_str());
+			cce = atof(values[3].c_str());
+			if(dutid != 0)
+				cce_results[dutnum][dutid]=cce;
+		}
+	}
+}
+
 void readSysErr(){
     ifstream file(Errresultfile.Data());
     
@@ -591,6 +790,7 @@ void readSysErr(){
             results[dutnum][voltage][Bfield][7] = ameas;
         }
     }
+file.close();
 }
 
 void readLAResults(){
@@ -647,6 +847,7 @@ void readLAResults(){
 
         }
     }
+file.close();
     return;
 }
 

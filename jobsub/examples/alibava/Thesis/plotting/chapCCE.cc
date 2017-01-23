@@ -205,7 +205,7 @@ TCanvas *cc =new TCanvas("cc","",800,600);
 
 	formatCanvas1D(cc);
 	if (type == TString("clusize")) mgr->SetTitle(";(-1) Bias Voltage (V); Mean Cluster Size");
-	else mgr->SetTitle(";(-1) Bias Voltage (V); Collected Charge (ke)");
+	else mgr->SetTitle(";(-1) Bias Voltage (V); Collected Charge (e)");
 	mgr->Draw("ALP");
 	leg.Draw();
 	PdfName = pdfFolder + pdfname;

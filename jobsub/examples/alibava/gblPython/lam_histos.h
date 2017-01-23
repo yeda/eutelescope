@@ -153,6 +153,27 @@ struct LAmeas{
 	
 	TString getIrrad(){
 		TString irrad;
+		if ( DutNum==1 && DutID==6) irrad = TString("5.0E14");
+		if ( DutNum==1 && DutID==7) irrad = TString("1.0E15");
+
+		if ( DutNum==2 && DutID==6) irrad = TString("2.0E15");
+		if ( DutNum==2 && DutID==7) irrad = TString("5.0E15");
+
+		if ( DutNum==3 && DutID==6) irrad = TString("5.0E14_An");
+		if ( DutNum==3 && DutID==7) irrad = TString("1.0E15_An");
+
+		if ( DutNum==4) irrad = TString("non-irradiated");
+
+		if ( DutNum==5 && DutID==7) irrad = TString("2.0E14");
+		if ( DutNum==5 && DutID==6) irrad = TString("1.2E14");
+
+		if ( DutNum==6 && DutID==7) irrad = TString("2.0E14_An");
+		if ( DutNum==6 && DutID==6) irrad = TString("1.2E14_An");
+		return irrad;
+	}	
+
+	TString getIrradLatex(){
+		TString irrad;
 		if ( DutNum==1 && DutID==6) irrad = TString("5.0 #times 10^{14}");
 		if ( DutNum==1 && DutID==7) irrad = TString("1.0 #times 10^{15}");
 
@@ -169,7 +190,6 @@ struct LAmeas{
 
 		if ( DutNum==6 && DutID==7) irrad = TString("2.0 #times 10^{14} an.");
 		if ( DutNum==6 && DutID==6) irrad = TString("1.2 #times 10^{14} an.");
-		
 		return irrad;
 	}	
 };
@@ -225,12 +245,11 @@ TTree* getTree(int RunNum, TString iteration);
 void createMeasurements(vector<FileInfo> fileinfo);
 LAmeas* getMeasurement(int dutID, double b, int bias);
 void lam_plot_eachtrack(TString iteration);
-void lam_plot_eachtrack_ITK(TString iteration);
 void lam_plot_eachdata(TString iteration);
 void fitProfiles();
 void fitGraphs();
 void createGraphs();
-void plot_LAcombined(TString s);
+void plot_LAcombined();
 int sortLegendB(TString s);
 void writetotxt(TString f_txt);
 

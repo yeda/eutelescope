@@ -25,9 +25,13 @@
 #include "lam_histos.h"
 using namespace std;
 
+bool is_itk = false;
+
+
+
+
 TString InputPath = TString("output/notcomb-xtalk-telaligned");
-TString OutputPath = TString("results/ITK");
-//TString OutputPath = TString("results/notcomb-xtalk-telaligned");
+TString OutputPath;
 vector<LAmeas*> measurements;
 TString csvfilename = TString("../runlistfiles/lam_file_info.csv");
 TFile *fout;
@@ -44,23 +48,25 @@ int main(int argc, char *argv[]){
 	TString iteration = TString(argv[2]);
 	measurements.clear();
 	
+
+	if (is_itk) OutputPath = TString("results/ITK");
+	else OutputPath = TString("results/notcomb-xtalk-telaligned");
+
 	TString fout_name = OutputPath + TString("/lam_dut")+dutNum+TString("_it")+iteration+TString(".root");
 	fout = new TFile(fout_name.Data(),"RECREATE");
+
+	TString txt_out_file_name = OutputPath + TString("/LA_out.txt");
 
 	fileinfo = readCsvFile();
 	createMeasurements( fileinfo );
 
 	gStyle->SetOptStat(0);
-//	lam_plot_eachtrack(iteration);
-	lam_plot_eachtrack_ITK(iteration);	
+	lam_plot_eachtrack(iteration);
 //	lam_plot_eachdata(iteration);	
 //	createGraphs();
 
-	plot_LAcombined(TString("ITK"));
-//	plot_LAcombined(TString(""));
-
-//        writetotxt("LA_out.txt");
-        writetotxt("LA_ITK_out.txt");
+	plot_LAcombined();
+        writetotxt(txt_out_file_name.Data());
 
 	return 0;
 }
@@ -88,7 +94,7 @@ int sortLegendB(TString s){
 	else return -1;
 }
 
-void plot_LAcombined(TString s){
+void plot_LAcombined(){
 TString _irradString_;	
 	TProfile* pr;
 	TF1* fit_pr;
@@ -138,7 +144,7 @@ TString _irradString_;
 					fit_pr = (TF1*) measurements[imeas]->getFitProfile();
 
 					sorting.insert(make_pair( sortLegendB( pr->GetName() ), measurements[imeas] ) );
-					if (s==TString("ITK")){
+					if (is_itk){
 						if (dutNum == TString("1") && measuredDut[i]==6) pr->SetAxisRange(1.2,1.6,"Y");
 						if (dutNum == TString("1") && measuredDut[i]==7) pr->SetAxisRange(1.05,1.25,"Y");
 						if (dutNum == TString("2") && measuredDut[i]==6) pr->SetAxisRange(0.95,1.15,"Y");
@@ -168,7 +174,7 @@ TString _irradString_;
 					title = TString("; Incidence Angle (degrees); Cluster Size");
 //					title = TString("LAM ")+ measurements[imeas]->getIrrad()+TString("; Incidence Angle (degrees); Cluster Size");
 					pr->SetTitle(title.Data());
-					_irradString_ = measurements[imeas]->getIrrad();
+					_irradString_ = measurements[imeas]->getIrradLatex();
 		        		gStyle->SetOptStat(0);
 					formatProfile(pr);
 					pr->Draw("same");
@@ -234,42 +240,21 @@ void lam_plot_eachtrack(TString iteration){
       			treeDUT->GetEntry(ientry);
 			if ( dutID==currentMeas->getDutID() ){
 				double slope = locxslope * 180.0 / TMath::Pi();
-				currentProfile->Fill(slope,clustersize);
-			}	
-   		}
-	}
-
-	fitProfiles();
-}
-
-
-void lam_plot_eachtrack_ITK(TString iteration){
-	
-	gStyle->SetOptStat(0);
-	for(unsigned int ifile=0; ifile<fileinfo.size(); ifile++){	
-
-//		fileinfo[ifile].print();
-   		TTree* treeDUT= getTree(fileinfo[ifile].RunNum, iteration);
-		setBranches(treeDUT);
-	
-		LAmeas* currentMeas =  getMeasurement(fileinfo[ifile].DutID, fileinfo[ifile].B, fileinfo[ifile].Bias );	
-		TProfile* currentProfile = currentMeas->getProfile();
-
-		Long64_t nentries = treeDUT->GetEntries();
-		for (Long64_t ientry=0; ientry<nentries;ientry++) {
-      			treeDUT->GetEntry(ientry);
-			if ( dutID==currentMeas->getDutID() ){
-				int calibID = 10*fileinfo[ifile].DutNum + currentMeas->getDutID();
-				double calib = mapCalib[calibID];
-				int newclusize =0;
-				for (unsigned int i_strip = 0; i_strip<clustersize; i_strip++){
-					if (clustercharge[i_strip] * calib > threshold)
-						newclusize++;
+				if (is_itk){
+					int calibID = 10*fileinfo[ifile].DutNum + currentMeas->getDutID();
+					double calib = mapCalib[calibID];
+					int newclusize =0;
+					for (unsigned int i_strip = 0; i_strip<clustersize; i_strip++){
+						if (clustercharge[i_strip] * calib > threshold)
+							newclusize++;
+					}
+					if (newclusize > 0)
+						currentProfile->Fill(slope,newclusize);
 				}
-				double slope = locxslope * 180.0 / TMath::Pi();
-				if (newclusize > 0)
-					currentProfile->Fill(slope,newclusize);
-			}	
+				else{
+					currentProfile->Fill(slope,clustersize);
+				}
+			}
    		}
 	}
 
