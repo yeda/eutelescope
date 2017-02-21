@@ -135,14 +135,11 @@ def main(argv):
   #   Track definition: X/Y-slope differences of pair of triplets (RMS depends on Z-distances)
   #   Track definition: X/Y-position differences of pair of triplets (RMS depends on Z-distances)
   #   DUT matching: X/Y-distances of DUT hit to track
-  #cuts = ((2., 1.), (1., 1.), (0.01, 0.01), (5., 5.))  # iteration 1, no alignment, B on
-  #cuts = ((1., 1.), (1., 1.), (0.01, 0.01), (5., 5.))  # iteration 1, no alignment, B off
-  #cuts = ((2., 1.), (0.25, 0.25), (0.01, 0.0025), (1., 1.))  # iteration 1, some alignment
-  #cuts = ((2., 1.), (0.1, 0.025), (0.01, 0.001), (0.1, 0.1))  # 286, B on
-  #cuts = ((1., 1.), (0.025, 0.025), (0.01, 0.01), (0.1, 0.1), (0.2, 10.0))  # 613, B off
-
-  # my cuts to align telescope only
-  #cuts = ((0.5, 0.5), (0.02,0.02), (0.01, 0.01), (0.1, 0.1), (2.2, 10))  
+  
+  # ((doubletDx_min, doubletDx_max), (doubletDy_min, doubletDy_max), (tripletDx_min, tripletDx_max), (tripletDy_min, tripletDy_max), (dslopeX_min, dslopeX_max), (dslopeY_min, dslopeY_max), (dposX_min, dposX_max), (dposY_min, dposY_max), (DUT-dx, DUT-dY))
+  # DUT-dx and DUT-dY are the absolute values of the cuts, i.e. min will be -(DUT-dx) and max will be DUT-dx 
+  # same for DUT-dY
+  # DUT-dx and DUT-dY is applied to both DUT
   gblcuts = gblcuts.replace('(','')
   gblcuts = gblcuts.replace(')','')
   gblcuts = gblcuts.replace(' ','')
